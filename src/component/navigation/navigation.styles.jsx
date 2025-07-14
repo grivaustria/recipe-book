@@ -7,7 +7,7 @@ export const NavigationContainer = styled.div`
 
 export const NavigationDish = styled.div`
   border: 3px solid;
-  padding: 0.5rem 6rem;
+  padding: 0.5rem 8rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
