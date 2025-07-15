@@ -1,7 +1,13 @@
+import type { ChangeEventHandler } from "react";
+
 import { SearchBox } from "./search-bar.styles";
-const SearchBar = () => {
+
+type SearchBoxProps = {
+    onChangeHandler: ChangeEventHandler<HTMLInputElement>
+}
+const SearchBar = ({onChangeHandler}: SearchBoxProps) => {
     return (
-        <SearchBox />
+        <SearchBox onChange={onChangeHandler} />
     )
 }
 

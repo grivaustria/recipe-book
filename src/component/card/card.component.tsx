@@ -1,15 +1,26 @@
-import { CardContainer, DishImage, DishName, DishTextContainer } from "./card.styles";
+import {
+  CardContainer,
+  DishImage,
+  DishName,
+  DishTextContainer,
+} from "./card.styles";
 
-import ChickenAdobo from "../../assets/dish-chicken-adobo.jpg"
-const Card = () => {
-    return (
-        <CardContainer>
-            <DishImage src={ChickenAdobo} alt="dish-chicken-adobo" />
-            <DishTextContainer>
-                <DishName className="dish-name">Chicken Adobo</DishName>
-            </DishTextContainer>
-        </CardContainer>
+import type { DishDataType } from "../../types/dish.type";
+
+type CardProps = {
+  dish: DishDataType;
+};
+
+const Card = ({ dish }: CardProps) => {
+  const { dishName, dishImage } = dish;
+  return (
+    <CardContainer>
+      <DishImage src={dishImage} alt="dish-chicken-adobo" />
+      <DishTextContainer>
+        <DishName className="dish-name">{dishName}</DishName>
+      </DishTextContainer>
+    </CardContainer>
     )
-}
+};
 
 export default Card;
