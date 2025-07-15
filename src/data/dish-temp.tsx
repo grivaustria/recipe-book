@@ -2,6 +2,8 @@ import type { DishDataType } from "../types/dish.type";
 
 import ChickenAdobo from "../assets/dish-chicken-adobo.jpg";
 import PorkSinigang from "../assets/dish-pork-sinigang.jpg";
+import ChickenAfritada from "../assets/dish-chicken-afritada.jpg";
+import FriedTilapia from "../assets/dish-fried-tilapia.jpg"
 
 export const dishJSON: DishDataType[] = [
   {
@@ -129,4 +131,120 @@ export const dishJSON: DishDataType[] = [
       },
     ],
   },
+  {
+  dishType: 'meat',
+  dishName: "Chicken Afritada",
+  dishImage: ChickenAfritada,
+  ingredients: [
+    {
+      name: "Chicken",
+      quantity: "2",
+      unit: "lbs",
+    },
+    {
+      name: "Potato",
+      quantity: "2",
+      unit: "pcs",
+    },
+    {
+      name: "Carrot",
+      quantity: "1",
+      unit: "pc",
+    },
+    {
+      name: "Bell Pepper (Red & Green)",
+      quantity: "1/2",
+      unit: "each",
+    },
+    {
+      name: "Tomato Sauce",
+      quantity: "1",
+      unit: "cup",
+    },
+    {
+      name: "Garlic",
+      quantity: "4",
+      unit: "cloves",
+    },
+    {
+      name: "Onion",
+      quantity: "1",
+      unit: "pc",
+    },
+    {
+      name: "Water",
+      quantity: "240",
+      unit: "mL",
+    },
+    {
+      name: "Cooking Oil",
+      quantity: "2",
+      unit: "tbsp",
+    },
+    {
+      name: "Salt & Pepper",
+      quantity: "to taste",
+      unit: "",
+    },
+  ],
+  procedure: [
+    {
+      proc1: "Heat oil in a pan. Sauté garlic and onion until fragrant.",
+      proc2: "Add chicken pieces and cook until lightly browned on all sides.",
+      proc3: "Pour in tomato sauce and water. Stir and bring to a boil.",
+      proc4: "Add potatoes and carrots. Simmer for 20 minutes or until tender.",
+      proc5: "Add bell peppers, season with salt and pepper, and simmer for 5 more minutes. Serve hot.",
+    },
+  ],
+},
+{
+  dishType: 'fish',
+  dishName: "Fried Tilapia",
+  dishImage: FriedTilapia,
+  ingredients: [
+    {
+      name: "Tilapia",
+      quantity: "1.5",
+      unit: "kg",
+    },
+    {
+      name: "Salt",
+      quantity: "1",
+      unit: "tsp",
+    },
+    {
+      name: "Black Pepper",
+      quantity: "1/2",
+      unit: "tsp",
+    },
+    {
+      name: "Garlic Powder",
+      quantity: "1/2",
+      unit: "tsp",
+    },
+    {
+      name: "Cooking Oil",
+      quantity: "500",
+      unit: "mL",
+    },
+    {
+      name: "Calamansi or Lemon",
+      quantity: "2",
+      unit: "pcs",
+    },
+  ],
+  procedure: [
+    {
+      proc1: "Clean and pat dry the tilapia. Score both sides with 2-3 diagonal cuts.",
+      proc2: "Rub salt, black pepper, and garlic powder all over the fish, including inside the cuts.",
+      proc3: "Heat cooking oil in a pan over medium heat until hot.",
+      proc4: "Fry the tilapia for about 5-7 minutes per side or until golden brown and crispy.",
+      proc5: "Remove from oil and drain excess oil on paper towels. Serve with calamansi or lemon wedges.",
+    },
+  ],
+},
+
+
 ];
+
+

@@ -6,7 +6,7 @@ import './App.scss'
 import Navigation from './component/navigation/navigation.component'
 import SearchBar from './component/search-bar/search-bar.component'
 import CardList from './component/card-list/card-list.component';
-
+import ViewRecipe from './component/modal/view-recipe/view-recipe.component'
 
 import { dishJSON } from './data/dish-temp'
 import type { DishDataType } from './types/dish.type'
@@ -29,6 +29,7 @@ function App() {
 
   return (
     <>
+      <ViewRecipe dishData={dishFilter} />
       <Navigation />
       <SearchBar onChangeHandler={onSearchChange} />
       <CardList dishData={dishFilter} />

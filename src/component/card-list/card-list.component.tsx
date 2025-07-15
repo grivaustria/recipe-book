@@ -16,8 +16,6 @@ const CardList = ({dishData}: CardListProps) => {
                 <>
                 {dishData.map((dish) => <Card dish={dish} />)}
                 <CardAdd />
-                <CardAdd />
-                <CardAdd />
 
                 </>
                 

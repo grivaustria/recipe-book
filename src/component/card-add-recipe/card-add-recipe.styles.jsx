@@ -6,6 +6,7 @@ export const AddRecipeContainer = styled.div`
   justify-content: center;
   max-width: 295px;
   width: 100%;
+  height: 380px;
   box-shadow: 0 4px 6px -1px rgba(100, 116, 139, 0.5),
     0 2px 4px -2px rgba(100, 116, 139, 0.5);
   align-items: center;
