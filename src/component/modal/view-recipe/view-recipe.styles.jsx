@@ -11,7 +11,7 @@ export const ImageSection = styled.div`
     display: flex;
     flex-direction: column;
     flex: 1 1 40%;
-    
+    box-shadow: 5px 0px 6px 0px rgba(100, 116, 139, 0.5);
 `;
 
 export const ImageDisplay = styled.img`
@@ -26,6 +26,8 @@ export const ImageText = styled.span`
     font-size: 28px;
     font-weight: 700;
     padding: 0.5rem;
+    text-align: center;
+    cursor: default;
 `
 
 export const ContentSection = styled.div`
