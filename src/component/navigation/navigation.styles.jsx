@@ -12,6 +12,17 @@ export const NavigationDish = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  &:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+  
+  &.active {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-width: 4px;
+  }
 `;
 
 export const NavigationHeading = styled.span`
@@ -27,12 +38,22 @@ export const NavigationFish = styled(NavigationDish)`
   background-color: #abfffc;
   border-bottom-left-radius: 32px;
   color: #2391cd;
+
+  &.active {
+    background-color: #8af5f1;
+    border-color: #4dd4cf;
+  }
 `;
 
 export const NavigationMeat = styled(NavigationDish)`
   border-color: #8be556;
   background-color: #c1fa9f;
   color: #14ae5c;
+
+  &.active {
+    background-color: #aef77a;
+    border-color: #6bc230;
+  }
 `;
 
 export const NavigationDessert = styled(NavigationDish)`
@@ -40,4 +61,9 @@ export const NavigationDessert = styled(NavigationDish)`
   background-color: #FFC1CC;
   border-bottom-right-radius: 32px;
   color: #F04F6C;
+
+  &.active {
+    background-color: #ffaab8;
+    border-color: #e6708a;
+  }
 `;

@@ -14,14 +14,29 @@ import type { DishDataType } from './types/dish.type'
 function App() {
   const dishData: DishDataType[] = dishJSON;
   const [searchField, setSearchField] = useState<string>("");
+
+  // For Sorting DishType
+  const [selectedDishType, setSelectedDishType] = useState<string>("all");
+
   const [dishFilter, setDishFilter] = useState<DishDataType[]>(dishData);
+
+  // For View Recipe
   const [selectedDish, setSelectedDish] = useState<DishDataType | null>(null);
   const [isViewRecipeOpen, setIsViewRecipeOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    const newFilteredDish = dishData.filter((dish) => dish.dishName.toLocaleLowerCase().includes(searchField));
-    setDishFilter(newFilteredDish);
-  }, [dishData, searchField]);
+    let filteredDish = dishData;
+
+    if (selectedDishType !== "all"){
+      filteredDish = filteredDish.filter((dish) => dish.dishType.toLowerCase() === selectedDishType.toLowerCase());
+    }
+
+    if (searchField) {
+      filteredDish = filteredDish.filter((dish) => dish.dishName.toLocaleLowerCase().includes(searchField));
+    }
+
+    setDishFilter(filteredDish);
+  }, [dishData, searchField, selectedDishType]);
 
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const searchFieldString = event.target.value.toLocaleLowerCase();
@@ -38,11 +53,15 @@ function App() {
     setSelectedDish(null);
   }
 
+  const handleDishTypeChange = (dishType: string) => {
+    setSelectedDishType(dishType)
+  }
+
   return (
     <>
       {isViewRecipeOpen && selectedDish && <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} />}
       
-      <Navigation />
+      <Navigation selectedDishType={selectedDishType} onDishTypeChange={handleDishTypeChange} />
       <SearchBar onChangeHandler={onSearchChange} />
       <CardList dishData={dishFilter} onCardClick={viewRecipeClick}/>
     </>
