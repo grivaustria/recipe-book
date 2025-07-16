@@ -4,13 +4,7 @@ export type Ingredient = {
     unit: string,
 }
 
-export type Procedure = {
-    proc1: string,
-    proc2: string,
-    proc3: string,
-    proc4: string,
-    proc5: string,
-}
+export type Procedure = string;
 
 export type DishDataType = {
     dishType: string,

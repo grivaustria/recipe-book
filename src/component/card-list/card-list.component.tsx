@@ -5,26 +5,29 @@ import Card from "../card/card.component";
 import CardAdd from "../card-add-recipe/card-add-recipe.component";
 
 type CardListProps = {
-    dishData: DishDataType[];
-}
+  dishData: DishDataType[];
+  onCardClick: (dish: DishDataType) => void;
+};
 
-const CardList = ({dishData}: CardListProps) => {
-    return (
-        <CardListContainer>
-            {/* {dishData.map((dish) => <Card dish={dish} />)} */}
-            {dishData.length > 0 ? (
-                <>
-                {dishData.map((dish) => <Card dish={dish} />)}
-                <CardAdd />
-
-                </>
-                
-            ) : (
-                <CardAdd />
-            )}
-            
-        </CardListContainer>
-    )
-}
+const CardList = ({ dishData, onCardClick }: CardListProps) => {
+  return (
+    <CardListContainer>
+      {dishData.length > 0 ? (
+        <>
+          {dishData.map((dish) => (
+            <Card
+              key={dish.dishName}
+              dish={dish}
+              onClick={() => onCardClick(dish)}
+            />
+          ))}
+          <CardAdd />
+        </>
+      ) : (
+        <CardAdd />
+      )}
+    </CardListContainer>
+  );
+};
 
 export default CardList;

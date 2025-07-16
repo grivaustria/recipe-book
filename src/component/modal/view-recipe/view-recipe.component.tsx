@@ -12,41 +12,36 @@ import {
 
 import type { DishDataType } from "../../../types/dish.type";
 
-import ChickenAdobo from "../../../assets/dish-chicken-adobo.jpg";
 
 type ViewRecipeProps = {
-  dishData: DishDataType[];
+  dish: DishDataType;
+  onClose: () => void;
 };
 
-const ViewRecipe = ({ dishData }: ViewRecipeProps) => {
-  console.log("viewRecipe", dishData);
+const ViewRecipe = ({ dish, onClose }: ViewRecipeProps) => {
+  const {dishName, dishImage, ingredients, procedure} = dish;
   return (
-    <ModalBackground>
-      <Modal>
+    <ModalBackground onClick={onClose}>
+      <Modal onClick={(e) => e.stopPropagation()}>
         <ViewRecipeContainer>
           <ImageSection>
-            <ImageDisplay src={ChickenAdobo} />
-            <ImageText>Chicken Inadobong Manok</ImageText>
+            <ImageDisplay src={dishImage} />
+            <ImageText>{dishName}</ImageText>
           </ImageSection>
           <ContentSection>
             <ContentHeading>Ingredients</ContentHeading>
             <ContentBullet>
-                <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem quae officiis consequuntur animi ex aperiam, nam repellat accusamus dolores dicta illo impedit velit fugiat totam veritatis dolor distinctio? Provident, natus.</li>
-                <li>allo</li>
-                <li>allo</li>
-                <li>allo</li>
-                <li>allo</li>
-                <li>allo</li>
-                <li>allo</li>
+                {ingredients.map((ingredient, index) => (
+                  <li key={index}>{ingredient.quantity} {ingredient.unit} {ingredient.name}</li>
+                ))}
 
 
             </ContentBullet>
             <ContentHeading>Procedure</ContentHeading>
             <ContentOrder>
-                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae, quidem? Saepe ad, aut minima tempora deleniti officiis doloribus nulla ullam unde enim. Nemo sit fugiat eum cumque voluptatibus laboriosam sapiente?</li>
-                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae, quidem? Saepe ad, aut minima tempora deleniti officiis doloribus nulla ullam unde enim. Nemo sit fugiat eum cumque voluptatibus laboriosam sapiente?</li>
-                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae, quidem? Saepe ad, aut minima tempora deleniti officiis doloribus nulla ullam unde enim. Nemo sit fugiat eum cumque voluptatibus laboriosam sapiente?</li>
-
+                {procedure.map((step, index) => (
+                  <li key={index}>{step}</li>
+                ))}
 
 
             </ContentOrder>

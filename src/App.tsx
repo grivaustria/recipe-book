@@ -15,9 +15,10 @@ function App() {
   const dishData: DishDataType[] = dishJSON;
   const [searchField, setSearchField] = useState<string>("");
   const [dishFilter, setDishFilter] = useState<DishDataType[]>(dishData);
+  const [selectedDish, setSelectedDish] = useState<DishDataType | null>(null);
+  const [isViewRecipeOpen, setIsViewRecipeOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    // console.log(dishData)
     const newFilteredDish = dishData.filter((dish) => dish.dishName.toLocaleLowerCase().includes(searchField));
     setDishFilter(newFilteredDish);
   }, [dishData, searchField]);
@@ -27,12 +28,23 @@ function App() {
     setSearchField(searchFieldString);
   }
 
+  const viewRecipeClick = (dish: DishDataType) => {
+    setSelectedDish(dish);
+    setIsViewRecipeOpen(true);
+  }
+
+  const viewRecipeClose = () => {
+    setIsViewRecipeOpen(false);
+    setSelectedDish(null);
+  }
+
   return (
     <>
-      <ViewRecipe dishData={dishFilter} />
+      {isViewRecipeOpen && selectedDish && <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} />}
+      
       <Navigation />
       <SearchBar onChangeHandler={onSearchChange} />
-      <CardList dishData={dishFilter} />
+      <CardList dishData={dishFilter} onCardClick={viewRecipeClick}/>
     </>
   )
 }
