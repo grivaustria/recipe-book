@@ -4,8 +4,9 @@ export const CardListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
+
   max-width: 1200px; /* for better control */
-  margin-left: 0;
+  margin: 0 auto 1rem; /* Center the grid container itself */
   padding: 0 1rem 1rem;
   max-height: 450px;
   overflow-y: auto;

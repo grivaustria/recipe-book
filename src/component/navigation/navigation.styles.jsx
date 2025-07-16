@@ -7,23 +7,29 @@ export const NavigationContainer = styled.div`
 
 export const NavigationDish = styled.div`
   border: 3px solid;
-  padding: 0.5rem 8rem;
+  // padding: 0.5rem 8rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 355px;
+  height: 130px;
 
   &:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
+    opacity: 0.7;
   }
   
-  &.active {
-    transform: scale(1.1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-width: 4px;
+  &.active span {
+    font-size: 38px
   }
+
+  /* Prevent text selection */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 `;
+
 
 export const NavigationHeading = styled.span`
   font-weight: 700;

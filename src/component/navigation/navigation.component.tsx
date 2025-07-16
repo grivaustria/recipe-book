@@ -19,25 +19,26 @@ const Navigation = ({
   selectedDishType,
   onDishTypeChange,
 }: NavigationProps) => {
+
   return (
     <>
       <NavigationContainer>
         <NavigationFish
-          onClick={() => onDishTypeChange("fish")}
+          onClick={() => onDishTypeChange(selectedDishType === "fish" ? "all" : "fish")}
           className={selectedDishType === "fish" ? "active" : ""}
         >
           <img src={NavFish} alt="icon-lucide--fish" />
           <NavigationHeading>Fish</NavigationHeading>
         </NavigationFish>
         <NavigationMeat
-          onClick={() => onDishTypeChange("meat")}
+          onClick={() => onDishTypeChange(selectedDishType === "meat" ? "all" : "meat")}
           className={selectedDishType === "meat" ? "active" : ""}
         >
           <img src={NavMeat} alt="icon-mdi--meat-outline" />
           <NavigationHeading>Meat</NavigationHeading>
         </NavigationMeat>
         <NavigationDessert
-          onClick={() => onDishTypeChange("dessert")}
+          onClick={() => onDishTypeChange(selectedDishType === "dessert" ? "all" : "dessert")}
           className={selectedDishType === "dessert" ? "active" : ""}
         >
           <img src={NavDessert} alt="icon-ep--dessert" />
