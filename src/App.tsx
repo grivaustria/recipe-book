@@ -12,6 +12,7 @@ import ViewRecipe from './component/modal/view-recipe/view-recipe.component'
 import { dishJSON } from './data/dish-temp'
 import type { DishDataType } from './types/dish.type'
 
+
 function App() {
   const dishData: DishDataType[] = dishJSON;
   const [searchField, setSearchField] = useState<string>("");
@@ -24,6 +25,8 @@ function App() {
   // For View Recipe
   const [selectedDish, setSelectedDish] = useState<DishDataType | null>(null);
   const [isViewRecipeOpen, setIsViewRecipeOpen] = useState<boolean>(false);
+
+
 
   useEffect(() => {
     let filteredDish = dishData;

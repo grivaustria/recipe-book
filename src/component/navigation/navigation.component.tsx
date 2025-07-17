@@ -12,6 +12,7 @@ const Navigation = ({
   return (
     <>
       <NavigationContainer>
+        
         <NavigationDish
           onClick={() =>
             onDishTypeChange(selectedDishType === "all" ? "" : "all")
