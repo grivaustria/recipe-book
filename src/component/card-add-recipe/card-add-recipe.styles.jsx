@@ -5,9 +5,9 @@ export const AddRecipeContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
-  // max-width: 295px;
+  max-width: 288px;
   width: 100%;
-  height: 214px;
+  height: 214px; /* Keep this to match your regular cards */
   box-shadow: 0 4px 6px -1px rgba(100, 116, 139, 0.5),
     0 2px 4px -2px rgba(100, 116, 139, 0.5);
   align-items: center;
@@ -16,7 +16,6 @@ export const AddRecipeContainer = styled.div`
   overflow: hidden;
   background-color: #FDF8F2;
   transition: 0.3s all ease-in-out;
-
 
   &:hover {
     cursor: pointer;

@@ -2,14 +2,13 @@ import styled from "styled-components";
 
 export const CardListContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, 1fr); 
   gap: 1rem;
 
+  width: 100%;
   max-width: 1200px; /* for better control */
-  margin: 0 auto 1rem; /* Center the grid container itself */
+  margin: 0 auto 1rem; 
   padding: 0 1rem 1rem;
-  max-height: 450px;
+  max-height: 500px;
   overflow-y: auto;
-  box-shadow: 0 4px 6px -1px rgba(100, 116, 139, 0.5),
-    0 2px 4px -2px rgba(100, 116, 139, 0.5);
 `;
