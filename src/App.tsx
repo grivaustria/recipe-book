@@ -3,6 +3,7 @@ import type { ChangeEvent } from 'react'
 
 import './App.scss'
 
+import Title from './component/title/title.component'
 import Navigation from './component/navigation/navigation.component'
 import SearchBar from './component/search-bar/search-bar.component'
 import CardList from './component/card-list/card-list.component';
@@ -60,7 +61,7 @@ function App() {
   return (
     <>
       {isViewRecipeOpen && selectedDish && <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} />}
-      
+      <Title />
       <Navigation selectedDishType={selectedDishType} onDishTypeChange={handleDishTypeChange} />
       <SearchBar onChangeHandler={onSearchChange} />
       <CardList dishData={dishFilter} onCardClick={viewRecipeClick}/>
