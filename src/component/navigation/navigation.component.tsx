@@ -1,14 +1,4 @@
-import {
-  NavigationContainer,
-  NavigationHeading,
-  NavigationFish,
-  NavigationMeat,
-  NavigationDessert,
-} from "./navigation.styles";
-
-import NavFish from "../../assets/lucide--fish.svg";
-import NavMeat from "../../assets/mdi--meat-outline.svg";
-import NavDessert from "../../assets/ep--dessert.svg";
+import { NavigationContainer, NavigationDish } from "./navigation.styles";
 
 type NavigationProps = {
   selectedDishType: string;
@@ -19,31 +9,41 @@ const Navigation = ({
   selectedDishType,
   onDishTypeChange,
 }: NavigationProps) => {
-
   return (
     <>
       <NavigationContainer>
-        <NavigationFish
-          onClick={() => onDishTypeChange(selectedDishType === "fish" ? "all" : "fish")}
+        <NavigationDish
+          onClick={() =>
+            onDishTypeChange(selectedDishType === "all" ? "" : "all")
+          }
+          className={selectedDishType === "all" ? "active" : ""}
+        >
+          All
+        </NavigationDish>
+        <NavigationDish
+          onClick={() =>
+            onDishTypeChange(selectedDishType === "fish" ? "all" : "fish")
+          }
           className={selectedDishType === "fish" ? "active" : ""}
         >
-          <img src={NavFish} alt="icon-lucide--fish" />
-          <NavigationHeading>Fish</NavigationHeading>
-        </NavigationFish>
-        <NavigationMeat
-          onClick={() => onDishTypeChange(selectedDishType === "meat" ? "all" : "meat")}
+          Fish
+        </NavigationDish>
+        <NavigationDish
+          onClick={() =>
+            onDishTypeChange(selectedDishType === "meat" ? "all" : "meat")
+          }
           className={selectedDishType === "meat" ? "active" : ""}
         >
-          <img src={NavMeat} alt="icon-mdi--meat-outline" />
-          <NavigationHeading>Meat</NavigationHeading>
-        </NavigationMeat>
-        <NavigationDessert
-          onClick={() => onDishTypeChange(selectedDishType === "dessert" ? "all" : "dessert")}
+          Meat
+        </NavigationDish>
+        <NavigationDish
+          onClick={() =>
+            onDishTypeChange(selectedDishType === "dessert" ? "all" : "dessert")
+          }
           className={selectedDishType === "dessert" ? "active" : ""}
         >
-          <img src={NavDessert} alt="icon-ep--dessert" />
-          <NavigationHeading>Dessert</NavigationHeading>
-        </NavigationDessert>
+          Dessert
+        </NavigationDish>
       </NavigationContainer>
     </>
   );
