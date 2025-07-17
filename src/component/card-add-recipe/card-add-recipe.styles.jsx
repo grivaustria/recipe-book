@@ -4,19 +4,23 @@ export const AddRecipeContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 295px;
+  gap: 0.5rem;
+  // max-width: 295px;
   width: 100%;
-  height: 380px;
+  height: 214px;
   box-shadow: 0 4px 6px -1px rgba(100, 116, 139, 0.5),
     0 2px 4px -2px rgba(100, 116, 139, 0.5);
   align-items: center;
   border-radius: 0.5rem;
-  border: 3px dashed #949494;
+  border: 1px dashed #949494;
   overflow: hidden;
-  background-color: #E5E5E5;
+  background-color: #FDF8F2;
+  transition: 0.3s all ease-in-out;
+
 
   &:hover {
     cursor: pointer;
+    transform: translateY(-5px);
   }
 
   &:hover span.add-dish-name{
@@ -25,12 +29,13 @@ export const AddRecipeContainer = styled.div`
 `;
 
 export const AddRecipeImage = styled.img`
-    width: 100px;
+    width: 40px;
+    color: #0e0e0e;
     height: auto;
 `
 
 export const AddRecipeText = styled.span.attrs({ className: "add-dish-name" })`
-    font-size: 32px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 400;
     color: #797979;
 `
