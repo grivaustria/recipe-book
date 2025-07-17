@@ -10,5 +10,5 @@ const SearchBar = ({onChangeHandler}: SearchBoxProps) => {
         <SearchBox onChange={onChangeHandler} />
     )
 }
-
+ 
 export default SearchBar;
