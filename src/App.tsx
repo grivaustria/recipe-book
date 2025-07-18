@@ -9,12 +9,38 @@ import SearchBar from './component/search-bar/search-bar.component'
 import CardList from './component/card-list/card-list.component';
 import ViewRecipe from './component/modal/view-recipe/view-recipe.component'
 
-import { dishJSON } from './data/dish-temp'
 import type { DishDataType } from './types/dish.type'
 
+import { getRecipesFromFirestore } from './utils/firebase.utils';
+import { dishImages } from './data/dish-images'
 
-function App() {
-  const dishData: DishDataType[] = dishJSON;
+
+const App = () => {
+
+  const [dishData, setDishData] = useState<DishDataType[]>([]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const recipes = await getRecipesFromFirestore();
+
+      console.log(recipes);
+
+      const typedRecipes = recipes as DishDataType[];
+
+      
+
+      const recipesWithImages = typedRecipes.map((dish) => ({
+        ...dish,
+        dishImage: dishImages[dish.dishName] || "",
+      }))
+
+      setDishData(recipesWithImages);
+    }
+
+    fetchData();
+  }, [])
+
   const [searchField, setSearchField] = useState<string>("");
 
   // For Sorting DishType

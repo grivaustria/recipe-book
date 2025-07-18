@@ -1,7 +1,7 @@
 // firebase.utils.js
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
-import { dishJSON } from "../data/dish-temp";
+import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+// import { dishJSON } from "../data/dish-temp";
 
 const firebaseConfig = {
   apiKey: "AIzaSyADKriubumnDOnNYY_pMa9IxIt43pHRaO4",
@@ -25,5 +25,39 @@ export const addDishToFirestore = async () => {
     console.log("🎉 All dishes uploaded with unique IDs!");
   } catch (error) {
     console.error("❌ Error uploading dishes:", error);
+  }
+};
+
+/**
+ * @typedef {import('../types/dish.type').DishDataType} DishDataType
+ */
+
+/**
+ * @returns {Promise<DishDataType[]>}
+ */
+
+export const getRecipesFromFirestore = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, 'recipes'));
+    
+
+    const mappedData = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      console.log('Document data:', data);
+
+      return {
+        id: doc.id,
+        ...data,
+      }
+    })
+
+    console.log("Mapped recipes", mappedData);
+
+    return mappedData;
+
+
+  } catch (error) {
+    console.error("Error fetching recipes:", error);
+    return [];
   }
 };
