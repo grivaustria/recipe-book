@@ -86,7 +86,6 @@ const App = () => {
 
   return (
     <>
-      {/* <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} /> */}
       {isViewRecipeOpen && selectedDish && <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} />}
       <Title />
       <Navigation
@@ -94,7 +93,7 @@ const App = () => {
         onDishTypeChange={handleDishTypeChange}
       />
       <SearchBar onChangeHandler={onSearchChange} />
-      <CardList dishData={dishFilter} onCardClick={viewRecipeClick} />
+      <CardList dishData={dishFilter} onCardClick={viewRecipeClick} searchField={searchField} />
     </>
   );
 };

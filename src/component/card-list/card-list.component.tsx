@@ -7,9 +7,10 @@ import CardAdd from "../card-add-recipe/card-add-recipe.component";
 type CardListProps = {
   dishData: DishDataType[];
   onCardClick: (dish: DishDataType) => void;
+  searchField: string;
 };
 
-const CardList = ({ dishData, onCardClick }: CardListProps) => {
+const CardList = ({ dishData, onCardClick, searchField }: CardListProps) => {
   return (
     <CardListContainer>
       {dishData.length > 0 ? (
@@ -21,10 +22,10 @@ const CardList = ({ dishData, onCardClick }: CardListProps) => {
               onClick={() => onCardClick(dish)}
             />
           ))}
-          <CardAdd />
+          {searchField === "" && <CardAdd />}
         </>
       ) : (
-        <CardAdd />
+        searchField === "" && <CardAdd />
       )}
     </CardListContainer>
   );
