@@ -4,14 +4,16 @@ import {
   ImageSection,
   ContentSection,
   ImageDisplay,
-  ImageText,
+  ContentTitle,
   ContentHeading,
+  ContentText,
   ContentBullet,
   ContentOrder,
+  ContentTag,
+  ContentList,
 } from "./view-recipe.styles";
 
 import type { DishDataType } from "../../../types/dish.type";
-
 
 type ViewRecipeProps = {
   dish: DishDataType;
@@ -19,33 +21,39 @@ type ViewRecipeProps = {
 };
 
 const ViewRecipe = ({ dish, onClose }: ViewRecipeProps) => {
-  const {dishName, dishImage, ingredients, procedure} = dish;
+  const { dishType, dishName, dishImage, ingredients, procedure } = dish;
   return (
     <ModalBackground onClick={onClose}>
       <Modal onClick={(e) => e.stopPropagation()}>
         <ViewRecipeContainer>
           <ImageSection>
             <ImageDisplay src={dishImage} />
-            <ImageText>{dishName}</ImageText>
           </ImageSection>
           <ContentSection>
-            <ContentHeading>Ingredients</ContentHeading>
-            <ContentBullet>
+            <ContentTitle>
+              <ContentText>{dishName}</ContentText>
+              <ContentTag>{dishType}</ContentTag>
+            </ContentTitle>
+
+            <ContentList>
+              <ContentHeading>Ingredients</ContentHeading>
+              <ContentBullet>
                 {ingredients.map((ingredient, index) => (
-                  <li key={index}>{ingredient.quantity} {ingredient.unit} {ingredient.name}</li>
+                  <li key={index}>
+                    {ingredient.quantity} {ingredient.unit} {ingredient.name}
+                  </li>
                 ))}
+              </ContentBullet>
+            </ContentList>
 
-
-            </ContentBullet>
-            <ContentHeading>Procedure</ContentHeading>
-            <ContentOrder>
+            <ContentList>
+              <ContentHeading>Procedure</ContentHeading>
+              <ContentOrder>
                 {procedure.map((step, index) => (
                   <li key={index}>{step}</li>
                 ))}
-
-
-            </ContentOrder>
-            
+              </ContentOrder>
+            </ContentList>
           </ContentSection>
         </ViewRecipeContainer>
       </Modal>

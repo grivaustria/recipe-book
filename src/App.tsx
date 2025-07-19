@@ -1,24 +1,21 @@
-import { useState, useEffect } from 'react'
-import type { ChangeEvent } from 'react'
+import { useState, useEffect } from "react";
+import type { ChangeEvent } from "react";
 
-import './App.scss'
+import "./App.scss";
 
-import Title from './component/title/title.component'
-import Navigation from './component/navigation/navigation.component'
-import SearchBar from './component/search-bar/search-bar.component'
-import CardList from './component/card-list/card-list.component';
-import ViewRecipe from './component/modal/view-recipe/view-recipe.component'
+import Title from "./component/title/title.component";
+import Navigation from "./component/navigation/navigation.component";
+import SearchBar from "./component/search-bar/search-bar.component";
+import CardList from "./component/card-list/card-list.component";
+import ViewRecipe from "./component/modal/view-recipe/view-recipe.component";
 
-import type { DishDataType } from './types/dish.type'
+import type { DishDataType } from "./types/dish.type";
 
-import { getRecipesFromFirestore } from './utils/firebase.utils';
-import { dishImages } from './data/dish-images'
-
+import { getRecipesFromFirestore } from "./utils/firebase.utils";
+import { dishImages } from "./data/dish-images";
 
 const App = () => {
-
   const [dishData, setDishData] = useState<DishDataType[]>([]);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,18 +25,16 @@ const App = () => {
 
       const typedRecipes = recipes as DishDataType[];
 
-      
-
       const recipesWithImages = typedRecipes.map((dish) => ({
         ...dish,
         dishImage: dishImages[dish.dishName] || "",
-      }))
+      }));
 
       setDishData(recipesWithImages);
-    }
+    };
 
     fetchData();
-  }, [])
+  }, []);
 
   const [searchField, setSearchField] = useState<string>("");
 
@@ -52,17 +47,19 @@ const App = () => {
   const [selectedDish, setSelectedDish] = useState<DishDataType | null>(null);
   const [isViewRecipeOpen, setIsViewRecipeOpen] = useState<boolean>(false);
 
-
-
   useEffect(() => {
     let filteredDish = dishData;
 
-    if (selectedDishType !== "all"){
-      filteredDish = filteredDish.filter((dish) => dish.dishType.toLowerCase() === selectedDishType.toLowerCase());
+    if (selectedDishType !== "all") {
+      filteredDish = filteredDish.filter(
+        (dish) => dish.dishType.toLowerCase() === selectedDishType.toLowerCase()
+      );
     }
 
     if (searchField) {
-      filteredDish = filteredDish.filter((dish) => dish.dishName.toLocaleLowerCase().includes(searchField));
+      filteredDish = filteredDish.filter((dish) =>
+        dish.dishName.toLocaleLowerCase().includes(searchField)
+      );
     }
 
     setDishFilter(filteredDish);
@@ -71,31 +68,35 @@ const App = () => {
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const searchFieldString = event.target.value.toLocaleLowerCase();
     setSearchField(searchFieldString);
-  }
+  };
 
   const viewRecipeClick = (dish: DishDataType) => {
     setSelectedDish(dish);
     setIsViewRecipeOpen(true);
-  }
+  };
 
   const viewRecipeClose = () => {
     setIsViewRecipeOpen(false);
     setSelectedDish(null);
-  }
+  };
 
   const handleDishTypeChange = (dishType: string) => {
-    setSelectedDishType(dishType)
-  }
+    setSelectedDishType(dishType);
+  };
 
   return (
     <>
+      {/* <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} /> */}
       {isViewRecipeOpen && selectedDish && <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} />}
       <Title />
-      <Navigation selectedDishType={selectedDishType} onDishTypeChange={handleDishTypeChange} />
+      <Navigation
+        selectedDishType={selectedDishType}
+        onDishTypeChange={handleDishTypeChange}
+      />
       <SearchBar onChangeHandler={onSearchChange} />
-      <CardList dishData={dishFilter} onCardClick={viewRecipeClick}/>
+      <CardList dishData={dishFilter} onCardClick={viewRecipeClick} />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
