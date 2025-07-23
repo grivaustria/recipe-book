@@ -7,7 +7,6 @@ export const ModalBackground = styled.div`
   flex-direction: column;
   justify-content: center;
 
-  // align-items:center;
 
   background-color: #0000007c;
   position: absolute;

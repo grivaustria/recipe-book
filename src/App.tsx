@@ -13,6 +13,7 @@ import type { DishDataType } from "./types/dish.type";
 
 import { getRecipesFromFirestore } from "./utils/firebase.utils";
 import { dishImages } from "./data/dish-images";
+import AddRecipe from "./component/modal/add-recipe/add-recipe.component";
 
 const App = () => {
   const [dishData, setDishData] = useState<DishDataType[]>([]);
@@ -86,6 +87,7 @@ const App = () => {
 
   return (
     <>
+      <AddRecipe />
       {isViewRecipeOpen && selectedDish && <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} />}
       <Title />
       <Navigation
