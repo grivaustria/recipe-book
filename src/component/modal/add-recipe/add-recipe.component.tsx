@@ -123,9 +123,9 @@ const AddRecipe = () => {
           <RecipeDetails>
             <RecipeTitleContainer>
               <InputLabelContainer>
-                <LabelText htmlFor="recipeName">Recipe Name:</LabelText>
+                <LabelText htmlFor="dishName">Recipe Name:</LabelText>
                 <InputText
-                  id="recipeName"
+                  id="dishName"
                   type="text"
                   value={dishName}
                   onChange={handleInputChange}
