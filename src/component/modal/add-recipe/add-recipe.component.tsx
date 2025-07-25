@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { FormEvent, ChangeEvent } from "react";
 
 import { ModalBackground, Modal } from "../modal.styles";
@@ -25,7 +25,11 @@ import type {
   Procedure,
 } from "../../../types/dish.type";
 
-const AddRecipe = () => {
+type AddRecipeProps = {
+  onClose: () => void;
+};
+
+const AddRecipe = ({ onClose }: AddRecipeProps) => {
   const [dishName, setDishName] = useState<string>("");
   const [dishType, setDishType] = useState<string>("");
   const [dishImage, setDishImage] = useState<string>("");
@@ -116,8 +120,8 @@ const AddRecipe = () => {
   };
 
   return (
-    <ModalBackground>
-      <Modal>
+    <ModalBackground onClick={onClose}>
+      <Modal onClick={(e) => e.stopPropagation()}>
         {/* Form */}
         <AddRecipeContainer onSubmit={handleSubmit}>
           <RecipeDetails>

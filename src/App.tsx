@@ -17,12 +17,24 @@ import AddRecipe from "./component/modal/add-recipe/add-recipe.component";
 
 const App = () => {
   const [dishData, setDishData] = useState<DishDataType[]>([]);
+  const [searchField, setSearchField] = useState<string>("");
+
+  // For Sorting DishType
+  const [selectedDishType, setSelectedDishType] = useState<string>("all");
+  const [dishFilter, setDishFilter] = useState<DishDataType[]>(dishData);
+
+  // For View Recipe
+  const [selectedDish, setSelectedDish] = useState<DishDataType | null>(null);
+  const [isViewRecipeOpen, setIsViewRecipeOpen] = useState<boolean>(false);
+
+  // For Add Recipe
+  const [isAddRecipeOpen, setIsAddRecipeOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const recipes = await getRecipesFromFirestore();
 
-      console.log(recipes);
+      // console.log(recipes);
 
       const typedRecipes = recipes as DishDataType[];
 
@@ -34,21 +46,6 @@ const App = () => {
       setDishData(recipesWithImages);
     };
 
-    fetchData();
-  }, []);
-
-  const [searchField, setSearchField] = useState<string>("");
-
-  // For Sorting DishType
-  const [selectedDishType, setSelectedDishType] = useState<string>("all");
-
-  const [dishFilter, setDishFilter] = useState<DishDataType[]>(dishData);
-
-  // For View Recipe
-  const [selectedDish, setSelectedDish] = useState<DishDataType | null>(null);
-  const [isViewRecipeOpen, setIsViewRecipeOpen] = useState<boolean>(false);
-
-  useEffect(() => {
     let filteredDish = dishData;
 
     if (selectedDishType !== "all") {
@@ -64,6 +61,7 @@ const App = () => {
     }
 
     setDishFilter(filteredDish);
+    fetchData();
   }, [dishData, searchField, selectedDishType]);
 
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -81,21 +79,39 @@ const App = () => {
     setSelectedDish(null);
   };
 
+  const addRecipeClick = (): void => {
+    setIsAddRecipeOpen(true);
+    // console.log("isAddRecipeOpen:", isAddRecipeOpen)
+  };
+
+  const addRecipeClose = (): void => {
+    setIsAddRecipeOpen(false);
+    console.log(isAddRecipeOpen);
+  };
+
   const handleDishTypeChange = (dishType: string) => {
     setSelectedDishType(dishType);
   };
 
   return (
     <>
-      <AddRecipe />
-      {isViewRecipeOpen && selectedDish && <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} />}
+      {isAddRecipeOpen && <AddRecipe onClose={addRecipeClose} />}
+
+      {isViewRecipeOpen && selectedDish && (
+        <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} />
+      )}
       <Title />
       <Navigation
         selectedDishType={selectedDishType}
         onDishTypeChange={handleDishTypeChange}
       />
       <SearchBar onChangeHandler={onSearchChange} />
-      <CardList dishData={dishFilter} onCardClick={viewRecipeClick} searchField={searchField} />
+      <CardList
+        dishData={dishFilter}
+        onCardClick={viewRecipeClick}
+        searchField={searchField}
+        onAddRecipeClick={addRecipeClick}
+      />
     </>
   );
 };

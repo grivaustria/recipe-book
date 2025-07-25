@@ -38,24 +38,21 @@ export const addDishToFirestore = async () => {
 
 export const getRecipesFromFirestore = async () => {
   try {
-    const snapshot = await getDocs(collection(db, 'recipes'));
-    
+    const snapshot = await getDocs(collection(db, "recipes"));
 
     const mappedData = snapshot.docs.map((doc) => {
       const data = doc.data();
-      console.log('Document data:', data);
+      // console.log('Document data:', data);
 
       return {
         id: doc.id,
         ...data,
-      }
-    })
+      };
+    });
 
-    console.log("Mapped recipes", mappedData);
+    // console.log("Mapped recipes", mappedData);
 
     return mappedData;
-
-
   } catch (error) {
     console.error("Error fetching recipes:", error);
     return [];
