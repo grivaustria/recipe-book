@@ -58,3 +58,18 @@ export const getRecipesFromFirestore = async () => {
     return [];
   }
 };
+
+/**
+ * @param {object} recipe - Recipe data to add.
+ * @returns {Promise<void>}
+ */
+
+export const addRecipeToFirestore = async (recipe) => {
+  try {
+    await addDoc(collection(db, "recipes"), recipe);
+    console.log("Recipe added successfully", recipe.dishName);
+  } catch (error) {
+    console.error("Error adding recipes", error);
+    throw error;
+  }
+};

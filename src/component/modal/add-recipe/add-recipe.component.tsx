@@ -1,6 +1,8 @@
 import { useState } from "react";
 import type { FormEvent, ChangeEvent } from "react";
 
+import { addRecipeToFirestore } from "../../../utils/firebase.utils";
+
 import { ModalBackground, Modal } from "../modal.styles";
 
 import {
@@ -97,7 +99,7 @@ const AddRecipe = ({ onClose }: AddRecipeProps) => {
     }
   };
 
-  const handleSubmit = (event: FormEvent): void => {
+  const handleSubmit = async (event: FormEvent): Promise<void> => {
     event.preventDefault();
 
     const recipeData: DishDataType = {
@@ -114,9 +116,19 @@ const AddRecipe = ({ onClose }: AddRecipeProps) => {
         .filter((step) => step !== ""),
     };
 
+    try {
+      await addRecipeToFirestore(recipeData);
+      setDishName("");
+      setDishImage("");
+      setDishType("");
+      setIngredients([{ quantity: "", unit: "cup", name: "" }]);
+      setProcedure([{ step: "" }]);
+      onClose();
+    } catch (error) {
+      console.log("Failed to add recipe. Please try again.", error);
+    }
+
     console.log("Submitting Recipe:", recipeData);
-    setDishName("");
-    setDishImage("");
   };
 
   return (
