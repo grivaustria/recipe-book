@@ -3,10 +3,19 @@ import styled from "styled-components";
 export const AddRecipeContainer = styled.form`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 1rem;
   width: 100%;
-  overflow-x: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: 1.5rem;
+  height: 550px;
+`;
+
+export const RecipeDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 export const RecipeTitleContainer = styled.div`
@@ -46,9 +55,7 @@ export const ContentContainer = styled.div`
   display: grid;
   width: 100%;
   gap: 0.5rem;
-
 `;
-
 
 export const List = styled.div`
   display: flex;
@@ -56,12 +63,15 @@ export const List = styled.div`
   gap: 0.5rem;
   width: 100%;
 
-  & :is(${ContentContainer}:nth-child(1), ${ContentContainer}:nth-child(2)) {
-    grid-template-columns: 10% 20% 50% 20%;
-  
-  } 
-`;
+  &.ingredient ${ContentContainer} {
+    grid-template-columns: 10% 20% 54% 20%;
+  }
 
+  &.procedure ${ContentContainer} {
+    // grid-template-columns: 5% 76% 18%;
+    grid-template-columns: 5% 80% 18%;
+  }
+`;
 
 export const OptionsContainer = styled.div`
   display: flex;
@@ -92,4 +102,12 @@ export const AddItemButton = styled(Button)`
   background-color: #20bc1d;
   font-size: 16px;
   border: none;
+`;
+
+export const SubmitRecipe = styled(Button)`
+  background-color: #2d76e2ff;
+  font-size: 20px;
+  border: none;
+  // font-weight: 700;
+  align-self: center;
 `;

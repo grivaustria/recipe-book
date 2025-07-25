@@ -1,15 +1,17 @@
 export type Ingredient = {
-    name: string,
-    quantity: string,
-    unit: string,
-}
+  name: string;
+  quantity: string;
+  unit: string;
+};
 
-export type Procedure = string;
+export type Procedure = {
+  step: string;
+};
 
 export type DishDataType = {
-    dishType: string,
-    dishName: string,
-    dishImage: string,
-    ingredients: Ingredient[];
-    procedure: Procedure[];
-}
+  dishType: string;
+  dishName: string;
+  dishImage?: string;
+  ingredients: Ingredient[];
+  procedure: string[];
+};
