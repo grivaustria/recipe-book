@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
+
 import type { ChangeEvent } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./App.scss";
 
@@ -95,6 +98,7 @@ const App = () => {
 
   return (
     <>
+      <ToastContainer />
       {isAddRecipeOpen && <AddRecipe onClose={addRecipeClose} />}
 
       {isViewRecipeOpen && selectedDish && (

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { FormEvent, ChangeEvent } from "react";
+import { toast } from "react-toastify";
 
 import { addRecipeToFirestore } from "../../../utils/firebase.utils";
 
@@ -124,8 +125,10 @@ const AddRecipe = ({ onClose }: AddRecipeProps) => {
       setIngredients([{ quantity: "", unit: "cup", name: "" }]);
       setProcedure([{ step: "" }]);
       onClose();
+      toast.success("Recipe added successfully!");
     } catch (error) {
-      console.log("Failed to add recipe. Please try again.", error);
+      toast.error("Failed to add recipe.");
+      console.error(error);
     }
 
     console.log("Submitting Recipe:", recipeData);
