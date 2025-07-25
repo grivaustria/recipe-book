@@ -219,13 +219,15 @@ const AddRecipe = () => {
                     >
                       &#10005;
                     </RemoveButton>
-                    <AddItemButton
-                      className="active"
-                      type="button"
-                      onClick={addIngredientRow}
-                    >
-                      Add Item
-                    </AddItemButton>
+                    {index === ingredients.length - 1 && (
+                      <AddItemButton
+                        className="active"
+                        type="button"
+                        onClick={addIngredientRow}
+                      >
+                        Add Item
+                      </AddItemButton>
+                    )}
                   </OptionsContainer>
                 </ContentContainer>
               ))}
@@ -257,9 +259,12 @@ const AddRecipe = () => {
                     >
                       &#10005;
                     </RemoveButton>
-                    <AddItemButton type="button" onClick={addProcedureStep}>
-                      Add Item
-                    </AddItemButton>
+
+                    {index === procedure.length - 1 && (
+                      <AddItemButton type="button" onClick={addProcedureStep}>
+                        Add Item
+                      </AddItemButton>
+                    )}
                   </OptionsContainer>
                 </ContentContainer>
               ))}
