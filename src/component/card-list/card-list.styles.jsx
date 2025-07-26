@@ -9,6 +9,6 @@ export const CardListContainer = styled.div`
   max-width: 1200px; /* for better control */
   margin: 0 auto 1rem; 
   padding: 0 1rem 1rem;
-  max-height: 500px;
+  height: 410px;
   overflow-y: auto;
 `;

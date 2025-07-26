@@ -44,8 +44,11 @@ export const DishTextContainer = styled.div`
 export const DishName = styled.span.attrs({ className: "dish-name" })`
   font-weight: 700;
   font-size: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export const DishType = styled.span`
   text-transform: capitalize;
-`
+`;
