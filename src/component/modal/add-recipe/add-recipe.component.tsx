@@ -10,7 +10,7 @@ const AddRecipe = ({ onClose }: AddRecipeProps) => {
   return (
     <ModalBackground onClick={onClose}>
       <Modal onClick={(e) => e.stopPropagation()}>
-        <AddRecipeForm onClose={onClose} />
+        <AddRecipeForm />
         
       </Modal>
     </ModalBackground>

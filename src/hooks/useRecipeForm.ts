@@ -4,7 +4,7 @@ import type { DishDataType, Ingredient, Procedure } from "../types/dish.type";
 import { addRecipeToFirestore } from "../utils/firebase.utils";
 import { toast } from "react-toastify";
 
-export const useRecipeForm = (onClose: () => void) => {
+export const useRecipeForm = () => {
   const [dishName, setDishName] = useState<string>("");
   const [dishType, setDishType] = useState<string>("");
   const [dishImage, setDishImage] = useState<string>("");
