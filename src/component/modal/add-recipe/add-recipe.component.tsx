@@ -5,21 +5,16 @@ import { toast } from "react-toastify";
 import { addRecipeToFirestore } from "../../../utils/firebase.utils";
 
 import { ModalBackground, Modal } from "../modal.styles";
-
 import {
   AddRecipeContainer,
   RecipeTitleContainer,
+  RecipeDetails,
   InputLabelContainer,
   LabelText,
   InputText,
   SelectOption,
   List,
-  ContentContainer,
-  OptionsContainer,
-  RemoveButton,
-  AddItemButton,
   SubmitRecipe,
-  RecipeDetails,
 } from "./add-recipe.styles";
 
 import type {
@@ -28,6 +23,8 @@ import type {
   Procedure,
 } from "../../../types/dish.type";
 
+import IngredientList from "./ingredient-list.component";
+import ProcedureList from "./procedure-list.component";
 type AddRecipeProps = {
   onClose: () => void;
 };
@@ -168,125 +165,21 @@ const AddRecipe = ({ onClose }: AddRecipeProps) => {
             </RecipeTitleContainer>
 
             <List className="ingredient">
-              <ContentContainer>
-                <LabelText>Quantity:</LabelText>
-                <LabelText>Unit:</LabelText>
-                <LabelText>Ingredients:</LabelText>
-                <LabelText>Options:</LabelText>
-              </ContentContainer>
-
-              {ingredients.map((ingredient, index) => (
-                <ContentContainer key={index}>
-                  <InputText
-                    type="number"
-                    className="quantity"
-                    placeholder="1"
-                    value={ingredient.quantity}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                      handleIngredientChange(
-                        index,
-                        "quantity",
-                        event.target.value
-                      )
-                    }
-                  />
-                  <SelectOption
-                    value={ingredient.unit}
-                    onChange={(event: ChangeEvent<HTMLSelectElement>) =>
-                      handleIngredientChange(index, "unit", event.target.value)
-                    }
-                  >
-                    <optgroup label="Weight">
-                      <option value="milligram">milligram (mg)</option>
-                      <option value="gram">gram (g)</option>
-                      <option value="kilogram">kilogram (kg)</option>
-                      <option value="ounce">ounce (oz)</option>
-                      <option value="pound">pound (lb)</option>
-                    </optgroup>
-
-                    <optgroup label="Volume">
-                      <option value="milliliter">milliliter (ml)</option>
-                      <option value="liter">liter (L)</option>
-                      <option value="teaspoon">teaspoon (tsp)</option>
-                      <option value="tablespoon">tablespoon (tbsp)</option>
-                      <option value="fluid-ounce">fluid ounce (fl oz)</option>
-                      <option value="cup">cup (c)</option>
-                      <option value="pint">pint (pt)</option>
-                      <option value="quart">quart (qt)</option>
-                      <option value="gallon">gallon (gal)</option>
-                    </optgroup>
-
-                    <optgroup label="Length">
-                      <option value="millimeter">millimeter (mm)</option>
-                      <option value="inch">inch (in)</option>
-                    </optgroup>
-                    <option value="piece">piece(s)</option>
-                  </SelectOption>
-                  <InputText
-                    type="text"
-                    placeholder="e.g., garlic, salt"
-                    value={ingredient.name}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                      handleIngredientChange(index, "name", event.target.value)
-                    }
-                    required={index === 0}
-                  />
-                  <OptionsContainer>
-                    <RemoveButton
-                      type="button"
-                      onClick={() => removeIngredientRow(index)}
-                    >
-                      &#10005;
-                    </RemoveButton>
-                    {index === ingredients.length - 1 && (
-                      <AddItemButton
-                        className="active"
-                        type="button"
-                        onClick={addIngredientRow}
-                      >
-                        Add Item
-                      </AddItemButton>
-                    )}
-                  </OptionsContainer>
-                </ContentContainer>
-              ))}
+              <IngredientList
+                ingredients={ingredients}
+                onChange={handleIngredientChange}
+                onAdd={addIngredientRow}
+                onRemove={removeIngredientRow}
+              />
             </List>
 
             <List className="procedure">
-              <ContentContainer>
-                <LabelText>Procedure</LabelText>
-                <LabelText></LabelText>
-                <LabelText></LabelText>
-              </ContentContainer>
-
-              {procedure.map((stepItem, index) => (
-                <ContentContainer key={index}>
-                  <InputText type="text" value={index + 1} readOnly />
-                  <InputText
-                    type="text"
-                    placeholder="e.g. Marinate the chicken for 30 minutes"
-                    value={stepItem.step}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                      handleProcedureChange(index, event.target.value)
-                    }
-                    required={index === 0}
-                  />
-                  <OptionsContainer>
-                    <RemoveButton
-                      type="button"
-                      onClick={() => removeProcedureStep(index)}
-                    >
-                      &#10005;
-                    </RemoveButton>
-
-                    {index === procedure.length - 1 && (
-                      <AddItemButton type="button" onClick={addProcedureStep}>
-                        Add Item
-                      </AddItemButton>
-                    )}
-                  </OptionsContainer>
-                </ContentContainer>
-              ))}
+              <ProcedureList
+                procedure={procedure}
+                onChange={handleProcedureChange}
+                onAdd={addProcedureStep}
+                onRemove={removeProcedureStep}
+              />
             </List>
           </RecipeDetails>
 
