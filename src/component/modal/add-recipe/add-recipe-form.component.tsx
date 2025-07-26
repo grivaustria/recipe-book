@@ -14,7 +14,11 @@ import IngredientList from "./ingredient-list.component";
 import ProcedureList from "./procedure-list.component";
 import { useRecipeForm } from "../../../hooks/useRecipeForm";
 
-const AddRecipeForm = () => {
+type AddRecipeFormProps = {
+  onClose: () => void;
+};
+
+const AddRecipeForm = ({ onClose }: AddRecipeFormProps) => {
   const {
     dishName,
     dishType,
@@ -28,7 +32,7 @@ const AddRecipeForm = () => {
     addProcedureStep,
     removeProcedureStep,
     handleSubmit,
-  } = useRecipeForm();
+  } = useRecipeForm(onClose);
 
   return (
     <AddRecipeContainer onSubmit={handleSubmit}>

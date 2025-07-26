@@ -52,6 +52,8 @@ export const getRecipesFromFirestore = async () => {
 
     // console.log("Mapped recipes", mappedData);
 
+    // console.log()
+
     return mappedData;
   } catch (error) {
     console.error("Error fetching recipes:", error);

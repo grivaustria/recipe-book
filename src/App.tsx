@@ -43,7 +43,7 @@ const App = () => {
 
       const recipesWithImages = typedRecipes.map((dish) => ({
         ...dish,
-        dishImage: dishImages[dish.dishName] || "",
+        dishImage: dishImages[dish.dishName] ?? dish.dishImage,
       }));
 
       setDishData(recipesWithImages);

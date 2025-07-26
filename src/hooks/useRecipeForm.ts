@@ -2,9 +2,10 @@ import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import type { DishDataType, Ingredient, Procedure } from "../types/dish.type";
 import { addRecipeToFirestore } from "../utils/firebase.utils";
+import { generatedDishImage } from "../utils/generatedDishImage";
 import { toast } from "react-toastify";
 
-export const useRecipeForm = () => {
+export const useRecipeForm = (onClose: () => void) => {
   const [dishName, setDishName] = useState<string>("");
   const [dishType, setDishType] = useState<string>("");
   const [dishImage, setDishImage] = useState<string>("");
@@ -83,9 +84,12 @@ export const useRecipeForm = () => {
       .map((proc) => proc.step.trim())
       .filter((step) => step !== "");
 
+    const generatedImage = generatedDishImage(dishName);
+
     const recipeData: DishDataType = {
       dishName,
       dishType,
+      dishImage: generatedImage,
       ingredients: trimIngredients,
       procedure: trimProcedure,
     };
@@ -97,8 +101,8 @@ export const useRecipeForm = () => {
       setDishType("");
       setIngredients([{ quantity: "", unit: "cup", name: "" }]);
       setProcedure([{ step: "" }]);
-      onClose();
       toast.success("Recipe added successfully!");
+      onClose();
     } catch (error) {
       toast.error("Failed to add recipe.");
       console.error(error);
@@ -108,6 +112,7 @@ export const useRecipeForm = () => {
   return {
     dishName,
     dishType,
+    dishImage,
     ingredients,
     procedure,
     handleInputChange,
