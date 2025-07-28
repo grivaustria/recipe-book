@@ -4,24 +4,23 @@ import {
   ImageSection,
   ContentSection,
   ImageDisplay,
-  ContentTitle,
   ContentHeading,
-  ContentText,
   ContentBullet,
   ContentOrder,
-  ContentTag,
   ContentList,
 } from "./view-recipe.styles";
 
 import type { DishDataType } from "../../../types/dish.type";
+import ViewRecipeTitle from "./view-recipe-title.component";
 
 type ViewRecipeProps = {
   dish: DishDataType;
   onClose: () => void;
+  onDelete: () => void;
 };
 
-const ViewRecipe = ({ dish, onClose }: ViewRecipeProps) => {
-  const { dishType, dishName, dishImage, ingredients, procedure } = dish;
+const ViewRecipe = ({ dish, onClose, onDelete }: ViewRecipeProps) => {
+  const { id, dishType, dishName, dishImage, ingredients, procedure } = dish;
   return (
     <ModalBackground onClick={onClose}>
       <Modal onClick={(e) => e.stopPropagation()}>
@@ -30,10 +29,7 @@ const ViewRecipe = ({ dish, onClose }: ViewRecipeProps) => {
             <ImageDisplay src={dishImage} />
           </ImageSection>
           <ContentSection>
-            <ContentTitle>
-              <ContentText>{dishName}</ContentText>
-              <ContentTag>{dishType}</ContentTag>
-            </ContentTitle>
+            <ViewRecipeTitle id={id} title={dishName} tag={dishType} onDelete={onDelete} />
 
             <ContentList>
               <ContentHeading>Ingredients</ContentHeading>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import type { ChangeEvent } from "react";
 import { ToastContainer } from "react-toastify";
@@ -33,21 +33,20 @@ const App = () => {
   // For Add Recipe
   const [isAddRecipeOpen, setIsAddRecipeOpen] = useState<boolean>(false);
 
+  const fetchData = useCallback(async () => {
+    const recipes = await getRecipesFromFirestore();
+    const typedRecipes = recipes as DishDataType[];
+
+    const recipesWithImages = typedRecipes.map((dish) => ({
+      ...dish,
+      dishImage: dishImages[dish.dishName] ?? dish.dishImage,
+    }));
+
+    setDishData(recipesWithImages);
+  }, []);
+
   useEffect(() => {
-    const fetchData = async () => {
-      const recipes = await getRecipesFromFirestore();
-
-      // console.log(recipes);
-
-      const typedRecipes = recipes as DishDataType[];
-
-      const recipesWithImages = typedRecipes.map((dish) => ({
-        ...dish,
-        dishImage: dishImages[dish.dishName] ?? dish.dishImage,
-      }));
-
-      setDishData(recipesWithImages);
-    };
+    fetchData();
 
     let filteredDish = dishData;
 
@@ -65,7 +64,7 @@ const App = () => {
 
     setDishFilter(filteredDish);
     fetchData();
-  }, [dishData, searchField, selectedDishType]);
+  }, [dishData, fetchData, searchField, selectedDishType]);
 
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const searchFieldString = event.target.value.toLocaleLowerCase();
@@ -84,7 +83,6 @@ const App = () => {
 
   const addRecipeClick = (): void => {
     setIsAddRecipeOpen(true);
-    // console.log("isAddRecipeOpen:", isAddRecipeOpen)
   };
 
   const addRecipeClose = (): void => {
@@ -96,13 +94,18 @@ const App = () => {
     setSelectedDishType(dishType);
   };
 
+  const handleRecipeDeleted = () => {
+    viewRecipeClose();
+    fetchData();
+  };
+
   return (
     <>
       <ToastContainer />
       {isAddRecipeOpen && <AddRecipe onClose={addRecipeClose} />}
 
       {isViewRecipeOpen && selectedDish && (
-        <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} />
+        <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} onDelete={handleRecipeDeleted} />
       )}
       <Title />
       <Navigation

@@ -1,7 +1,15 @@
 // firebase.utils.js
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  doc,
+  addDoc,
+  getDocs,
+  deleteDoc,
+} from "firebase/firestore";
 // import { dishJSON } from "../data/dish-temp";
+import { toast } from "react-toastify";
 
 const firebaseConfig = {
   apiKey: "AIzaSyADKriubumnDOnNYY_pMa9IxIt43pHRaO4",
@@ -69,9 +77,26 @@ export const getRecipesFromFirestore = async () => {
 export const addRecipeToFirestore = async (recipe) => {
   try {
     await addDoc(collection(db, "recipes"), recipe);
-    console.log("Recipe added successfully", recipe.dishName);
+    toast.success("Recipe added successfully", recipe.dishName);
   } catch (error) {
-    console.error("Error adding recipes", error);
+    toast.error("Error adding recipes", error);
+    throw error;
+  }
+};
+
+/**
+ * Delete a recipe from Firestore
+ * @param {string} recipeID - The ID of the recipe to delete
+ * @returns {Promise<void>}
+ */
+
+export const deleteRecipeFromFirestore = async (recipeID) => {
+  try {
+    const recipeRef = doc(db, "recipes", recipeID);
+    await deleteDoc(recipeRef);
+    toast.success("Recipe deleted successfully");
+  } catch (error) {
+    toast.error("There was a problem deleting recipe:", error);
     throw error;
   }
 };

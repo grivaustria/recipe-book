@@ -30,7 +30,11 @@ export const ContentSection = styled.div`
   overflow-y: auto;
 `;
 
-
+export const ContentTitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
 
 export const ContentTitle = styled.div`
   display: flex;
@@ -54,11 +58,28 @@ export const ContentTag = styled.span`
   color: #fefefe;
 `;
 
+export const ContentOption = styled.div`
+  margin: 0.5rem 0.8rem 0 0;
+
+  & .img {
+    align-self: center;
+    height: 30px;
+    transition: 0.2s all ease-in-out;
+
+    &:hover {
+      opacity: 0.7;
+      cursor: pointer;
+    }
+  }
+
+  & .menu-item {
+  }
+`;
+
 export const ContentList = styled.div`
   display: flex;
   flex-direction: column;
-
-`
+`;
 
 export const ContentHeading = styled.span`
   font-size: 28px;
@@ -77,10 +98,4 @@ export const ContentBullet = styled.ul`
 export const ContentOrder = styled.ol`
   font-size: 18px;
   line-height: 28px;
-
-  
 `;
-
-
-
-
