@@ -1,5 +1,9 @@
+// src/component/modal/view-recipe/update-recipe-form.component.tsx
+
+import type { FormEvent } from "react";
+
 import {
-  AddRecipeContainer, // Can reuse styles from AddRecipeForm
+  AddRecipeContainer,
   RecipeTitleContainer,
   RecipeDetails,
   InputLabelContainer,
@@ -8,27 +12,29 @@ import {
   SelectOption,
   List,
   SubmitRecipe,
-} from "../add-recipe/add-recipe.styles"; // Adjust path if necessary
+} from "../add-recipe/add-recipe.styles";
 
-import IngredientList from "../add-recipe/ingredient-list.component"; // Adjust path
-import ProcedureList from "../add-recipe/procedure-list.component"; // Adjust path
-import { useRecipeForm } from "../../../hooks/useRecipeForm"; // Reuse your custom hook
+import IngredientList from "../add-recipe/ingredient-list.component";
+import ProcedureList from "../add-recipe/procedure-list.component"; // Expects Procedure[]
+
+import { updateRecipeInFirestore } from "../../../utils/firebase.utils";
+import { useRecipeForm } from "../../../hooks/useRecipeForm";
 
 import type { DishDataType } from "../../../types/dish.type"; // Import DishDataType
-import { updateRecipeInFirestore } from "../../../utils/firebase.utils";
+import { toast } from "react-toastify";
 
 type UpdateRecipeFormProps = {
-  recipe: DishDataType; // Pass the entire recipe object
+  recipe: DishDataType; // Incoming 'recipe' has procedure: string[]
   onClose: () => void;
 };
 
 const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
-  // Pass the existing recipe data to useRecipeForm for initialization
+  // useRecipeForm will convert recipe.procedure (string[]) to its internal Procedure[] state
   const {
     dishName,
     dishType,
     ingredients,
-    procedure,
+    procedure, // This `procedure` is now `Procedure[]` (from useRecipeForm's state)
     handleInputChange,
     handleIngredientChange,
     addIngredientRow,
@@ -36,23 +42,44 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
     handleProcedureChange,
     addProcedureStep,
     removeProcedureStep,
-  } = useRecipeForm(onClose, recipe); // Pass 'recipe' for initial state
+  } = useRecipeForm({ onClose, initialRecipe: recipe });
 
-  const handleUpdateSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    const updatedRecipeData = {
+  const handleUpdateSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    const trimmedIngredientsForUpdate = ingredients.filter(
+      (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim()
+    );
+
+    // CRITICAL: Convert `procedure` (which is `Procedure[]` from hook state)
+    // back to `string[]` for Firestore update.
+    const trimmedProcedureForUpdate = procedure
+      .map((procItem) => procItem.step.trim())
+      .filter((step) => step !== "");
+
+    const updatedRecipeData: DishDataType = {
+      // Type it as DishDataType
       dishName,
       dishType,
-      ingredients,
-      procedure,
-      dishImage: recipe.dishImage,
+      ingredients: trimmedIngredientsForUpdate,
+      procedure: trimmedProcedureForUpdate, // Now this is string[]
+      dishImage: recipe.dishImage, // Keep existing image on update if not modified
+      // No ID here, as it's passed as a separate argument to updateRecipeInFirestore
     };
+
     try {
+      // Assuming recipe.id contains the Firestore document ID
+      if (!recipe.id) {
+        throw new Error("Recipe ID is missing for update.");
+      }
       await updateRecipeInFirestore(recipe.id, updatedRecipeData);
+      toast.success("Successfully updated recipe");
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating recipe:", error);
+      toast.error(
+        `Failed to update recipe: ${error.message || "Unknown error"}`
+      );
     }
   };
 
@@ -85,7 +112,6 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
             </SelectOption>
           </InputLabelContainer>
         </RecipeTitleContainer>
-
         <List className="ingredient">
           <IngredientList
             ingredients={ingredients}
@@ -97,7 +123,7 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
 
         <List className="procedure">
           <ProcedureList
-            procedure={procedure}
+            procedure={procedure} // This is `Procedure[]`
             onChange={handleProcedureChange}
             onAdd={addProcedureStep}
             onRemove={removeProcedureStep}

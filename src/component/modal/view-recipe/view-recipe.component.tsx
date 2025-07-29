@@ -12,7 +12,7 @@ import {
   ContentList,
 } from "./view-recipe.styles";
 
-import type { DishDataType } from "../../../types/dish.type";
+import type { DishDataType, Procedure } from "../../../types/dish.type";
 import ViewRecipeTitle from "./view-recipe-title.component";
 import UpdateRecipeForm from "../update-recipe/update-recipe-form.component";
 
@@ -69,7 +69,11 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
                 <ContentHeading>Procedure</ContentHeading>
                 <ContentOrder>
                   {procedure.map((step, index) => (
-                    <li key={index}>{step}</li>
+                    <li key={index}>
+                      {typeof step === "string"
+                        ? step
+                        : (step as Procedure).step}
+                    </li>
                   ))}
                 </ContentOrder>
               </ContentList>
