@@ -1,26 +1,22 @@
 import { useState } from "react";
-import type { ChangeEvent, FormEvent } from "react";
-import type { DishDataType, Ingredient, Procedure } from "../types/dish.type";
-import { addRecipeToFirestore } from "../utils/firebase.utils";
-import { generatedDishImage } from "../utils/generatedDishImage";
+import type { ChangeEvent } from "react";
+import { addRecipeToFirestore } from "../utils/firebase.utils"; // Assuming this is used for adding
+import type { DishDataType, Ingredient } from "../types/dish.type";
 import { toast } from "react-toastify";
 
-export const useRecipeForm = (onClose: () => void) => {
-  const [dishName, setDishName] = useState<string>("");
-  const [dishType, setDishType] = useState<string>("");
-  const [dishImage, setDishImage] = useState<string>("");
-  const [ingredients, setIngredients] = useState<Ingredient[]>([
-    {
-      quantity: "",
-      unit: "",
-      name: "",
-    },
-  ]);
-  const [procedure, setProcedure] = useState<Procedure[]>([
-    {
-      step: "",
-    },
-  ]);
+// Extend the hook to accept an optional initialRecipe
+export const useRecipeForm = (
+  onClose: () => void,
+  initialRecipe?: DishDataType
+) => {
+  const [dishName, setDishName] = useState(initialRecipe?.dishName || "");
+  const [dishType, setDishType] = useState(initialRecipe?.dishType || "");
+  const [ingredients, setIngredients] = useState<Ingredient[]>(
+    initialRecipe?.ingredients || [{ quantity: "", unit: "", name: "" }]
+  );
+  const [procedure, setProcedure] = useState<string[]>(
+    initialRecipe?.procedure || [""]
+  );
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -36,83 +32,66 @@ export const useRecipeForm = (onClose: () => void) => {
   const handleIngredientChange = (
     index: number,
     field: keyof Ingredient,
-    value: string
+    value: string,
   ): void => {
     const newIngredients = [...ingredients];
-    newIngredients[index] = { ...newIngredients[index], [field]: value };
+    newIngredients[index] = { ...newIngredients[index], [field]: value}
     setIngredients(newIngredients);
   };
 
   const addIngredientRow = (): void => {
-    setIngredients([...ingredients, { quantity: "", unit: "cup", name: "" }]);
+    setIngredients([...ingredients, { quantity: "", unit: "", name: "" }]);
   };
 
-  const removeIngredientRow = (indexToRemove: number): void => {
-    if (ingredients.length > 1) {
-      setIngredients(ingredients.filter((_, index) => index !== indexToRemove));
-    } else {
-      setIngredients([{ quantity: "", unit: "cup", name: "" }]);
-    }
+  const removeIngredientRow = (index: number): void => {
+    const newIngredients = ingredients.filter((_, i) => i !== index);
+    setIngredients(newIngredients);
   };
 
-  const handleProcedureChange = (index: number, value: string): void => {
+  const handleProcedureChange = (
+    index: number,
+    event: ChangeEvent<HTMLInputElement> 
+  ): void => {
     const newProcedure = [...procedure];
-    newProcedure[index] = { ...newProcedure[index], step: value };
+    newProcedure[index] = event.target.value;
     setProcedure(newProcedure);
   };
 
   const addProcedureStep = (): void => {
-    setProcedure([...procedure, { step: "" }]);
+    setProcedure([...procedure, ""]);
   };
 
-  const removeProcedureStep = (indexToRemove: number): void => {
-    if (procedure.length > 1) {
-      setProcedure(procedure.filter((_, index) => index !== indexToRemove));
-    } else {
-      setProcedure([{ step: "" }]);
-    }
+  const removeProcedureStep = (index: number): void => {
+    const newProcedure = procedure.filter((_, i) => i !== index);
+    setProcedure(newProcedure);
   };
 
-  const handleSubmit = async (event: FormEvent) => {
+  // This handleSubmit is specifically for ADDING a recipe.
+  // For EDITING, the EditRecipeForm will have its own handleSubmit logic
+  // that calls updateRecipeInFirestore.
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const trimIngredients = ingredients.filter(
-      (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim()
-    );
-
-    const trimProcedure = procedure
-      .map((proc) => proc.step.trim())
-      .filter((step) => step !== "");
-
-    const generatedImage = generatedDishImage(dishName);
-
-    const recipeData: DishDataType = {
+    const newRecipe = {
       dishName,
       dishType,
-      dishImage: generatedImage,
-      ingredients: trimIngredients,
-      procedure: trimProcedure,
+      ingredients,
+      procedure,
+      dishImage: "", // You'll need to handle image updates separately if needed
     };
 
     try {
-      await addRecipeToFirestore(recipeData);
-      setDishName("");
-      setDishImage("");
-      setDishType("");
-      setIngredients([{ quantity: "", unit: "cup", name: "" }]);
-      setProcedure([{ step: "" }]);
-      toast.success("Recipe added successfully!");
+      await addRecipeToFirestore(newRecipe);
       onClose();
+      toast.success("Recipe added successfully!");
     } catch (error) {
+      console.error("Error adding recipe:", error);
       toast.error("Failed to add recipe.");
-      console.error(error);
     }
   };
 
   return {
     dishName,
     dishType,
-    dishImage,
     ingredients,
     procedure,
     handleInputChange,
@@ -122,6 +101,6 @@ export const useRecipeForm = (onClose: () => void) => {
     handleProcedureChange,
     addProcedureStep,
     removeProcedureStep,
-    handleSubmit,
+    handleSubmit, // This will be used by AddRecipeForm
   };
 };

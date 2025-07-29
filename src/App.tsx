@@ -16,6 +16,7 @@ import type { DishDataType } from "./types/dish.type";
 
 import { getRecipesFromFirestore } from "./utils/firebase.utils";
 import { dishImages } from "./data/dish-images";
+import { generatedDishImage } from "./utils/generatedDishImage";
 import AddRecipe from "./component/modal/add-recipe/add-recipe.component";
 
 const App = () => {
@@ -39,7 +40,10 @@ const App = () => {
 
     const recipesWithImages = typedRecipes.map((dish) => ({
       ...dish,
-      dishImage: dishImages[dish.dishName] ?? dish.dishImage,
+      dishImage:
+        dish.dishImage ||
+        dishImages[dish.dishName] ||
+        generatedDishImage(dish.dishName),
     }));
 
     setDishData(recipesWithImages);
@@ -94,7 +98,7 @@ const App = () => {
     setSelectedDishType(dishType);
   };
 
-  const handleRecipeDeleted = () => {
+  const handleRecipeChange = () => {
     viewRecipeClose();
     fetchData();
   };
@@ -105,7 +109,12 @@ const App = () => {
       {isAddRecipeOpen && <AddRecipe onClose={addRecipeClose} />}
 
       {isViewRecipeOpen && selectedDish && (
-        <ViewRecipe dish={selectedDish} onClose={viewRecipeClose} onDelete={handleRecipeDeleted} />
+        <ViewRecipe
+          dish={selectedDish}
+          onClose={viewRecipeClose}
+          onDelete={handleRecipeChange}
+          onUpdate={handleRecipeChange}
+        />
       )}
       <Title />
       <Navigation

@@ -20,9 +20,10 @@ type ViewRecipeTitleProps = {
   title: string;
   tag: string;
   onDelete: () => void;
+  onUpdate: () => void;
 };
 
-const ViewRecipeTitle = ({ id, title, tag, onDelete }: ViewRecipeTitleProps) => {
+const ViewRecipeTitle = ({ id, title, tag, onDelete, onUpdate }: ViewRecipeTitleProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,6 +42,11 @@ const ViewRecipeTitle = ({ id, title, tag, onDelete }: ViewRecipeTitleProps) => 
       console.error(error);
     }
   };
+
+  const handleUpdateItem = () => {
+    setAnchorEl(null);
+    onUpdate();
+  }
   return (
     <ContentTitleContainer>
       <ContentTitle>
@@ -69,8 +75,8 @@ const ViewRecipeTitle = ({ id, title, tag, onDelete }: ViewRecipeTitleProps) => 
           }}
           className="menu"
         >
-          <MenuItem className="menu-item" onClick={handleClose}>
-            Edit
+          <MenuItem className="menu-item" onClick={handleUpdateItem}>
+            Update
           </MenuItem>
           <MenuItem className="menu-item" onClick={handleDeleteItem}>
             Delete

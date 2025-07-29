@@ -7,6 +7,7 @@ import {
   addDoc,
   getDocs,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 // import { dishJSON } from "../data/dish-temp";
 import { toast } from "react-toastify";
@@ -33,6 +34,7 @@ export const addDishToFirestore = async () => {
     console.log("🎉 All dishes uploaded with unique IDs!");
   } catch (error) {
     console.error("❌ Error uploading dishes:", error);
+    throw error;
   }
 };
 
@@ -58,10 +60,6 @@ export const getRecipesFromFirestore = async () => {
       };
     });
 
-    // console.log("Mapped recipes", mappedData);
-
-    // console.log()
-
     return mappedData;
   } catch (error) {
     console.error("Error fetching recipes:", error);
@@ -80,6 +78,23 @@ export const addRecipeToFirestore = async (recipe) => {
     toast.success("Recipe added successfully", recipe.dishName);
   } catch (error) {
     toast.error("Error adding recipes", error);
+  }
+};
+
+/**
+ * Update an existing recipe in Firestore
+ * @param {string} recipeId - The ID of the recipe to update
+ * @param {object} updatedData - The updated recipe data
+ * @returns {Promise<void>}
+ */
+
+export const updateRecipeInFirestore = async (recipeID, updatedData) => {
+  try {
+    const recipeRef = doc(db, "recipes", recipeID);
+    await updateDoc(recipeRef, updatedData);
+    toast.success("Recipe updated successfully", updatedData.dishName);
+  } catch (error) {
+    toast.error("Error updating recipe:", error);
     throw error;
   }
 };
@@ -97,6 +112,24 @@ export const deleteRecipeFromFirestore = async (recipeID) => {
     toast.success("Recipe deleted successfully");
   } catch (error) {
     toast.error("There was a problem deleting recipe:", error);
+    throw error;
+  }
+};
+
+/**
+ * Update specific fields of a recipe (partial update)
+ * @param {string} recipeID - The ID of the recipe to update
+ * @param {object} fieldsToUpdate - Object containing only the fields to update
+ * @returns {Promise<void>}
+ */
+
+export const updateRecipeFields = async (recipeID, fieldsToUpdate) => {
+  try {
+    const recipeRef = doc(db, "recipes", recipeID);
+    await updateDoc(recipeRef, fieldsToUpdate);
+    toast.success("Recipe fields updated successfully", recipeID);
+  } catch (error) {
+    toast.error("Error updating recipe fields:", error);
     throw error;
   }
 };
