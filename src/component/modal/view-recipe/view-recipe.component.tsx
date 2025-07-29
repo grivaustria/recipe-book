@@ -16,6 +16,7 @@ import type { DishDataType, Procedure } from "../../../types/dish.type";
 import ViewRecipeTitle from "./view-recipe-title.component";
 import UpdateRecipeForm from "../update-recipe/update-recipe-form.component";
 
+
 type ViewRecipeProps = {
   dish: DishDataType;
   onClose: () => void;
@@ -35,6 +36,20 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
     setIsUpdateOpen(false);
     onUpdate();
   };
+
+  if (id === undefined) {
+    console.warn(
+      "Recipe being viewed has no ID. Cannot perform update/delete."
+    );
+    return (
+      <ModalBackground onClick={onClose}>
+        <Modal onClick={(e) => e.stopPropagation()}>
+          <div>Error: Recipe ID not found.</div>
+          <button onClick={onClose}>Close</button>
+        </Modal>
+      </ModalBackground>
+    );
+  }
   return (
     <ModalBackground onClick={onClose}>
       <Modal onClick={(e) => e.stopPropagation()}>

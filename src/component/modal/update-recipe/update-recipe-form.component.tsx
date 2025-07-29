@@ -21,7 +21,7 @@ import { updateRecipeInFirestore } from "../../../utils/firebase.utils";
 import { useRecipeForm } from "../../../hooks/useRecipeForm";
 
 import type { DishDataType } from "../../../types/dish.type"; // Import DishDataType
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 type UpdateRecipeFormProps = {
   recipe: DishDataType; // Incoming 'recipe' has procedure: string[]
@@ -29,12 +29,11 @@ type UpdateRecipeFormProps = {
 };
 
 const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
-  // useRecipeForm will convert recipe.procedure (string[]) to its internal Procedure[] state
   const {
     dishName,
     dishType,
     ingredients,
-    procedure, // This `procedure` is now `Procedure[]` (from useRecipeForm's state)
+    procedure,
     handleInputChange,
     handleIngredientChange,
     addIngredientRow,
@@ -51,8 +50,6 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
       (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim()
     );
 
-    // CRITICAL: Convert `procedure` (which is `Procedure[]` from hook state)
-    // back to `string[]` for Firestore update.
     const trimmedProcedureForUpdate = procedure
       .map((procItem) => procItem.step.trim())
       .filter((step) => step !== "");
@@ -62,24 +59,19 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
       dishName,
       dishType,
       ingredients: trimmedIngredientsForUpdate,
-      procedure: trimmedProcedureForUpdate, // Now this is string[]
-      dishImage: recipe.dishImage, // Keep existing image on update if not modified
-      // No ID here, as it's passed as a separate argument to updateRecipeInFirestore
+      procedure: trimmedProcedureForUpdate,
+      dishImage: recipe.dishImage,
     };
 
     try {
-      // Assuming recipe.id contains the Firestore document ID
       if (!recipe.id) {
         throw new Error("Recipe ID is missing for update.");
       }
       await updateRecipeInFirestore(recipe.id, updatedRecipeData);
-      toast.success("Successfully updated recipe");
+      // toast.success("Successfully updated recipe");
       onClose();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error updating recipe:", error);
-      toast.error(
-        `Failed to update recipe: ${error.message || "Unknown error"}`
-      );
     }
   };
 
@@ -123,7 +115,7 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
 
         <List className="procedure">
           <ProcedureList
-            procedure={procedure} // This is `Procedure[]`
+            procedure={procedure}
             onChange={handleProcedureChange}
             onAdd={addProcedureStep}
             onRemove={removeProcedureStep}

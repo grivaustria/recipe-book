@@ -9,7 +9,7 @@ export type Procedure = {
 };
 
 export type DishDataType = {
-  id: string;
+  id?: string;
   dishType: string;
   dishName: string;
   dishImage?: string;
