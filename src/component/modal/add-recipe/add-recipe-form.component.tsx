@@ -7,8 +7,9 @@ import {
   InputText,
   SelectOption,
   List,
-  SubmitRecipe,
 } from "./add-recipe.styles";
+
+import { SubmitRecipe } from "../../button/button.styled";
 
 import IngredientList from "./ingredient-list.component";
 import ProcedureList from "./procedure-list.component";

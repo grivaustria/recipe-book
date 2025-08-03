@@ -4,11 +4,11 @@ import {
   ContentContainer,
   InputText,
   SelectOption,
-  RemoveButton,
-  AddItemButton,
   LabelText,
   OptionsContainer,
 } from "../add-recipe/add-recipe.styles";
+
+import { RemoveButton, AddItemButton } from "../../button/button.styled";
 
 type IngredientListProps = {
   ingredients: Ingredient[];
@@ -39,13 +39,13 @@ const IngredientList = ({
             className="quantity"
             placeholder="1"
             value={ingredient.quantity}
-            onChange={(event) => onChange(index, "quantity", event.target.value)
+            onChange={(event) =>
+              onChange(index, "quantity", event.target.value)
             }
           />
           <SelectOption
             value={ingredient.unit}
-            onChange={(event) => onChange(index, "unit", event.target.value)
-            }
+            onChange={(event) => onChange(index, "unit", event.target.value)}
           >
             <optgroup label="Weight">
               <option value="milligram">milligram (mg)</option>
@@ -77,23 +77,15 @@ const IngredientList = ({
             type="text"
             placeholder="e.g., garlic, salt"
             value={ingredient.name}
-            onChange={(event) => onChange(index, "name", event.target.value)
-            }
+            onChange={(event) => onChange(index, "name", event.target.value)}
             required={index === 0}
           />
           <OptionsContainer>
-            <RemoveButton
-              type="button"
-              onClick={() => onRemove(index)}
-            >
+            <RemoveButton type="button" onClick={() => onRemove(index)}>
               &#10005;
             </RemoveButton>
             {index === ingredients.length - 1 && (
-              <AddItemButton
-                className="active"
-                type="button"
-                onClick={onAdd}
-              >
+              <AddItemButton className="active" type="button" onClick={onAdd}>
                 Add Item
               </AddItemButton>
             )}

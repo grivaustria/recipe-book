@@ -2,11 +2,11 @@ import type { Procedure } from "../../../types/dish.type";
 import {
   ContentContainer,
   InputText,
-  RemoveButton,
-  AddItemButton,
   LabelText,
   OptionsContainer,
 } from "../add-recipe/add-recipe.styles";
+
+import { RemoveButton, AddItemButton } from "../../button/button.styled";
 
 type ProcedureListProps = {
   procedure: Procedure[];
@@ -36,15 +36,11 @@ const ProcedureList = ({
             type="text"
             placeholder="e.g. Marinate the chicken for 30 minutes"
             value={stepItem.step}
-            onChange={(event) => onChange(index, event.target.value)
-            }
+            onChange={(event) => onChange(index, event.target.value)}
             required={index === 0}
           />
           <OptionsContainer>
-            <RemoveButton
-              type="button"
-              onClick={() => onRemove(index)}
-            >
+            <RemoveButton type="button" onClick={() => onRemove(index)}>
               &#10005;
             </RemoveButton>
 

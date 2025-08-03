@@ -3,9 +3,6 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-
-import { deleteRecipeFromFirestore } from "../../../utils/firebase.utils";
-
 import {
   ContentTitle,
   ContentText,
@@ -23,7 +20,12 @@ type ViewRecipeTitleProps = {
   onUpdate: () => void;
 };
 
-const ViewRecipeTitle = ({ id, title, tag, onDelete, onUpdate }: ViewRecipeTitleProps) => {
+const ViewRecipeTitle = ({
+  title,
+  tag,
+  onDelete,
+  onUpdate,
+}: ViewRecipeTitleProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -35,18 +37,13 @@ const ViewRecipeTitle = ({ id, title, tag, onDelete, onUpdate }: ViewRecipeTitle
 
   const handleDeleteItem = async () => {
     setAnchorEl(null);
-    try {
-      await deleteRecipeFromFirestore(id);
-      onDelete();
-    } catch (error) {
-      console.error(error);
-    }
+    onDelete();
   };
 
   const handleUpdateItem = () => {
     setAnchorEl(null);
     onUpdate();
-  }
+  };
   return (
     <ContentTitleContainer>
       <ContentTitle>

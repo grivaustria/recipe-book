@@ -11,8 +11,9 @@ import {
   InputText,
   SelectOption,
   List,
-  SubmitRecipe,
 } from "../add-recipe/add-recipe.styles";
+
+import { SubmitRecipe } from "../../button/button.styled";
 
 import IngredientList from "../add-recipe/ingredient-list.component";
 import ProcedureList from "../add-recipe/procedure-list.component"; // Expects Procedure[]
