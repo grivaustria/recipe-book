@@ -1,13 +1,10 @@
-// src/hooks/useRecipeForm.ts
-
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-import { addRecipeToFirestore } from "../utils/firebase.utils"; // Used for adding new recipes
-import { generatedDishImage } from "../utils/generatedDishImage"; // For generating image URLs
-import type { DishDataType, Ingredient, Procedure } from "../types/dish.type"; // Import all necessary types
+import { addRecipeToFirestore } from "../utils/firebase.utils"; 
+import { generatedDishImage } from "../utils/generatedDishImage";
+import type { DishDataType, Ingredient, Procedure } from "../types/dish.type";
 
 
-// Define the props for the hook (optional initialRecipe for editing)
 interface UseRecipeFormProps {
   onClose: () => void;
   initialRecipe?: DishDataType;
@@ -24,12 +21,10 @@ export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) =>
       : [{ quantity: "", unit: "", name: "" }]
   );
 
-  // CRITICAL: Initialize 'procedure' state as Procedure[] (array of objects)
-  // by mapping incoming string[] data from initialRecipe.
   const [procedure, setProcedure] = useState<Procedure[]>(
     (initialRecipe?.procedure && initialRecipe.procedure.length > 0)
-      ? initialRecipe.procedure.map(step => ({ step })) // Convert string to { step: string }
-      : [{ step: "" }] // Default for a new, empty step
+      ? initialRecipe.procedure.map(step => ({ step })) 
+      : [{ step: "" }]
   );
 
   const handleInputChange = (
@@ -67,12 +62,12 @@ export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) =>
 
   const handleProcedureChange = (index: number, value: string): void => {
     const newProcedure = [...procedure];
-    newProcedure[index] = { ...newProcedure[index], step: value }; // Update the 'step' property of the object
+    newProcedure[index] = { ...newProcedure[index], step: value };
     setProcedure(newProcedure);
   };
 
   const addProcedureStep = (): void => {
-    setProcedure([...procedure, { step: "" }]); // Add a new { step: "" } object
+    setProcedure([...procedure, { step: "" }]);
   };
 
   const removeProcedureStep = (indexToRemove: number): void => {
@@ -83,8 +78,6 @@ export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) =>
     }
   };
 
-  // This handleSubmit is for ADDING new recipes.
-  // It converts the internal `Procedure[]` state back to `string[]` for Firestore.
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -92,19 +85,18 @@ export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) =>
       (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim()
     );
 
-    // CRITICAL: Convert `Procedure[]` state back to `string[]` for Firestore storage
     const trimProcedure = procedure
-      .map((procItem) => procItem.step.trim()) // Map to array of strings
-      .filter((step) => step !== ""); // Remove empty strings
+      .map((procItem) => procItem.step.trim())
+      .filter((step) => step !== "");
 
     const generatedImage = generatedDishImage(dishName);
 
-    const recipeDataToSave: DishDataType = { // Type it as DishDataType
+    const recipeDataToSave: DishDataType = { 
       dishName,
       dishType,
-      dishImage: generatedImage, // Use generated image for new recipes
+      dishImage: generatedImage, 
       ingredients: trimIngredients,
-      procedure: trimProcedure, // This is now string[]
+      procedure: trimProcedure, 
     };
 
     try {
@@ -116,7 +108,7 @@ export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) =>
       setDishType("");
       setDishImage("");
       setIngredients([{ quantity: "", unit: "", name: "" }]);
-      setProcedure([{ step: "" }]); // Reset to default { step: "" }
+      setProcedure([{ step: "" }]);
     } catch (error: unknown) {
       console.error("Error adding recipe:", error);
     }
@@ -127,7 +119,7 @@ export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) =>
     dishType,
     dishImage,
     ingredients,
-    procedure, // Exposes Procedure[]
+    procedure,
     handleInputChange,
     handleIngredientChange,
     addIngredientRow,
@@ -135,6 +127,6 @@ export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) =>
     handleProcedureChange,
     addProcedureStep,
     removeProcedureStep,
-    handleSubmit, // For adding recipes
+    handleSubmit, 
   };
 };
