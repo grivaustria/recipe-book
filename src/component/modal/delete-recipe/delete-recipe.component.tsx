@@ -43,7 +43,7 @@ const DeleteRecipe = ({ dish, onClose }: DeleteRecipeProps) => {
             <DeleteButton onClick={handleConfirmDelete}>Delete Recipe</DeleteButton>
           </ButtonContainer>
         </DeleteContainer>
-      </TinyModal>
+      </TinyModal> 
     </ModalBackground>
   );
 };

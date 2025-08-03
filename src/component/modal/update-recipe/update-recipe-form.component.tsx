@@ -1,5 +1,3 @@
-// src/component/modal/view-recipe/update-recipe-form.component.tsx
-
 import type { FormEvent } from "react";
 
 import {
@@ -16,16 +14,15 @@ import {
 import { SubmitRecipe } from "../../button/button.styled";
 
 import IngredientList from "../add-recipe/ingredient-list.component";
-import ProcedureList from "../add-recipe/procedure-list.component"; // Expects Procedure[]
+import ProcedureList from "../add-recipe/procedure-list.component";
 
 import { updateRecipeInFirestore } from "../../../utils/firebase.utils";
 import { useRecipeForm } from "../../../hooks/useRecipeForm";
 
-import type { DishDataType } from "../../../types/dish.type"; // Import DishDataType
-// import { toast } from "react-toastify";
+import type { DishDataType } from "../../../types/dish.type";
 
 type UpdateRecipeFormProps = {
-  recipe: DishDataType; // Incoming 'recipe' has procedure: string[]
+  recipe: DishDataType;
   onClose: () => void;
 };
 
@@ -56,7 +53,6 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
       .filter((step) => step !== "");
 
     const updatedRecipeData: DishDataType = {
-      // Type it as DishDataType
       dishName,
       dishType,
       ingredients: trimmedIngredientsForUpdate,
@@ -69,7 +65,6 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
         throw new Error("Recipe ID is missing for update.");
       }
       await updateRecipeInFirestore(recipe.id, updatedRecipeData);
-      // toast.success("Successfully updated recipe");
       onClose();
     } catch (error: unknown) {
       console.error("Error updating recipe:", error);
