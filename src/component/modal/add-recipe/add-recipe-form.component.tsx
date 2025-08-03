@@ -33,7 +33,7 @@ const AddRecipeForm = ({ onClose }: AddRecipeFormProps) => {
     addProcedureStep,
     removeProcedureStep,
     handleSubmit,
-  } = useRecipeForm(onClose);
+  } = useRecipeForm({ onClose });
 
   return (
     <AddRecipeContainer onSubmit={handleSubmit}>

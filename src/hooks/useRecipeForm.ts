@@ -5,7 +5,7 @@ import type { ChangeEvent } from "react";
 import { addRecipeToFirestore } from "../utils/firebase.utils"; // Used for adding new recipes
 import { generatedDishImage } from "../utils/generatedDishImage"; // For generating image URLs
 import type { DishDataType, Ingredient, Procedure } from "../types/dish.type"; // Import all necessary types
-import { toast } from "react-toastify";
+
 
 // Define the props for the hook (optional initialRecipe for editing)
 interface UseRecipeFormProps {
@@ -110,8 +110,8 @@ export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) =>
     try {
       await addRecipeToFirestore(recipeDataToSave);
       onClose();
-      toast.success("Recipe added successfully!");
-      // Reset form fields
+      console.log("Recipe added successfully!");
+      
       setDishName("");
       setDishType("");
       setDishImage("");
@@ -119,7 +119,6 @@ export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) =>
       setProcedure([{ step: "" }]); // Reset to default { step: "" }
     } catch (error: unknown) {
       console.error("Error adding recipe:", error);
-      // toast.error(`Failed to add recipe: ${error.message || "Unknown error"}`);
     }
   };
 
