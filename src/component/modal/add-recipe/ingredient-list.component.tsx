@@ -35,7 +35,7 @@ const IngredientList = ({
       {ingredients.map((ingredient, index) => (
         <ContentContainer key={index}>
           <InputText
-            type="number"
+            type="text"
             className="quantity"
             placeholder="1"
             value={ingredient.quantity}

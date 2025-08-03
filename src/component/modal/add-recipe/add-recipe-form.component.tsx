@@ -57,7 +57,9 @@ const AddRecipeForm = ({ onClose }: AddRecipeFormProps) => {
               onChange={handleInputChange}
               required
             >
-              <option value="">Select Type</option>
+              <option value="" disabled>
+                Select Type
+              </option>
               <option value="fish">Fish</option>
               <option value="meat">Meat</option>
               <option value="dessert">Dessert</option>
