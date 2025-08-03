@@ -1,4 +1,3 @@
-// firebase.utils.js
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -9,14 +8,13 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-// import { dishJSON } from "../data/dish-temp";
 import { toast } from "react-toastify";
 
 const firebaseConfig = {
   apiKey: "AIzaSyADKriubumnDOnNYY_pMa9IxIt43pHRaO4",
   authDomain: "recipe-book-web-app.firebaseapp.com",
   projectId: "recipe-book-web-app",
-  storageBucket: "recipe-book-web-app.appspot.com", // fixed .app typo
+  storageBucket: "recipe-book-web-app.appspot.com",
   messagingSenderId: "436779686471",
   appId: "1:436779686471:web:ef360709d41d17d6f16f62",
 };
@@ -27,7 +25,7 @@ export const db = getFirestore(app);
 export const addDishToFirestore = async () => {
   try {
     for (const dish of dishJSON) {
-      const { dishImage, ...data } = dish; // exclude image
+      const { dishImage, ...data } = dish;
       await addDoc(collection(db, "recipes"), data);
       console.log(`✅ Added: ${data.dishName}`);
     }
@@ -52,7 +50,6 @@ export const getRecipesFromFirestore = async () => {
 
     const mappedData = snapshot.docs.map((doc) => {
       const data = doc.data();
-      // console.log('Document data:', data);
 
       return {
         id: doc.id,

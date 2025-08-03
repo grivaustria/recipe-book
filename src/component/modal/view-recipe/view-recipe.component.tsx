@@ -16,7 +16,6 @@ import type { DishDataType, Procedure } from "../../../types/dish.type";
 import ViewRecipeTitle from "./view-recipe-title.component";
 import UpdateRecipeForm from "../update-recipe/update-recipe-form.component";
 
-
 type ViewRecipeProps = {
   dish: DishDataType;
   onClose: () => void;
