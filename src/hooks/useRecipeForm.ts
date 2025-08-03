@@ -1,31 +1,66 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ChangeEvent } from "react";
-import { addRecipeToFirestore } from "../utils/firebase.utils"; 
+import { addRecipeToFirestore } from "../utils/firebase.utils";
 import { generatedDishImage } from "../utils/generatedDishImage";
 import type { DishDataType, Ingredient, Procedure } from "../types/dish.type";
 
+const LOCAL_STORAGE_KEY = "recipeFormDraft";
 
 interface UseRecipeFormProps {
   onClose: () => void;
   initialRecipe?: DishDataType;
 }
 
-export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) => {
-  const [dishName, setDishName] = useState(initialRecipe?.dishName || "");
-  const [dishType, setDishType] = useState(initialRecipe?.dishType || "");
-  const [dishImage, setDishImage] = useState(initialRecipe?.dishImage || "");
+export const useRecipeForm = ({
+  onClose,
+  initialRecipe,
+}: UseRecipeFormProps) => {
+  const savedRecipe: DishDataType | null = (() => {
+    try {
+      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  })();
+
+  const baseRecipe = initialRecipe || savedRecipe;
+
+  const [dishName, setDishName] = useState(baseRecipe?.dishName || "");
+  const [dishType, setDishType] = useState(baseRecipe?.dishType || "");
+  const [dishImage, setDishImage] = useState(baseRecipe?.dishImage || "");
 
   const [ingredients, setIngredients] = useState<Ingredient[]>(
-    (initialRecipe?.ingredients && initialRecipe.ingredients.length > 0)
-      ? initialRecipe.ingredients
+    baseRecipe?.ingredients && baseRecipe.ingredients.length > 0
+      ? baseRecipe.ingredients
       : [{ quantity: "", unit: "", name: "" }]
   );
 
   const [procedure, setProcedure] = useState<Procedure[]>(
-    (initialRecipe?.procedure && initialRecipe.procedure.length > 0)
-      ? initialRecipe.procedure.map(step => ({ step })) 
+    baseRecipe?.procedure && baseRecipe.procedure.length > 0
+      ? baseRecipe.procedure.map((step) => ({ step }))
       : [{ step: "" }]
   );
+
+  useEffect(() => {
+    const currentState: DishDataType = {
+      dishName,
+      dishType,
+      dishImage,
+      ingredients,
+      procedure: procedure.map((p) => p.step),
+    };
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(currentState));
+  }, [dishName, dishType, dishImage, ingredients, procedure]);
+
+  const clearFormState = () => {
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    setDishName("");
+    setDishType("");
+    setDishImage("");
+    setIngredients([{ quantity: "", unit: "", name: "" }]);
+    setProcedure([{ step: "" }]);
+  };
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -91,25 +126,26 @@ export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) =>
 
     const generatedImage = generatedDishImage(dishName);
 
-    const recipeDataToSave: DishDataType = { 
+    const recipeDataToSave: DishDataType = {
       dishName,
       dishType,
-      dishImage: generatedImage, 
+      dishImage: generatedImage,
       ingredients: trimIngredients,
-      procedure: trimProcedure, 
+      procedure: trimProcedure,
     };
 
     try {
       await addRecipeToFirestore(recipeDataToSave);
+      clearFormState();
       onClose();
       console.log("Recipe added successfully!");
-      
-      setDishName("");
-      setDishType("");
-      setDishImage("");
-      setIngredients([{ quantity: "", unit: "", name: "" }]);
-      setProcedure([{ step: "" }]);
-    } catch (error: unknown) {
+
+      // setDishName("");
+      // setDishType("");
+      // setDishImage("");
+      // setIngredients([{ quantity: "", unit: "", name: "" }]);
+      // setProcedure([{ step: "" }]);
+    } catch (error) {
       console.error("Error adding recipe:", error);
     }
   };
@@ -127,6 +163,6 @@ export const useRecipeForm = ({ onClose, initialRecipe }: UseRecipeFormProps) =>
     handleProcedureChange,
     addProcedureStep,
     removeProcedureStep,
-    handleSubmit, 
+    handleSubmit,
   };
 };

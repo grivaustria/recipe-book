@@ -40,10 +40,12 @@ const DeleteRecipe = ({ dish, onClose }: DeleteRecipeProps) => {
           <DeleteWarning>This action cannot be undone</DeleteWarning>
           <ButtonContainer>
             <CancelButton onClick={onClose}>Cancel</CancelButton>
-            <DeleteButton onClick={handleConfirmDelete}>Delete Recipe</DeleteButton>
+            <DeleteButton onClick={handleConfirmDelete}>
+              Delete Recipe
+            </DeleteButton>
           </ButtonContainer>
         </DeleteContainer>
-      </TinyModal> 
+      </TinyModal>
     </ModalBackground>
   );
 };
