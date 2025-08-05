@@ -5,8 +5,12 @@ import {
   DeleteContainer,
   DeleteText,
   DeleteWarning,
+  ImageDeleteWarning,
+  RecipeToDelete,
   TinyModal,
 } from "./delete-recipe.styles";
+
+import WarningImg from "../../../assets/noto-v1--warning.svg";
 
 import { CancelButton, DeleteButton } from "../../button/button.styled";
 
@@ -34,8 +38,10 @@ const DeleteRecipe = ({ dish, onClose }: DeleteRecipeProps) => {
     <ModalBackground onClick={onClose}>
       <TinyModal onClick={(event) => event.stopPropagation()}>
         <DeleteContainer>
+          <ImageDeleteWarning src={WarningImg} />
           <DeleteText>
-            Are you sure you want to delete {dishName} from the recipe book?{" "}
+            You're deleting <RecipeToDelete>{dishName}</RecipeToDelete>. Do you
+            confirm?
           </DeleteText>
           <DeleteWarning>This action cannot be undone</DeleteWarning>
           <ButtonContainer>
