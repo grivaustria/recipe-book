@@ -12,6 +12,13 @@ const Button = styled.button`
   }
 `;
 
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+`;
+
 export const RemoveButton = styled(Button)`
   background-color: #e34040;
   font-size: 20px;
@@ -36,6 +43,9 @@ export const SubmitRecipe = styled(Button)`
 export const CancelButton = styled(Button)`
   background-color: #d6d6d6ff;
   color: #0e0e0e;
+  font-size: 20px;
+  border: none;
+  align-self: center;
 `;
 
 export const DeleteButton = styled(RemoveButton)``;

@@ -9,11 +9,13 @@ const LOCAL_STORAGE_KEY = "recipeFormDraft";
 interface UseRecipeFormProps {
   onClose: () => void;
   initialRecipe?: DishDataType;
+  isNewRecipe?: boolean;
 }
 
 export const useRecipeForm = ({
   onClose,
   initialRecipe,
+  isNewRecipe,
 }: UseRecipeFormProps) => {
   const savedRecipe: DishDataType | null = (() => {
     try {
@@ -25,6 +27,10 @@ export const useRecipeForm = ({
   })();
 
   const baseRecipe = initialRecipe || savedRecipe;
+
+  if (isNewRecipe) {
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+  }
 
   const [dishName, setDishName] = useState(baseRecipe?.dishName || "");
   const [dishType, setDishType] = useState(baseRecipe?.dishType || "");
@@ -150,6 +156,10 @@ export const useRecipeForm = ({
     }
   };
 
+  const handleCancel = () => {
+    localStorage.removeItem(LOCAL_STORAGE_KEY)
+  }
+
   return {
     dishName,
     dishType,
@@ -164,5 +174,6 @@ export const useRecipeForm = ({
     addProcedureStep,
     removeProcedureStep,
     handleSubmit,
+    handleCancel,
   };
 };

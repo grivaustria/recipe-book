@@ -87,10 +87,13 @@ const App = () => {
 
   const addRecipeClick = (): void => {
     setIsAddRecipeOpen(true);
+    localStorage.removeItem("recipeFormDraft");
+    console.log("Open: Add New Dish");
   };
 
   const addRecipeClose = (): void => {
     setIsAddRecipeOpen(false);
+    console.log("Close: Add New Dish");
   };
 
   const deleteRecipeClick = (): void => {

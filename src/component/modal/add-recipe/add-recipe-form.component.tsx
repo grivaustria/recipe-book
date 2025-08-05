@@ -9,7 +9,11 @@ import {
   List,
 } from "./add-recipe.styles";
 
-import { SubmitRecipe } from "../../button/button.styled";
+import {
+  ButtonsContainer,
+  CancelButton,
+  SubmitRecipe,
+} from "../../button/button.styled";
 
 import IngredientList from "./ingredient-list.component";
 import ProcedureList from "./procedure-list.component";
@@ -34,8 +38,6 @@ const AddRecipeForm = ({ onClose }: AddRecipeFormProps) => {
     removeProcedureStep,
     handleSubmit,
   } = useRecipeForm({ onClose });
-
-  
 
   return (
     <AddRecipeContainer onSubmit={handleSubmit}>
@@ -87,8 +89,12 @@ const AddRecipeForm = ({ onClose }: AddRecipeFormProps) => {
           />
         </List>
       </RecipeDetails>
-
-      <SubmitRecipe type="submit">Add Recipe</SubmitRecipe>
+      <ButtonsContainer>
+        <CancelButton type="button" onClick={onClose}>
+          Cancel
+        </CancelButton>
+        <SubmitRecipe type="submit">Add Recipe</SubmitRecipe>
+      </ButtonsContainer>
     </AddRecipeContainer>
   );
 };

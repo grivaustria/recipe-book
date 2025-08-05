@@ -7,8 +7,8 @@ type AddRecipeProps = {
 
 const AddRecipe = ({ onClose }: AddRecipeProps) => {
   return (
-    <ModalBackground onClick={onClose}>
-      <Modal onClick={(e) => e.stopPropagation()}>
+    <ModalBackground>
+      <Modal>
         <AddRecipeForm onClose={onClose} />
       </Modal>
     </ModalBackground>
