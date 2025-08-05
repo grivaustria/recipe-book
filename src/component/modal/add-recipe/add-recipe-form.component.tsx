@@ -21,9 +21,10 @@ import { useRecipeForm } from "../../../hooks/useRecipeForm";
 
 type AddRecipeFormProps = {
   onClose: () => void;
+  onRecipeAdd?: () => void;
 };
 
-const AddRecipeForm = ({ onClose }: AddRecipeFormProps) => {
+const AddRecipeForm = ({ onClose, onRecipeAdd }: AddRecipeFormProps) => {
   const {
     dishName,
     dishType,
@@ -37,7 +38,7 @@ const AddRecipeForm = ({ onClose }: AddRecipeFormProps) => {
     addProcedureStep,
     removeProcedureStep,
     handleSubmit,
-  } = useRecipeForm({ onClose });
+  } = useRecipeForm({ onClose, onRecipeAdd });
 
   return (
     <AddRecipeContainer onSubmit={handleSubmit}>

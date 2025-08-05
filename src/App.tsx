@@ -21,6 +21,7 @@ const App = () => {
     isViewRecipeOpen,
     isAddRecipeOpen,
     isDeleteRecipeOpen,
+    fetchData,
     onSearchChange,
     viewRecipeClick,
     viewRecipeClose,
@@ -36,7 +37,7 @@ const App = () => {
   return (
     <>
       <ToastContainer />
-      {isAddRecipeOpen && <AddRecipe onClose={addRecipeClose} />}
+      {isAddRecipeOpen && <AddRecipe onClose={addRecipeClose} onRecipeAdd={fetchData} />}
       {isDeleteRecipeOpen && selectedDish && (
         <DeleteRecipe dish={selectedDish} onClose={deleteRecipeClose} />
       )}

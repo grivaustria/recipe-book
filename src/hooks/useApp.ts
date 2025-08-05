@@ -80,6 +80,7 @@ export const useApp = () => {
 
     const addRecipeClose = (): void => {
       setIsAddRecipeOpen(false);
+      fetchData(); // Refresh data after closing add Recipe
       console.log("Close: Add New Dish");
     };
 
@@ -111,6 +112,7 @@ export const useApp = () => {
     isViewRecipeOpen,
     isAddRecipeOpen,
     isDeleteRecipeOpen,
+    fetchData,
     onSearchChange,
     viewRecipeClick,
     viewRecipeClose,

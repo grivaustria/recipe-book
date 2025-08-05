@@ -8,12 +8,14 @@ const LOCAL_STORAGE_KEY = "recipeFormDraft";
 
 interface UseRecipeFormProps {
   onClose: () => void;
+  onRecipeAdd?: () => void;
   initialRecipe?: DishDataType;
   isNewRecipe?: boolean;
 }
 
 export const useRecipeForm = ({
   onClose,
+  onRecipeAdd,
   initialRecipe,
   isNewRecipe,
 }: UseRecipeFormProps) => {
@@ -143,14 +145,13 @@ export const useRecipeForm = ({
     try {
       await addRecipeToFirestore(recipeDataToSave);
       clearFormState();
+
+      if (onRecipeAdd) {
+        onRecipeAdd();
+      }
       onClose();
       console.log("Recipe added successfully!");
 
-      // setDishName("");
-      // setDishType("");
-      // setDishImage("");
-      // setIngredients([{ quantity: "", unit: "", name: "" }]);
-      // setProcedure([{ step: "" }]);
     } catch (error) {
       console.error("Error adding recipe:", error);
     }

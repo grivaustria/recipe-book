@@ -3,13 +3,14 @@ import AddRecipeForm from "./add-recipe-form.component";
 
 type AddRecipeProps = {
   onClose: () => void;
+  onRecipeAdd?: () => void;
 };
 
-const AddRecipe = ({ onClose }: AddRecipeProps) => {
+const AddRecipe = ({ onClose, onRecipeAdd }: AddRecipeProps) => {
   return (
     <ModalBackground>
       <Modal>
-        <AddRecipeForm onClose={onClose} />
+        <AddRecipeForm onClose={onClose} onRecipeAdd={onRecipeAdd}/>
       </Modal>
     </ModalBackground>
   );
