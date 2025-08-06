@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const ViewRecipeContainer = styled.div`
   display: flex;
   gap: 1rem;
-  max-width: 1200px;
+  // max-width: 1200px;
+  width: 100%;
 `;
 
 export const ImageSection = styled.div`
@@ -24,7 +25,9 @@ export const ContentSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  flex: 1 1 60%;
+  flex-grow: 1;
+  min-width: 0;
+  width: 100%;
   padding: 1rem 0.5rem;
   max-height: 565px;
   overflow-y: auto;

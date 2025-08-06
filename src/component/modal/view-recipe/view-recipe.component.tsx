@@ -92,7 +92,7 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
                 </ContentOrder>
               </ContentList>
             </ContentSection>
-          </ViewRecipeContainer>
+          </ViewRecipeContainer> 
         )}
       </Modal>
     </ModalBackground>

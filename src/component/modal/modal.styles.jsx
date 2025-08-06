@@ -17,5 +17,4 @@ export const Modal = styled.div`
   background-color: #fefefe;
   margin: 0 13rem;
   z-index: 60;
-  //   padding: 1rem;
 `;
