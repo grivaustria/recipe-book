@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device, breakpointsBetween } from "../../utils/breakpoints";
 
 export const TitleContainer = styled.div`
   display: flex;
@@ -6,6 +7,10 @@ export const TitleContainer = styled.div`
   gap: 0.25rem;
   align-items: center;
   margin: 0.25rem 0 0;
+
+  ${device.mobile} {
+    text-align: center;
+  }
 `;
 
 export const TitleText = styled.span`
