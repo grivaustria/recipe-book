@@ -16,10 +16,19 @@ export const TitleContainer = styled.div`
 export const TitleText = styled.span`
   font-size: 64px;
   font-weight: 700;
+
+  ${device.mobile} {
+    font-size: 48px;
+  }
+
+  ${device.tablet} {
+    font-size: 64px;
+  }
 `;
 
 export const TitleDesc = styled.span`
   font-size: 23px;
   color: #6d6d6d;
   font-weight: 400;
+
 `;
