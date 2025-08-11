@@ -16,11 +16,11 @@ export const CardListContainer = styled.div`
   ${device.mobile} {
     grid-template-columns: repeat(1, 1fr);
     justify-items: center;
+    width: 80%;
   }
 
   ${device.tablet} {
     grid-template-columns: repeat(4, 1fr);
     width: 100%;
-    // max-height: 400px;
   }
 `;
