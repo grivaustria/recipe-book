@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { device } from "../../utils/breakpoints";
+
+
 
 export const NavigationContainer = styled.div`
   display: flex;
@@ -12,14 +15,21 @@ export const NavigationDish = styled.div`
   box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.5);
   padding: 0.5rem 1rem;
 
+  ${device.mobile} {
+    font-size: 14px;
+  }
+
+  ${device.tablet} {
+    font-size: 16px;
+  }
 
   &:hover {
     opacity: 0.7;
   }
-  
+
   &.active {
     background-color: #301411;
-    color: #fefefe; 
+    color: #fefefe;
   }
 
   /* Prevent text selection */
@@ -28,4 +38,3 @@ export const NavigationDish = styled.div`
   -moz-user-select: none;
   -ms-user-select: none;
 `;
-

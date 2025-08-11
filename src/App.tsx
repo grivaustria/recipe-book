@@ -2,7 +2,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useApp } from "./hooks/useApp";
 
-import "./App.scss";
+import { GlobalStyle, RootContainer } from "./App.styles";
 
 import Title from "./component/title/title.component";
 import Navigation from "./component/navigation/navigation.component";
@@ -33,35 +33,40 @@ const App = () => {
     handleRecipeChange,
   } = useApp();
 
-
   return (
     <>
-      <ToastContainer />
-      {isAddRecipeOpen && <AddRecipe onClose={addRecipeClose} onRecipeAdd={fetchData} />}
-      {isDeleteRecipeOpen && selectedDish && (
-        <DeleteRecipe dish={selectedDish} onClose={deleteRecipeClose} />
-      )}
-      {isViewRecipeOpen && selectedDish && (
-        <ViewRecipe
-          dish={selectedDish}
-          onClose={viewRecipeClose}
-          onDelete={deleteRecipeClick}
-          onUpdate={handleRecipeChange}
-        />
-      )}
+      <GlobalStyle />
+      <RootContainer>
+        <ToastContainer />
+        {isAddRecipeOpen && (
+          <AddRecipe onClose={addRecipeClose} onRecipeAdd={fetchData} />
+        )}
+        {isDeleteRecipeOpen && selectedDish && (
+          <DeleteRecipe dish={selectedDish} onClose={deleteRecipeClose} />
+        )}
+        {isViewRecipeOpen && selectedDish && (
+          <ViewRecipe
+            dish={selectedDish}
+            onClose={viewRecipeClose}
+            onDelete={deleteRecipeClick}
+            onUpdate={handleRecipeChange}
+          />
+        )}
 
-      <Title />
-      <Navigation
-        selectedDishType={selectedDishType}
-        onDishTypeChange={handleDishTypeChange}
-      />
-      <SearchBar onChangeHandler={onSearchChange} />
-      <CardList
-        dishData={dishFilter}
-        onCardClick={viewRecipeClick}
-        searchField={searchField}
-        onAddRecipeClick={addRecipeClick}
-      />
+        <Title />
+        <Navigation
+          selectedDishType={selectedDishType}
+          onDishTypeChange={handleDishTypeChange}
+        />
+        <SearchBar onChangeHandler={onSearchChange} />
+
+        <CardList
+          dishData={dishFilter}
+          onCardClick={viewRecipeClick}
+          searchField={searchField}
+          onAddRecipeClick={addRecipeClick}
+        />
+      </RootContainer>
     </>
   );
 };
