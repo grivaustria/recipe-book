@@ -20,7 +20,7 @@ export const Modal = styled.div`
   z-index: 60;
 
   ${device.mobile} {
-    height: 100vh;
+    height: 90vh;
     margin: 1rem;
   }
 

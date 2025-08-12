@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { device } from "../../../utils/breakpoints";
-
+import { CancelButton } from "../../button/button.styled";
 export const ViewRecipeContainer = styled.div`
   display: flex;
   // gap: 1rem;
@@ -89,12 +89,20 @@ export const ContentText = styled.span`
 
 export const ContentTag = styled.span`
   text-transform: capitalize;
-  border-radius: 20px;
   box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.5);
-  padding: 0.5rem 1rem;
   background-color: #8c6662;
   color: #fefefe;
   margin-bottom: 0.5rem;
+
+  ${device.mobile} {
+    font-size: 13px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+  }
+
+  ${device.tablet} {
+    font-size: 16px;
+  }
 `;
 
 export const ContentOption = styled.div`
@@ -109,9 +117,6 @@ export const ContentOption = styled.div`
       opacity: 0.7;
       cursor: pointer;
     }
-  }
-
-  & .menu-item {
   }
 `;
 
@@ -149,16 +154,74 @@ export const ContentBullet = styled.ul`
 
   ${device.mobile} {
     font-size: 16px;
+
+    & li {
+      margin: 0.2rem 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 
   ${device.tablet} {
     font-size: 18px;
+
+    & li {
+      margin: 0.5rem 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 `;
 
 export const ContentOrder = styled.ol`
   line-height: 28px;
 
+  ${device.mobile} {
+    font-size: 16px;
+
+    & li {
+      margin: 0.2rem 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  ${device.tablet} {
+    font-size: 18px;
+
+    & li {
+      margin: 0.5rem 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+`;
+
+export const CloseButton = styled(CancelButton)`
   ${device.mobile} {
     font-size: 16px;
   }

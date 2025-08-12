@@ -10,6 +10,7 @@ import {
   ContentBullet,
   ContentOrder,
   ContentList,
+  CloseButton,
 } from "./view-recipe.styles";
 
 import type { DishDataType, Procedure } from "../../../types/dish.type";
@@ -91,8 +92,9 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
                   ))}
                 </ContentOrder>
               </ContentList>
+                <CloseButton onClick={onClose}>Close</CloseButton>
             </ContentSection>
-          </ViewRecipeContainer> 
+          </ViewRecipeContainer>
         )}
       </Modal>
     </ModalBackground>
