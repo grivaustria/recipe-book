@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "../../utils/breakpoints";
 
 export const ModalBackground = styled.div`
   height: 100vh;
@@ -15,6 +16,16 @@ export const ModalBackground = styled.div`
 export const Modal = styled.div`
   display: flex;
   background-color: #fefefe;
-  margin: 0 13rem;
+  // margin: 0 13rem;
   z-index: 60;
+
+  ${device.mobile} {
+    height: 100vh;
+    margin: 1rem;
+  }
+
+  ${device.tablet} {
+    height: auto;
+    margin: 0 13rem;
+  }
 `;

@@ -1,24 +1,46 @@
 import styled from "styled-components";
-
+import { device } from "../../../utils/breakpoints";
 
 export const ViewRecipeContainer = styled.div`
   display: flex;
-  gap: 1rem;
+  // gap: 1rem;
   // max-width: 1200px;
   width: 100%;
+
+  ${device.mobile} {
+    flex-direction: column;
+  }
+
+  ${device.tablet} {
+    flex-direction: row;
+    gap: 1rem;
+  }
 `;
 
 export const ImageSection = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1 1 40%;
   box-shadow: 5px 0px 6px 0px rgba(100, 116, 139, 0.5);
+
+  ${device.tablet} {
+    flex: 1 1 40%;
+  }
 `;
 
 export const ImageDisplay = styled.img`
-  width: 450px;
-  height: 600px;
-  object-fit: cover;
+    object-fit:cover;
+
+  ${device.mobile} {
+    max-height: 200px;
+    // display: none;
+  }
+
+  ${device.tablet} {
+    max-height: none;
+    width: 450px; 
+    height 600px; 
+  }
+
   position: relative;
 `;
 
@@ -45,7 +67,7 @@ export const ContentTitle = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
 `;
 
 export const ContentText = styled.span`
@@ -60,6 +82,7 @@ export const ContentTag = styled.span`
   padding: 0.5rem 1rem;
   background-color: #8c6662;
   color: #fefefe;
+  margin-bottom: 0.5rem;
 `;
 
 export const ContentOption = styled.div`
