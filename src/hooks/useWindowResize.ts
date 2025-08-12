@@ -11,6 +11,10 @@ export const useWindowResize = () => {
     width: window.innerWidth,
   });
 
+  const windowWidth = windowSize.width;
+
+  const [showComponent, setShowComponent] = useState<boolean>(true);
+
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -23,5 +27,16 @@ export const useWindowResize = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return windowSize;
+  useEffect(() => {
+    // console.log("viewport width:", windowWidth);
+    if (windowWidth < 768) {
+      setShowComponent(false);
+    } else {
+      setShowComponent(true);
+    }
+  }, [windowWidth]);
+
+  return {
+    showComponent,
+  };
 };

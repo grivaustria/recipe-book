@@ -1,5 +1,5 @@
 // import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { MouseEvent } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -33,17 +33,8 @@ const ViewRecipeTitle = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const { width } = useWindowResize();
-  const [showComponent, setShowComponent] = useState<boolean>(true);
+  const { showComponent } = useWindowResize();
 
-  useEffect(() => {
-    console.log("viewport width:", width);
-    if (width < 768) {
-      setShowComponent(false);
-    } else {
-      setShowComponent(true);
-    }
-  }, [width]);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

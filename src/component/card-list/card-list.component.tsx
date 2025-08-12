@@ -1,9 +1,10 @@
-
 import { CardListContainer } from "./card-list.styles";
 import type { DishDataType } from "../../types/dish.type";
 
 import Card from "../card/card.component";
 import CardAdd from "../card-add-recipe/card-add-recipe.component";
+
+import { useWindowResize } from "../../hooks/useWindowResize";
 
 type CardListProps = {
   dishData: DishDataType[];
@@ -12,9 +13,14 @@ type CardListProps = {
   onAddRecipeClick: () => void;
 };
 
-const CardList = ({ dishData, onCardClick, searchField, onAddRecipeClick }: CardListProps) => {
+const CardList = ({
+  dishData,
+  onCardClick,
+  searchField,
+  onAddRecipeClick,
+}: CardListProps) => {
+  const { showComponent } = useWindowResize();
 
-  
   return (
     <CardListContainer>
       {dishData.length > 0 ? (
@@ -26,10 +32,14 @@ const CardList = ({ dishData, onCardClick, searchField, onAddRecipeClick }: Card
               onClick={() => onCardClick(dish)}
             />
           ))}
-          {searchField === "" && <CardAdd onAddRecipeClick={onAddRecipeClick} />}
+          {searchField === "" &&
+            (showComponent ? (
+              <CardAdd onAddRecipeClick={onAddRecipeClick} />
+            ) : null)}
         </>
       ) : (
-        searchField === "" && <CardAdd onAddRecipeClick={onAddRecipeClick} />
+        searchField === "" &&
+        (showComponent ? <CardAdd onAddRecipeClick={onAddRecipeClick} /> : null)
       )}
     </CardListContainer>
   );
