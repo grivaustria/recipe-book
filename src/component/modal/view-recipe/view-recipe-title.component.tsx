@@ -1,4 +1,6 @@
-import * as React from "react";
+// import * as React from "react";
+import { useState, useEffect } from "react";
+import type { MouseEvent } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,6 +14,8 @@ import {
 } from "./view-recipe.styles";
 
 import MoreOptions from "../../../assets/qlementine-icons--menu-dots-16.svg";
+import { useWindowResize } from "../../../hooks/useWindowResize";
+
 type ViewRecipeTitleProps = {
   id: string;
   title: string;
@@ -26,9 +30,22 @@ const ViewRecipeTitle = ({
   onDelete,
   onUpdate,
 }: ViewRecipeTitleProps) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+
+  const { width } = useWindowResize();
+  const [showComponent, setShowComponent] = useState<boolean>(true);
+
+  useEffect(() => {
+    console.log("viewport width:", width);
+    if (width < 768) {
+      setShowComponent(false);
+    } else {
+      setShowComponent(true);
+    }
+  }, [width]);
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -44,6 +61,7 @@ const ViewRecipeTitle = ({
     setAnchorEl(null);
     onUpdate();
   };
+
   return (
     <ContentTitleContainer>
       <ContentTitle>
@@ -51,34 +69,38 @@ const ViewRecipeTitle = ({
         <ContentTag>{tag}</ContentTag>
       </ContentTitle>
       <ContentOption>
-        <Button
-          id="basic-button"
-          aria-controls={open ? "basic-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          onClick={handleClick}
-        >
-          <img className="img" src={MoreOptions} />
-        </Button>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          slotProps={{
-            list: {
-              "aria-labelledby": "basic-button",
-            },
-          }}
-          className="menu"
-        >
-          <MenuItem className="menu-item" onClick={handleUpdateItem}>
-            Update
-          </MenuItem>
-          <MenuItem className="menu-item" onClick={handleDeleteItem}>
-            Delete
-          </MenuItem>
-        </Menu>
+        {showComponent && (
+          <>
+            <Button
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+            >
+              <img className="img" src={MoreOptions} />
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              slotProps={{
+                list: {
+                  "aria-labelledby": "basic-button",
+                },
+              }}
+              className="menu"
+            >
+              <MenuItem className="menu-item" onClick={handleUpdateItem}>
+                Update
+              </MenuItem>
+              <MenuItem className="menu-item" onClick={handleDeleteItem}>
+                Delete
+              </MenuItem>
+            </Menu>
+          </>
+        )}
       </ContentOption>
     </ContentTitleContainer>
   );
