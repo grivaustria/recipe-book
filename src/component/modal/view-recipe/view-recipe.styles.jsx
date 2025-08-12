@@ -28,20 +28,18 @@ export const ImageSection = styled.div`
 `;
 
 export const ImageDisplay = styled.img`
-    object-fit:cover;
+  object-fit: cover;
+  position: relative;
 
   ${device.mobile} {
     max-height: 200px;
-    // display: none;
   }
 
   ${device.tablet} {
     max-height: none;
     width: 450px; 
-    height 600px; 
+    height: 600px;
   }
-
-  position: relative;
 `;
 
 export const ContentSection = styled.div`
