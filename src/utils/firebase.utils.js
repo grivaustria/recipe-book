@@ -71,8 +71,9 @@ export const getRecipesFromFirestore = async () => {
 
 export const addRecipeToFirestore = async (recipe) => {
   try {
-    await addDoc(collection(db, "recipes"), recipe);
-    toast.success("Recipe added successfully", recipe.dishName);
+    const docRef = await addDoc(collection(db, "recipes"), recipe);
+    toast.success(`Recipe ${recipe.dishName} added successfully`);
+    return docRef.id;
   } catch (error) {
     toast.error("Error adding recipes", error);
   }
@@ -89,7 +90,7 @@ export const updateRecipeInFirestore = async (recipeID, updatedData) => {
   try {
     const recipeRef = doc(db, "recipes", recipeID);
     await updateDoc(recipeRef, updatedData);
-    toast.success("Recipe updated successfully", updatedData.dishName);
+    toast.success(`Recipe ${updatedData.dishName} updated successfully.`);
   } catch (error) {
     toast.error("Error updating recipe:", error);
     throw error;

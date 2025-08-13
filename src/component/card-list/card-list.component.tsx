@@ -26,11 +26,7 @@ const CardList = ({
       {dishData.length > 0 ? (
         <>
           {dishData.map((dish) => (
-            <Card
-              key={dish.dishName}
-              dish={dish}
-              onClick={() => onCardClick(dish)}
-            />
+            <Card key={dish.id} dish={dish} onClick={() => onCardClick(dish)} />
           ))}
           {searchField === "" &&
             (showComponent ? (

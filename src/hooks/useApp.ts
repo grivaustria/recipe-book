@@ -58,51 +58,51 @@ export const useApp = () => {
   }, [dishData, searchField, selectedDishType]);
 
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
-      const searchFieldString = event.target.value.toLowerCase();
-      setSearchField(searchFieldString);
-    };
-  
-    const viewRecipeClick = (dish: DishDataType) => {
-      setSelectedDish(dish);
-      setIsViewRecipeOpen(true);
-    };
-  
-    const viewRecipeClose = () => {
-      setIsViewRecipeOpen(false);
-      setSelectedDish(null);
-    };
+    const searchFieldString = event.target.value.toLowerCase();
+    setSearchField(searchFieldString);
+  };
 
-    const addRecipeClick = (): void => {
-      setIsAddRecipeOpen(true);
-      localStorage.removeItem("recipeFormDraft");
-      console.log("Open: Add New Dish");
-    };
+  const viewRecipeClick = (dish: DishDataType) => {
+    setSelectedDish(dish);
+    setIsViewRecipeOpen(true);
+  };
 
-    const addRecipeClose = (): void => {
-      setIsAddRecipeOpen(false);
-      fetchData(); // Refresh data after closing add Recipe
-      console.log("Close: Add New Dish");
-    };
+  const viewRecipeClose = () => {
+    setIsViewRecipeOpen(false);
+    setSelectedDish(null);
+  };
 
-    const deleteRecipeClick = (): void => {
-      setIsDeleteRecipeOpen(true);
-      setIsViewRecipeOpen(false);
-    };
+  const addRecipeClick = (): void => {
+    setIsAddRecipeOpen(true);
+    localStorage.removeItem("recipeFormDraft");
+    // console.log("Open: Add New Dish");
+  };
 
-    const deleteRecipeClose = (): void => {
-      setIsDeleteRecipeOpen(false);
-      setSelectedDish(null);
-      fetchData(); // Refresh data after deletion
-    };
+  const addRecipeClose = (): void => {
+    setIsAddRecipeOpen(false);
+    fetchData(); // Refresh data after closing add Recipe
+    // console.log("Close: Add New Dish");
+  };
 
-    const handleDishTypeChange = (dishType: string) => {
-      setSelectedDishType(dishType);
-    };
+  const deleteRecipeClick = (): void => {
+    setIsDeleteRecipeOpen(true);
+    setIsViewRecipeOpen(false);
+  };
 
-    const handleRecipeChange = () => {
-      setIsViewRecipeOpen(false);
-      fetchData(); // Refresh data after update
-    };
+  const deleteRecipeClose = (): void => {
+    setIsDeleteRecipeOpen(false);
+    setSelectedDish(null);
+    fetchData(); // Refresh data after deletion
+  };
+
+  const handleDishTypeChange = (dishType: string) => {
+    setSelectedDishType(dishType);
+  };
+
+  const handleRecipeChange = () => {
+    setIsViewRecipeOpen(false);
+    fetchData(); // Refresh data after update
+  };
 
   return {
     searchField,
@@ -122,6 +122,5 @@ export const useApp = () => {
     deleteRecipeClose,
     handleDishTypeChange,
     handleRecipeChange,
-
   };
 };
