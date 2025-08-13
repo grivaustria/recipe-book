@@ -11,7 +11,7 @@ import {
   List,
 } from "../add-recipe/add-recipe.styles";
 
-import { SubmitRecipe } from "../../button/button.styled";
+import { ButtonsContainer, SubmitRecipe } from "../../button/button.styled";
 
 import IngredientList from "../add-recipe/ingredient-list.component";
 import ProcedureList from "../add-recipe/procedure-list.component";
@@ -20,6 +20,7 @@ import { updateRecipeInFirestore } from "../../../utils/firebase.utils";
 import { useRecipeForm } from "../../../hooks/useRecipeForm";
 
 import type { DishDataType } from "../../../types/dish.type";
+import { CloseButton } from "../view-recipe/view-recipe.styles";
 
 type UpdateRecipeFormProps = {
   recipe: DishDataType;
@@ -118,7 +119,12 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
           />
         </List>
       </RecipeDetails>
-      <SubmitRecipe type="submit">Update Recipe</SubmitRecipe>
+      <ButtonsContainer>
+        <CloseButton type="button" onClick={onClose}>
+          Close
+        </CloseButton>
+        <SubmitRecipe type="submit">Update Recipe</SubmitRecipe>
+      </ButtonsContainer>
     </AddRecipeContainer>
   );
 };
