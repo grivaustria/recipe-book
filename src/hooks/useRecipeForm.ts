@@ -150,16 +150,15 @@ export const useRecipeForm = ({
         onRecipeAdd();
       }
       onClose();
-      console.log("Recipe added successfully!");
-
+      // console.log("Recipe added successfully!");
     } catch (error) {
       console.error("Error adding recipe:", error);
     }
   };
 
   const handleCancel = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY)
-  }
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+  };
 
   return {
     dishName,
