@@ -20,6 +20,11 @@ export const CardListContainer = styled.div`
   }
 
   ${device.tablet} {
+    grid-template-columns: repeat(3, 1fr);
+    width: 90%;
+  }
+
+  ${device.laptop} {
     grid-template-columns: repeat(4, 1fr);
     width: 100%;
   }

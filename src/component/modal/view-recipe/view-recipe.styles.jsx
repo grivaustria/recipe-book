@@ -11,7 +11,7 @@ export const ViewRecipeContainer = styled.div`
     flex-direction: column;
   }
 
-  ${device.tablet} {
+  ${device.laptop} {
     flex-direction: row;
     gap: 1rem;
   }
@@ -22,7 +22,7 @@ export const ImageSection = styled.div`
   flex-direction: column;
   box-shadow: 5px 0px 6px 0px rgba(100, 116, 139, 0.5);
 
-  ${device.tablet} {
+  ${device.laptop} {
     flex: 1 1 40%;
   }
 `;
@@ -35,7 +35,7 @@ export const ImageDisplay = styled.img`
     max-height: 200px;
   }
 
-  ${device.tablet} {
+  ${device.laptop} {
     max-height: none;
     width: 450px;
     height: 600px;
@@ -70,7 +70,7 @@ export const ContentTitle = styled.div`
     padding: 0 0.5rem;
   }
 
-  ${device.tablet} {
+  ${device.laptop} {
     padding: 0.5rem;
   }
 `;
@@ -82,7 +82,7 @@ export const ContentText = styled.span`
     font-size: 24px;
   }
 
-  ${device.tablet} {
+  ${device.laptop} {
     font-size: 32px;
   }
 `;
@@ -100,7 +100,7 @@ export const ContentTag = styled.span`
     border-radius: 12px;
   }
 
-  ${device.tablet} {
+  ${device.laptop} {
     font-size: 16px;
   }
 `;
@@ -128,7 +128,7 @@ export const ContentList = styled.div`
     margin: 0 1rem 0 0;
   }
 
-  ${device.tablet} {
+  ${device.laptop} {
     margin: 0;
   }
 `;
@@ -144,7 +144,7 @@ export const ContentHeading = styled.span`
     font-size: 24px;
   }
 
-  ${device.tablet} {
+  ${device.laptop} {
     font-size: 28px;
   }
 `;
@@ -168,7 +168,7 @@ export const ContentBullet = styled.ul`
     }
   }
 
-  ${device.tablet} {
+  ${device.laptop} {
     font-size: 18px;
 
     & li {
@@ -204,7 +204,7 @@ export const ContentOrder = styled.ol`
     }
   }
 
-  ${device.tablet} {
+  ${device.laptop} {
     font-size: 18px;
 
     & li {
@@ -226,7 +226,7 @@ export const CloseButton = styled(CancelButton)`
     font-size: 16px;
   }
 
-  ${device.tablet} {
+  ${device.laptop} {
     font-size: 18px;
   }
 `;
