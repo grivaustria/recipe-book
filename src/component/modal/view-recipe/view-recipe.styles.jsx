@@ -35,6 +35,10 @@ export const ImageDisplay = styled.img`
     max-height: 200px;
   }
 
+  ${device.tablet} {
+    max-height: 300px;
+  }
+
   ${device.laptop} {
     max-height: none;
     width: 450px;
@@ -82,6 +86,10 @@ export const ContentText = styled.span`
     font-size: 24px;
   }
 
+  ${device.tablet} {
+    font-size: 28px;
+  }
+
   ${device.laptop} {
     font-size: 32px;
   }
@@ -98,6 +106,10 @@ export const ContentTag = styled.span`
     font-size: 13px;
     padding: 0.5rem 0.75rem;
     border-radius: 12px;
+  }
+
+  ${device.tablet} {
+    font-size: 14px;
   }
 
   ${device.laptop} {
@@ -168,6 +180,10 @@ export const ContentBullet = styled.ul`
     }
   }
 
+  ${device.tablet} {
+    font-size: 17px;
+  }
+
   ${device.laptop} {
     font-size: 18px;
 
@@ -202,6 +218,10 @@ export const ContentOrder = styled.ol`
         margin-bottom: 0;
       }
     }
+  }
+
+  ${device.tablet} {
+    font-size: 17px;
   }
 
   ${device.laptop} {

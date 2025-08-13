@@ -29,7 +29,7 @@ export const useWindowResize = () => {
 
   useEffect(() => {
     // console.log("viewport width:", windowWidth);
-    if (windowWidth < 768) {
+    if (windowWidth < 1024) {
       setShowComponent(false);
     } else {
       setShowComponent(true);
