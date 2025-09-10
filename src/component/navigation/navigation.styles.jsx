@@ -1,7 +1,14 @@
 import styled from "styled-components";
 import { device } from "../../utils/breakpoints";
 
-
+export const Container = styled.div`
+  display: flex;
+  // justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+`;
 
 export const NavigationContainer = styled.div`
   display: flex;
@@ -38,3 +45,4 @@ export const NavigationDish = styled.div`
   -moz-user-select: none;
   -ms-user-select: none;
 `;
+

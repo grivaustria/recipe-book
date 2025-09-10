@@ -1,18 +1,26 @@
-import { NavigationContainer, NavigationDish } from "./navigation.styles";
+import {
+  Container,
+  NavigationContainer,
+  NavigationDish,
+} from "./navigation.styles";
+import type { ChangeEventHandler } from "react";
+import SearchBar from "../search-bar/search-bar.component";
+
 
 type NavigationProps = {
   selectedDishType: string;
   onDishTypeChange: (dishType: string) => void;
+  onSearchChange: ChangeEventHandler<HTMLInputElement>;
 };
 
 const Navigation = ({
   selectedDishType,
   onDishTypeChange,
+  onSearchChange,
 }: NavigationProps) => {
   return (
-    <>
+    <Container>
       <NavigationContainer>
-        
         <NavigationDish
           onClick={() =>
             onDishTypeChange(selectedDishType === "all" ? "" : "all")
@@ -46,7 +54,8 @@ const Navigation = ({
           Dessert
         </NavigationDish>
       </NavigationContainer>
-    </>
+      <SearchBar onChangeHandler={onSearchChange} />
+    </Container>
   );
 };
 

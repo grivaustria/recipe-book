@@ -6,12 +6,10 @@ import { GlobalStyle, RootContainer } from "./App.styles";
 
 import Title from "./component/title/title.component";
 import Navigation from "./component/navigation/navigation.component";
-import SearchBar from "./component/search-bar/search-bar.component";
 import CardList from "./component/card-list/card-list.component";
 import ViewRecipe from "./component/modal/view-recipe/view-recipe.component";
 import AddRecipe from "./component/modal/add-recipe/add-recipe.component";
 import DeleteRecipe from "./component/modal/delete-recipe/delete-recipe.component";
-
 
 const App = () => {
   const {
@@ -60,8 +58,9 @@ const App = () => {
         <Navigation
           selectedDishType={selectedDishType}
           onDishTypeChange={handleDishTypeChange}
+          onSearchChange={onSearchChange}
         />
-        <SearchBar onChangeHandler={onSearchChange} />
+        {/* <SearchBar onChangeHandler={onSearchChange} /> */}
 
         <CardList
           dishData={dishFilter}
