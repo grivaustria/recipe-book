@@ -1,13 +1,27 @@
-import { TitleContainer, TitleText, TitleDesc } from "./title.styles";
+import {
+  TitleContainer,
+  TitleText,
+  TitleDesc,
+  ButtonContainer,
+  Container,
+  SignUpBtn,
+  LoginBtn,
+} from "./title.styles";
 
 const Title = () => {
   return (
-    <TitleContainer>
-      <TitleText>Dish Galeria</TitleText>
-      <TitleDesc>
-        Collect recipes, all in one place. Accessible to any device.
-      </TitleDesc>
-    </TitleContainer>
+    <Container>
+      <TitleContainer>
+        <TitleText>Dish Galeria</TitleText>
+        <TitleDesc>
+          Collect recipes, all in one place. Accessible to any device.
+        </TitleDesc>
+      </TitleContainer>
+      <ButtonContainer>
+        <LoginBtn>Sign In</LoginBtn>
+        <SignUpBtn>Create Account</SignUpBtn>
+      </ButtonContainer>
+    </Container>
   );
 };
 

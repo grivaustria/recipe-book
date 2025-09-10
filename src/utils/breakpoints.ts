@@ -12,7 +12,7 @@ const breakpointValues: Record<BreakpointName, string> = {
   mobileSM: "20em", // 320px
   mobileMD: "23.4375em", // 375px
   mobileLG: "26.5625em", // 425px
-  tablet: "48em", // 768px
+  tablet: "37.5em", // 600px // previously 48em === 768px
   laptop: "64em", // 1024px
   laptopLG: "90em", // 1440px
   bigDesktop: "112.5em", // 1800px
@@ -53,12 +53,12 @@ export const breakpointsBetween = (
 };
 
 type DeviceBreakpoints = {
-    mobile: string;
-    tablet: string;
-    laptop: string;
-    desktop: string;
-    wide: string;
-}
+  mobile: string;
+  tablet: string;
+  laptop: string;
+  desktop: string;
+  wide: string;
+};
 
 export const device: DeviceBreakpoints = {
   mobile: breakpoints.mobileSM,
@@ -77,7 +77,9 @@ export const deviceMax: DeviceBreakpoints = {
 };
 
 // Type guard to check if a string is a valid breakpoint name
-export const isValidBreakpoint = (breakpoint: string): breakpoint is BreakpointName => {
+export const isValidBreakpoint = (
+  breakpoint: string
+): breakpoint is BreakpointName => {
   return Object.keys(breakpointValues).includes(breakpoint);
 };
 

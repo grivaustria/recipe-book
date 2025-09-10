@@ -5,10 +5,8 @@ import { device } from "./utils/breakpoints";
 export const GlobalStyle = createGlobalStyle`
 
 body {
-  // overflow: hidden;
   margin: 0;
   padding: 0;
-  // height: 100vh;
   
   font-family: "Arial", sans-serif;
   background-color: #fdf8f2;
@@ -25,4 +23,5 @@ export const RootContainer = styled.div`
   align-items: center;
   gap: 1rem;
   height: 100vh;
+  width: 100%;
 `;

@@ -12,6 +12,7 @@ import ViewRecipe from "./component/modal/view-recipe/view-recipe.component";
 import AddRecipe from "./component/modal/add-recipe/add-recipe.component";
 import DeleteRecipe from "./component/modal/delete-recipe/delete-recipe.component";
 
+
 const App = () => {
   const {
     searchField,
@@ -36,6 +37,8 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
+      {/* <AuthBar /> */}
+
       <RootContainer>
         <ToastContainer />
         {isAddRecipeOpen && (
