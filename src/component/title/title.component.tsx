@@ -2,11 +2,14 @@ import {
   TitleContainer,
   TitleText,
   TitleDesc,
-  ButtonContainer,
   Container,
+} from "./title.styles";
+
+import {
+  MUIButtonContainer,
   SignUpBtn,
   LoginBtn,
-} from "./title.styles";
+} from "../button/button.styled";
 
 const Title = () => {
   return (
@@ -17,10 +20,10 @@ const Title = () => {
           Collect recipes, all in one place. Accessible to any device.
         </TitleDesc>
       </TitleContainer>
-      <ButtonContainer>
+      <MUIButtonContainer>
         <LoginBtn to="/login">Sign In</LoginBtn>
         <SignUpBtn>Create Account</SignUpBtn>
-      </ButtonContainer>
+      </MUIButtonContainer>
     </Container>
   );
 };

@@ -1,4 +1,8 @@
+import { styled as muiStyled } from "@mui/material/styles";
+import { Button } from "@mui/material";
 import styled from "styled-components";
+import { device, breakpointsBetween } from "../../utils/breakpoints";
+import { Link } from "react-router";
 
 const Button = styled.button`
   padding: 0.5rem 1rem;
@@ -49,3 +53,37 @@ export const CancelButton = styled(Button)`
 `;
 
 export const DeleteButton = styled(RemoveButton)``;
+
+
+export const MUIButtonContainer = styled.div`
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-content: center;
+  gap: 0.5rem;
+`;
+
+const BaseBtn = muiStyled(Button)`
+  text-transform: uppercase;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  font-weight: 500;
+`;
+
+const BaseLinkBtn = (props) => {
+  return <BaseBtn component={Link} {...props} />;
+};
+
+export const LoginBtn = styled(BaseLinkBtn)`
+  background-color: #fefefe;
+  color: #301411;
+`;
+
+export const SignUpBtn = styled(BaseLinkBtn)`
+  background-color: #301411;
+  color: #fefefe;
+  text-transform: uppercase;
+`;
