@@ -2,6 +2,7 @@ import { styled as muiStyled } from "@mui/material/styles";
 import { Button } from "@mui/material";
 import styled from "styled-components";
 import { device, breakpointsBetween } from "../../utils/breakpoints";
+import { Link } from "react-router";
 
 export const Container = styled.div`
   display: flex;
@@ -70,12 +71,16 @@ const BaseBtn = muiStyled(Button)`
   font-weight: 500;
 `;
 
-export const LoginBtn = styled(BaseBtn)`
+const BaseLinkBtn = (props) => {
+  return <BaseBtn component={Link} {...props} />;
+};
+
+export const LoginBtn = styled(BaseLinkBtn)`
   background-color: #fefefe;
   color: #301411;
 `;
 
-export const SignUpBtn = styled(BaseBtn)`
+export const SignUpBtn = styled(BaseLinkBtn)`
   background-color: #301411;
   color: #fefefe;
   text-transform: uppercase;

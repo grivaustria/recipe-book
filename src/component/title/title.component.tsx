@@ -18,7 +18,7 @@ const Title = () => {
         </TitleDesc>
       </TitleContainer>
       <ButtonContainer>
-        <LoginBtn>Sign In</LoginBtn>
+        <LoginBtn to="/login">Sign In</LoginBtn>
         <SignUpBtn>Create Account</SignUpBtn>
       </ButtonContainer>
     </Container>

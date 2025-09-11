@@ -1,7 +1,7 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useApp } from "../../hooks/useApp";
-
+import { Outlet } from "react-router";
 import { GlobalStyle, RootContainer } from "../../App.styles";
 
 import Title from "../../component/title/title.component";
@@ -35,7 +35,6 @@ const MainPage = () => {
   return (
     <>
       <GlobalStyle />
-      {/* <AuthBar /> */}
 
       <RootContainer>
         <ToastContainer />
@@ -69,6 +68,7 @@ const MainPage = () => {
           onAddRecipeClick={addRecipeClick}
         />
       </RootContainer>
+      <Outlet />
     </>
   );
 };
