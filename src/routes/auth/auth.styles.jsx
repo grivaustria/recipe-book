@@ -5,9 +5,7 @@ import { Button as MUIButton } from "@mui/material";
 
 export const AuthBackground = styled.div`
   background-color: #fdf8f2;
-  height: 100dvh;
   display: flex;
-  align-content: center;
   margin: 0;
   padding: 0 2.5rem;
   font-family: "Arial", sans-serif;
@@ -87,5 +85,3 @@ export const LoginTitle = styled.div`
 export const LoginDesc = styled.div`
   color: #464646ff;
 `;
-
-

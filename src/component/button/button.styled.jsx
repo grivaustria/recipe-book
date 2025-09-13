@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { device, breakpointsBetween } from "../../utils/breakpoints";
 import { Link } from "react-router";
 
-const Button = styled.button`
+const CustomButton = styled.button`
   padding: 0.5rem 1rem;
   color: #fefefe;
   border-radius: 10px;
@@ -23,20 +23,20 @@ export const ButtonsContainer = styled.div`
   justify-content: center;
 `;
 
-export const RemoveButton = styled(Button)`
+export const RemoveButton = styled(CustomButton)`
   background-color: #e34040;
   font-size: 20px;
   font-weight: 700;
   border: none;
 `;
 
-export const AddItemButton = styled(Button)`
+export const AddItemButton = styled(CustomButton)`
   background-color: #20bc1d;
   font-size: 16px;
   border: none;
 `;
 
-export const SubmitRecipe = styled(Button)`
+export const SubmitRecipe = styled(CustomButton)`
   background-color: #2d76e2ff;
   font-size: 20px;
   border: none;
@@ -44,7 +44,7 @@ export const SubmitRecipe = styled(Button)`
   align-self: center;
 `;
 
-export const CancelButton = styled(Button)`
+export const CancelButton = styled(CustomButton)`
   background-color: #d6d6d6ff;
   color: #0e0e0e;
   font-size: 20px;
@@ -53,7 +53,6 @@ export const CancelButton = styled(Button)`
 `;
 
 export const DeleteButton = styled(RemoveButton)``;
-
 
 export const MUIButtonContainer = styled.div`
   padding: 1rem;
@@ -86,4 +85,14 @@ export const SignUpBtn = styled(BaseLinkBtn)`
   background-color: #301411;
   color: #fefefe;
   text-transform: uppercase;
+`;
+
+export const AuthSubmitBtn = styled(SignUpBtn)``;
+
+export const ThirdPartyAccBtn = styled(BaseBtn)`
+  color: #0e0e0e;
+  text-transform: capitalize;
+  display: flex;
+  gap: 0.5rem;
+  font-size: 15px;
 `;
