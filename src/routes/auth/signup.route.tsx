@@ -1,5 +1,5 @@
-import type { FormEvent } from "react";
-
+import type { FormEvent, ChangeEvent } from "react";
+import { useState } from "react";
 import {
   AuthBackground,
   Container,
@@ -11,7 +11,6 @@ import {
   AuthContain,
   SignUpPrompt,
   LinkText,
-  TextFieldRow,
   TextFieldInput,
 } from "./auth.styles";
 
@@ -25,16 +24,65 @@ import {
   ThirdPartyAccBtn,
 } from "../../component/button/button.styled";
 
-import { signInWithGooglePopup } from "../../utils/firebase.utils";
-import { toast } from "react-toastify";
+import {
+  signInWithGooglePopup,
+  createUserDocFromAuth,
+  authCreateUserEmailPassword,
+} from "../../utils/firebase.utils";
+import { toast, ToastContainer } from "react-toastify";
+
+type FormFields = {
+  displayName: string;
+  email: string;
+  password: string;
+  conPassword: string;
+};
+
+const defaultFormFields = {
+  displayName: "",
+  email: "",
+  password: "",
+  conPassword: "",
+};
 const SignUp = () => {
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
+  const { displayName, email, password, conPassword } = formFields;
+
+  const resetFormFields = () => {
+    setFormFields(defaultFormFields);
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Testing");
+
+    if (password !== conPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    try {
+      const { user } = await authCreateUserEmailPassword(email, password);
+      await createUserDocFromAuth(user, { displayName });
+      toast.success("Account created successfully!");
+
+      resetFormFields();
+    } catch (err) {
+      console.error("Error signing up", err);
+      toast.error("Failed to create account");
+    }
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setFormFields({ ...formFields, [name]: value });
   };
 
   const signUpGPopup = async () => {
     const { user } = await signInWithGooglePopup();
+    await createUserDocFromAuth(user);
+
+    console.log("signInWithGooglePopup");
     console.log(user);
     try {
       if (user) {
@@ -48,6 +96,7 @@ const SignUp = () => {
   };
   return (
     <AuthBackground>
+      <ToastContainer />
       <Container>
         <AuthTitleContainer>
           <AuthTitle to="/">Dish Galeria</AuthTitle>
@@ -64,16 +113,41 @@ const SignUp = () => {
             Continue with Google
           </ThirdPartyAccBtn>
           <Divider>or</Divider>
-          <TextFieldRow>
-            <TextFieldInput variant="outlined" label="First Name" type="text" />
-            <TextFieldInput variant="outlined" label="Last Name" type="text" />
-          </TextFieldRow>
-          <TextField variant="outlined" label="Email" type="email" />
-          <TextField variant="outlined" label="Password" type="password" />
+          <TextField
+            variant="outlined"
+            label="Display Name"
+            name="displayName"
+            type="text"
+            onChange={handleChange}
+            value={displayName}
+            required
+          />
+          <TextField
+            variant="outlined"
+            label="Email"
+            type="email"
+            name="email"
+            onChange={handleChange}
+            value={email}
+            required
+          />
+          <TextField
+            variant="outlined"
+            label="Password"
+            type="password"
+            name="password"
+            onChange={handleChange}
+            value={password}
+            required
+          />
           <TextFieldInput
             variant="outlined"
             label="Confirm Password"
             type="password"
+            name="conPassword"
+            onChange={handleChange}
+            value={conPassword}
+            required
           />
 
           <AuthSubmitBtn type="submit">Submit</AuthSubmitBtn>

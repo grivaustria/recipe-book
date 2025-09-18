@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app"; 
+import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   collection,
@@ -7,9 +7,18 @@ import {
   getDocs,
   deleteDoc,
   updateDoc,
+  getDoc,
+  setDoc,
 } from "firebase/firestore";
 
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, getRedirectResult } from "firebase/auth"
+import {
+  getAuth,
+  signInWithRedirect,
+  signInWithPopup,
+  GoogleAuthProvider,
+  getRedirectResult,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 
 import { toast } from "react-toastify";
 
@@ -27,20 +36,59 @@ const app = initializeApp(firebaseConfig);
 const googleProvider = new GoogleAuthProvider();
 
 googleProvider.setCustomParameters({
-  prompt: "select_account"
+  prompt: "select_account",
 });
 
+// Authentication
 export const auth = getAuth();
 
-export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider);
 
-export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
 
 export const getGoogleRedirectResult = () => getRedirectResult(auth);
 
-
 export const db = getFirestore(app);
 
+// Authentication: Creating User Document
+export const createUserDocFromAuth = async (userAuth, moreInfo = {}) => {
+  if (!userAuth) return console.error("userAuth does not exist");
+
+  const userDocRef = doc(db, "users", userAuth.uid);
+  // console.log("userDocRef: ", userDocRef);
+
+  const userSnapshot = await getDoc(userDocRef);
+  // console.log("userSnapshot: ", userSnapshot);
+
+  if (!userSnapshot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+        ...moreInfo,
+      });
+    } catch (err) {
+      console.error("Error create user.", err.message);
+    }
+  }
+  return userDocRef;
+};
+
+// Authentication: Sign-Up
+export const authCreateUserEmailPassword = async (email, password) => {
+  if (!email || !password) {
+    throw new Error("Email and password must be provided");
+  }
+  return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+// CRUD: Recipes
 export const addDishToFirestore = async () => {
   try {
     for (const dish of dishJSON) {

@@ -24,7 +24,10 @@ import {
   ThirdPartyAccBtn,
 } from "../../component/button/button.styled";
 
-import { signInWithGooglePopup } from "../../utils/firebase.utils";
+import {
+  signInWithGooglePopup,
+  createUserDocFromAuth,
+} from "../../utils/firebase.utils";
 
 import { toast, ToastContainer } from "react-toastify";
 
@@ -35,6 +38,9 @@ const Login = () => {
 
   const signInGPopup = async () => {
     const { user } = await signInWithGooglePopup();
+    await createUserDocFromAuth(user);
+
+    console.log("signInWithGooglePopup");
     console.log(user);
     try {
       if (user) {
