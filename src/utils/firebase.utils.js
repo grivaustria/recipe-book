@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app"; 
 import {
   getFirestore,
   collection,
@@ -8,18 +8,37 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
+
+import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, getRedirectResult } from "firebase/auth"
+
 import { toast } from "react-toastify";
 
 const firebaseConfig = {
   apiKey: "AIzaSyADKriubumnDOnNYY_pMa9IxIt43pHRaO4",
   authDomain: "recipe-book-web-app.firebaseapp.com",
   projectId: "recipe-book-web-app",
-  storageBucket: "recipe-book-web-app.appspot.com",
+  storageBucket: "recipe-book-web-app.firebasestorage.app",
   messagingSenderId: "436779686471",
   appId: "1:436779686471:web:ef360709d41d17d6f16f62",
 };
 
 const app = initializeApp(firebaseConfig);
+
+const googleProvider = new GoogleAuthProvider();
+
+googleProvider.setCustomParameters({
+  prompt: "select_account"
+});
+
+export const auth = getAuth();
+
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
+
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
+
+export const getGoogleRedirectResult = () => getRedirectResult(auth);
+
+
 export const db = getFirestore(app);
 
 export const addDishToFirestore = async () => {

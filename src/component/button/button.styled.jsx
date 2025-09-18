@@ -87,12 +87,16 @@ export const SignUpBtn = styled(BaseLinkBtn)`
   text-transform: uppercase;
 `;
 
-export const AuthSubmitBtn = styled(SignUpBtn)``;
+export const AuthSubmitBtn = styled(BaseBtn)`
+  background-color: #301411;
+  color: #fefefe;
+  text-transform: uppercase;
+`;
 
 export const ThirdPartyAccBtn = styled(BaseBtn)`
   color: #0e0e0e;
   text-transform: capitalize;
   display: flex;
   gap: 0.5rem;
-  font-size: 15px;
+  font-size: 14px;
 `;

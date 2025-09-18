@@ -1,4 +1,4 @@
-import { type FormEvent } from "react";
+import type { FormEvent } from "react";
 
 import {
   AuthBackground,
@@ -8,10 +8,11 @@ import {
   AuthText,
   AuthForm,
   AuthTitleText,
-  AuthDesc,
   AuthContain,
   SignUpPrompt,
   LinkText,
+  TextFieldRow,
+  TextFieldInput,
 } from "./auth.styles";
 
 import Divider from "@mui/material/Divider";
@@ -25,15 +26,14 @@ import {
 } from "../../component/button/button.styled";
 
 import { signInWithGooglePopup } from "../../utils/firebase.utils";
-
-import { toast, ToastContainer } from "react-toastify";
-
-const Login = () => {
+import { toast } from "react-toastify";
+const SignUp = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log("Testing");
   };
 
-  const signInGPopup = async () => {
+  const signUpGPopup = async () => {
     const { user } = await signInWithGooglePopup();
     console.log(user);
     try {
@@ -46,10 +46,8 @@ const Login = () => {
       );
     }
   };
-
   return (
     <AuthBackground>
-      <ToastContainer />
       <Container>
         <AuthTitleContainer>
           <AuthTitle to="/">Dish Galeria</AuthTitle>
@@ -59,20 +57,29 @@ const Login = () => {
         </AuthTitleContainer>
         <AuthForm onSubmit={handleSubmit}>
           <AuthContain>
-            <AuthTitleText>Welcome, User!</AuthTitleText>
-            <AuthDesc>Log in to your account to continue</AuthDesc>
+            <AuthTitleText>Create an account</AuthTitleText>
           </AuthContain>
-          <TextField variant="outlined" label="Email" type="email" />
-          <TextField variant="outlined" label="Password" type="password" />
-          <AuthSubmitBtn>Submit</AuthSubmitBtn>
-          <Divider>or</Divider>
-          <ThirdPartyAccBtn onClick={signInGPopup}>
+          <ThirdPartyAccBtn onClick={signUpGPopup}>
             <Icon icon="devicon:google" width="16" height="16" />
             Continue with Google
           </ThirdPartyAccBtn>
+          <Divider>or</Divider>
+          <TextFieldRow>
+            <TextFieldInput variant="outlined" label="First Name" type="text" />
+            <TextFieldInput variant="outlined" label="Last Name" type="text" />
+          </TextFieldRow>
+          <TextField variant="outlined" label="Email" type="email" />
+          <TextField variant="outlined" label="Password" type="password" />
+          <TextFieldInput
+            variant="outlined"
+            label="Confirm Password"
+            type="password"
+          />
+
+          <AuthSubmitBtn type="submit">Submit</AuthSubmitBtn>
+
           <SignUpPrompt>
-            New to Dish Galeria?{" "}
-            <LinkText to="/signup">Create an account</LinkText>{" "}
+            Already have an account?<LinkText to="/login"> Sign In</LinkText>
           </SignUpPrompt>
         </AuthForm>
       </Container>
@@ -80,4 +87,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

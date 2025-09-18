@@ -22,7 +22,7 @@ const Title = () => {
       </TitleContainer>
       <MUIButtonContainer>
         <LoginBtn to="/login">Sign In</LoginBtn>
-        <SignUpBtn>Create Account</SignUpBtn>
+        <SignUpBtn to="/signup">Create Account</SignUpBtn>
       </MUIButtonContainer>
     </Container>
   );

@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { styled as muiStyled } from "@mui/material";
+import { styled as muiStyled, TextField } from "@mui/material";
 import { device, breakpointsBetween } from "../../utils/breakpoints";
 import { Button as MUIButton } from "@mui/material";
+import { Link } from "react-router";
 
 export const AuthBackground = styled.div`
   background-color: #fdf8f2;
@@ -33,8 +34,10 @@ export const AuthTitleContainer = styled.div`
   // }
 `;
 
-export const AuthTitle = styled.span`
+export const AuthTitle = styled(Link)`
   font-weight: 700;
+  text-decoration: none;
+  color: #0e0e0e;
 
   ${device.mobile} {
     font-size: 40px;
@@ -58,7 +61,7 @@ export const AuthText = styled.span`
   }
 `;
 
-export const LoginForm = styled.form`
+export const AuthForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -69,7 +72,7 @@ export const LoginForm = styled.form`
   background-color: #fefefe;
 `;
 
-export const LoginContain = styled.div`
+export const AuthContain = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -77,11 +80,35 @@ export const LoginContain = styled.div`
   margin: 0.5rem 0;
 `;
 
-export const LoginTitle = styled.div`
+export const AuthTitleText = styled.div`
   font-size: 32px;
   font-weight: 700;
 `;
 
-export const LoginDesc = styled.div`
+export const AuthDesc = styled.div`
   color: #464646ff;
+`;
+
+export const SignUpPrompt = styled.span`
+  text-align: center;
+`;
+
+export const LinkText = styled(Link)`
+  color: #3498db;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export const TextFieldRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+`;
+
+export const TextFieldInput = muiStyled(TextField)`
+  width: 100%;
 `;
