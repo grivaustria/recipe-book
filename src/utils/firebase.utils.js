@@ -19,7 +19,11 @@ import {
   getRedirectResult,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
+  signOut,
 } from "firebase/auth";
+
+
 
 import { toast } from "react-toastify";
 
@@ -82,11 +86,24 @@ export const createUserDocFromAuth = async (userAuth, moreInfo = {}) => {
 };
 
 // Authentication: Sign-Up
-export const authCreateUserEmailPassword = async (email, password) => {
+export const authCreateUserEmailPassword = async (
+  email,
+  password,
+  displayName
+) => {
   if (!email || !password) {
     throw new Error("Email and password must be provided");
   }
-  return await createUserWithEmailAndPassword(auth, email, password);
+  const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+  const user = userCredential.user;
+
+  if (!displayName) console.error("displayName does not exist");
+
+  return userCredential;
 };
 
 // Authentication: Login
@@ -96,6 +113,9 @@ export const loginUserEmailPassword = async (email, password) => {
   }
   return signInWithEmailAndPassword(auth, email, password);
 };
+
+// Authentication: Log out
+export const logOutUser = async () => signOut(auth);
 
 // CRUD: Recipes
 export const addDishToFirestore = async () => {

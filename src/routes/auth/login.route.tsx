@@ -32,6 +32,7 @@ import {
 
 import { toast, ToastContainer } from "react-toastify";
 import { FirebaseError } from "firebase/app";
+import { useNavigate } from "react-router";
 
 type FormFields = {
   email: string;
@@ -46,6 +47,7 @@ const defaultFormFields = {
 const Login = () => {
   const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
   const { email, password } = formFields;
+  const navigate = useNavigate();
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -61,8 +63,9 @@ const Login = () => {
     try {
       const userCredential = await loginUserEmailPassword(email, password);
       const user = userCredential.user;
-      console.log("userCredential: ", user);
+      // console.log("userCredential: ", user);
       resetFormFields();
+      navigate("/");
       toast.success("Signed in successfully(?)!");
     } catch (error) {
       if (error instanceof FirebaseError) {

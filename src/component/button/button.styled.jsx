@@ -87,6 +87,11 @@ export const SignUpBtn = styled(BaseLinkBtn)`
   text-transform: uppercase;
 `;
 
+export const SignOutBtn = styled(BaseLinkBtn)`
+  background-color: #fefefe;
+  color: #301411;
+`;
+
 export const AuthSubmitBtn = styled(BaseBtn)`
   background-color: #301411;
   color: #fefefe;

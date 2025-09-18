@@ -30,6 +30,7 @@ import {
   authCreateUserEmailPassword,
 } from "../../utils/firebase.utils";
 import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router";
 
 type FormFields = {
   displayName: string;
@@ -47,7 +48,7 @@ const defaultFormFields = {
 const SignUp = () => {
   const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
   const { displayName, email, password, conPassword } = formFields;
-
+  const navigate = useNavigate();
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
@@ -66,6 +67,7 @@ const SignUp = () => {
       toast.success("Account created successfully!");
 
       resetFormFields();
+      navigate("/");
     } catch (err) {
       console.error("Error signing up", err);
       toast.error("Failed to create account");
