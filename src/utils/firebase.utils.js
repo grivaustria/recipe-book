@@ -18,6 +18,7 @@ import {
   GoogleAuthProvider,
   getRedirectResult,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 import { toast } from "react-toastify";
@@ -86,6 +87,14 @@ export const authCreateUserEmailPassword = async (email, password) => {
     throw new Error("Email and password must be provided");
   }
   return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+// Authentication: Login
+export const loginUserEmailPassword = async (email, password) => {
+  if (!email || !password) {
+    throw new Error("Email and password must be provided");
+  }
+  return signInWithEmailAndPassword(auth, email, password);
 };
 
 // CRUD: Recipes
