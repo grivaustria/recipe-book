@@ -62,7 +62,11 @@ const SignUp = () => {
     }
 
     try {
-      const { user } = await authCreateUserEmailPassword(email, password);
+      const { user } = await authCreateUserEmailPassword(
+        email,
+        password,
+        displayName
+      );
       await createUserDocFromAuth(user, { displayName });
       toast.success("Account created successfully!");
 

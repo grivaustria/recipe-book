@@ -23,8 +23,6 @@ import {
   signOut,
 } from "firebase/auth";
 
-
-
 import { toast } from "react-toastify";
 
 const firebaseConfig = {
@@ -101,7 +99,11 @@ export const authCreateUserEmailPassword = async (
   );
   const user = userCredential.user;
 
-  if (!displayName) console.error("displayName does not exist");
+  if (displayName) {
+    await updateProfile(user, { displayName });
+  } else {
+    console.error("displayName does not exist");
+  }
 
   return userCredential;
 };
