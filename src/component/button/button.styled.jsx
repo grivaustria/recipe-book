@@ -78,18 +78,24 @@ const BaseLinkBtn = (props) => {
 
 export const LoginBtn = styled(BaseLinkBtn)`
   background-color: #fefefe;
+  text-transform: capitalize;
+  font-weight: 700;
   color: #301411;
+
 `;
 
 export const SignUpBtn = styled(BaseLinkBtn)`
   background-color: #301411;
   color: #fefefe;
-  text-transform: uppercase;
+  font-weight: 700;
+  text-transform: capitalize;
 `;
 
 export const SignOutBtn = styled(BaseLinkBtn)`
   background-color: #fefefe;
-  color: #301411;
+  color: #582924ff;
+  font-weight: 700;
+  text-transform: capitalize;
 `;
 
 export const AuthSubmitBtn = styled(BaseBtn)`
