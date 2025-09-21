@@ -9,6 +9,7 @@ import {
   UserContainer,
   UserName,
   UserEmail,
+  UserUID,
   AuthUserContainer,
 } from "./title.styles";
 
@@ -32,7 +33,6 @@ const Title = () => {
       setUser(currentUser);
       console.log("Check Auth: ", currentUser);
       console.log("user id: ", auth.currentUser?.uid);
-
     });
 
     return () => unsubscribe();
@@ -57,6 +57,7 @@ const Title = () => {
           <UserContainer>
             <UserName>{user.displayName}</UserName>
             <UserEmail>{user.email}</UserEmail>
+            <UserUID>UID: {user.uid}</UserUID>
           </UserContainer>
           <SignOutBtn onClick={() => handleLogout()}>
             <svg

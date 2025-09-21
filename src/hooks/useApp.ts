@@ -2,9 +2,10 @@ import { useState, useEffect, useCallback } from "react";
 import type { ChangeEvent } from "react";
 import type { DishDataType } from "../types/dish.type";
 
-import { getRecipesFromFirestore } from "../utils/firebase.utils";
+import { getRecipesFromFirestore, auth } from "../utils/firebase.utils";
 import { dishImages } from "../data/dish-images";
 import { generatedDishImage } from "../utils/generatedDishImage";
+import { onAuthStateChanged } from "firebase/auth";
 
 export const useApp = () => {
   const [dishData, setDishData] = useState<DishDataType[]>([]);
@@ -37,7 +38,14 @@ export const useApp = () => {
 
   // 👉 Fetch once on mount
   useEffect(() => {
-    fetchData();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchData();
+      } else {
+        setDishData([]);
+      }
+    });
+    return unsubscribe
   }, [fetchData]);
 
   // 👉 Filtering logic when dishData, searchField, or selectedDishType changes

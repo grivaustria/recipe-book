@@ -74,3 +74,8 @@ export const UserEmail = styled.span`
   font-weight: 400;
   font-size: 16px;
 `;
+
+export const UserUID = styled.span`
+  font-size: 16px;
+  color: #6b6b6bff;
+`;
