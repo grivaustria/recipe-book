@@ -30,6 +30,7 @@ const MainPage = () => {
     deleteRecipeClose,
     handleDishTypeChange,
     handleRecipeChange,
+    isLoading,
   } = useApp();
 
   return (
@@ -66,6 +67,7 @@ const MainPage = () => {
           onCardClick={viewRecipeClick}
           searchField={searchField}
           onAddRecipeClick={addRecipeClick}
+          isLoading={isLoading}
         />
       </RootContainer>
       <Outlet />

@@ -9,6 +9,7 @@ import { generatedDishImage } from "../utils/generatedDishImage";
 export const useApp = () => {
   const [dishData, setDishData] = useState<DishDataType[]>([]);
   const [searchField, setSearchField] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [selectedDishType, setSelectedDishType] = useState<string>("all");
   const [dishFilter, setDishFilter] = useState<DishDataType[]>([]);
@@ -31,6 +32,7 @@ export const useApp = () => {
     }));
 
     setDishData(recipesWithImages);
+    setIsLoading(false);
   }, []);
 
   // 👉 Fetch once on mount
@@ -122,5 +124,6 @@ export const useApp = () => {
     deleteRecipeClose,
     handleDishTypeChange,
     handleRecipeChange,
+    isLoading,
   };
 };
