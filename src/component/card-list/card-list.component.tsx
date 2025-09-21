@@ -59,17 +59,9 @@ const CardList = ({
           ) : (
             !isSearching &&
             showComponent && (
-              <motion.div
-                key="cardaddonly"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.4 }}
-              >
-                <CardListContainer>
-                  <CardAdd onAddRecipeClick={onAddRecipeClick} />
-                </CardListContainer>
-              </motion.div>
+              <CardListContainer>
+                <CardAdd onAddRecipeClick={onAddRecipeClick} />
+              </CardListContainer>
             )
           )}
         </AnimatePresence>
