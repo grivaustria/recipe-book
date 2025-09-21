@@ -61,8 +61,8 @@ const Login = () => {
     event.preventDefault();
 
     try {
-      const userCredential = await loginUserEmailPassword(email, password);
-      const user = userCredential.user;
+      await loginUserEmailPassword(email, password);
+      // const user = userCredential.user;
       // console.log("userCredential: ", user);
       resetFormFields();
       navigate("/");
