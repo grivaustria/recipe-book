@@ -81,7 +81,6 @@ export const LoginBtn = styled(BaseLinkBtn)`
   text-transform: capitalize;
   font-weight: 700;
   color: #301411;
-
 `;
 
 export const SignUpBtn = styled(BaseLinkBtn)`
@@ -92,14 +91,19 @@ export const SignUpBtn = styled(BaseLinkBtn)`
 `;
 
 export const SignOutBtn = styled(BaseLinkBtn)`
-  background-color: #fefefe;
+  background-color: #fcfcfcff;
   color: #582924ff;
   font-weight: 700;
   text-transform: capitalize;
+
+  &:hover {
+    background-color: #301411;
+    color: #fefefe;
+  }
 `;
 
 export const AuthSubmitBtn = styled(BaseBtn)`
-  background-color: #301411;
+  background-color: #582924ff;
   color: #fefefe;
   text-transform: uppercase;
 `;

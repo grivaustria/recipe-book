@@ -52,3 +52,25 @@ export const AuthContainer = styled.div`
   position: absolute;
   width: 100%;
 `;
+
+export const AuthUserContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+export const UserContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
+export const UserName = styled.span`
+  font-weight: 700;
+  font-size: 24px;
+`;
+
+export const UserEmail = styled.span`
+  font-weight: 400;
+  font-size: 16px;
+`;
