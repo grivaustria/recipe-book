@@ -169,11 +169,23 @@ export const getRecipesFromFirestore = async () => {
 
 export const addRecipeToFirestore = async (recipe) => {
   try {
-    const docRef = await addDoc(collection(db, "recipes"), recipe);
+    const user = auth.currentUser;
+    if (!user) throw new Error("User must be logged in to add a recipe");
+
+    // Previous Doc Ref
+    // const docRef = await addDoc(collection(db, "recipes"), recipe);
+
+    const docRef = await addDoc(collection(db, "recipes"), {
+      ...recipe,
+      userId: user.uid,
+      createdAt: new Date(),
+    });
+
     toast.success(`Recipe ${recipe.dishName} added successfully`);
     return docRef.id;
   } catch (error) {
     toast.error("Error adding recipes", error);
+    throw error;
   }
 };
 
