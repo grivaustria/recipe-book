@@ -7,6 +7,7 @@ import CardAdd from "../card-add-recipe/card-add-recipe.component";
 import Spinner from "../spinner/spinner.component";
 
 import { motion, AnimatePresence } from "framer-motion";
+import NoResult from "../no-result/no-result.component";
 
 type CardListProps = {
   dishData: DishDataType[];
@@ -54,15 +55,7 @@ const CardList = ({
               </CardListContainer>
             </motion.div>
           ) : isSearching ? (
-            <motion.span
-              key="noresults"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              No results found
-            </motion.span>
+            <NoResult />
           ) : (
             !isSearching &&
             showComponent && (
