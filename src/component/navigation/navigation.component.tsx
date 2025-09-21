@@ -6,7 +6,6 @@ import {
 import type { ChangeEventHandler } from "react";
 import SearchBar from "../search-bar/search-bar.component";
 
-
 type NavigationProps = {
   selectedDishType: string;
   onDishTypeChange: (dishType: string) => void;
@@ -44,6 +43,14 @@ const Navigation = ({
           className={selectedDishType === "meat" ? "active" : ""}
         >
           Meat
+        </NavigationDish>
+        <NavigationDish
+          onClick={() =>
+            onDishTypeChange(selectedDishType === "veggies" ? "all" : "veggies")
+          }
+          className={selectedDishType === "veggies" ? "active" : ""}
+        >
+          Veggies
         </NavigationDish>
         <NavigationDish
           onClick={() =>

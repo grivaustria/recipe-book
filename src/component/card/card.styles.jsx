@@ -4,7 +4,7 @@ export const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 288px;
-  width: 100%;
+  width: 288px;
   height: 214px; /* Match the CardAdd height exactly */
   box-shadow: 0 4px 6px -1px rgba(100, 116, 139, 0.5),
     0 2px 4px -2px rgba(100, 116, 139, 0.5);

@@ -67,6 +67,7 @@ const AddRecipeForm = ({ onClose, onRecipeAdd }: AddRecipeFormProps) => {
               </option>
               <option value="fish">Fish</option>
               <option value="meat">Meat</option>
+              <option value="veggies">Veggies</option>
               <option value="dessert">Dessert</option>
             </SelectOption>
           </InputLabelContainer>

@@ -6,10 +6,10 @@ import SignUp from "./routes/auth/signup.route";
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
       <Route path="login" element={<Login />} />
-      <Route path="signup" element={<SignUp />} />
 
+      <Route path="/" element={<MainPage />} />
+      <Route path="signup" element={<SignUp />} />
     </Routes>
   );
 };

@@ -182,7 +182,9 @@ export const addRecipeToFirestore = async (recipe) => {
     toast.success(`Recipe ${recipe.dishName} added successfully`);
     return docRef.id;
   } catch (error) {
-    toast.error("Error adding recipes", error);
+    console.error("Error occured", error.message);
+
+    toast.error("Error adding recipes");
     throw error;
   }
 };
