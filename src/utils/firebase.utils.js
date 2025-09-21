@@ -9,6 +9,7 @@ import {
   updateDoc,
   getDoc,
   setDoc,
+  where,
 } from "firebase/firestore";
 
 import {
@@ -144,18 +145,26 @@ export const addDishToFirestore = async () => {
 
 export const getRecipesFromFirestore = async () => {
   try {
-    const snapshot = await getDocs(collection(db, "recipes"));
+    // const snapshot = await getDocs(collection(db, "recipes"));
 
-    const mappedData = snapshot.docs.map((doc) => {
-      const data = doc.data();
+    // const mappedData = snapshot.docs.map((doc) => {
+    //   const data = doc.data();
 
-      return {
-        id: doc.id,
-        ...data,
-      };
-    });
+    //   return {
+    //     id: doc.id,
+    //     ...data,
+    //   };
+    // });
 
-    return mappedData;
+    // return mappedData;
+
+    const user = auth.currentUser;
+    if (!user) return [];
+
+    const q = query(collection(db, "recipes"), where("uid", "==", user.uid));
+
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
     console.error("Error fetching recipes:", error);
     return [];
