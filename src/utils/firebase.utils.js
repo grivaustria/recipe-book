@@ -158,6 +158,7 @@ export const getRecipesFromFirestore = async () => {
 
     // return mappedData;
 
+    //2nd Version
     const user = auth.currentUser;
     if (!user) return [];
 
@@ -169,6 +170,7 @@ export const getRecipesFromFirestore = async () => {
     console.error("Error fetching recipes:", error);
     return [];
   }
+
 };
 
 /**

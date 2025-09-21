@@ -103,6 +103,7 @@ const Login = () => {
     try {
       if (user) {
         toast.success("You have successfully signed in.");
+        navigate("/");
       }
     } catch {
       toast.error(

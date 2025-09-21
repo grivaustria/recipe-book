@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 import {
   TitleContainer,
@@ -24,15 +25,24 @@ import { logOutUser } from "../../utils/firebase.utils";
 const Title = () => {
   const auth = getAuth();
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       console.log("Check Auth: ", currentUser);
+      console.log("user id: ", auth.currentUser?.uid);
+
     });
 
     return () => unsubscribe();
   }, [auth]);
+
+  const handleLogout = async () => {
+    await logOutUser();
+    navigate("/login");
+  };
+
   return (
     <Container>
       <TitleContainer>
@@ -48,7 +58,7 @@ const Title = () => {
             <UserName>{user.displayName}</UserName>
             <UserEmail>{user.email}</UserEmail>
           </UserContainer>
-          <SignOutBtn onClick={logOutUser}>
+          <SignOutBtn onClick={() => handleLogout()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width={18}
