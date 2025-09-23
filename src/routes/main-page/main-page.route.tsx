@@ -50,15 +50,6 @@ const MainPage = () => {
           <AddRecipe onClose={addRecipeClose} onRecipeAdd={fetchData} />
         )}
 
-        {/* {isViewRecipeOpen && selectedDish && (
-          <ViewRecipe
-            dish={selectedDish}
-            onClose={viewRecipeClose}
-            onDelete={deleteRecipeClick}
-            onUpdate={handleRecipeChange}
-          />
-        )} */}
-
         {slug &&
           location.pathname.startsWith("/recipe/view/") &&
           currentSelectedDish && (
@@ -85,7 +76,6 @@ const MainPage = () => {
           onDishTypeChange={handleDishTypeChange}
           onSearchChange={onSearchChange}
         />
-        {/* <SearchBar onChangeHandler={onSearchChange} /> */}
 
         <CardList
           dishData={dishFilter}
