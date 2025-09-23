@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import type { ChangeEvent } from "react";
 import type { DishDataType } from "../types/dish.type";
+import { useNavigate } from "react-router-dom";
 
 import { getRecipesFromFirestore, auth } from "../utils/firebase.utils";
 import { dishImages } from "../data/dish-images";
@@ -16,21 +17,15 @@ export const useApp = () => {
   const [dishFilter, setDishFilter] = useState<DishDataType[]>([]);
 
   const [selectedDish, setSelectedDish] = useState<DishDataType | null>(null);
-  const [isViewRecipeOpen, setIsViewRecipeOpen] = useState<boolean>(false);
+  const [isViewRecipeOpen] = useState<boolean>(false);
   const [isAddRecipeOpen, setIsAddRecipeOpen] = useState<boolean>(false);
   const [isDeleteRecipeOpen, setIsDeleteRecipeOpen] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const fetchData = useCallback(async () => {
     const recipes = await getRecipesFromFirestore();
     const typedRecipes = recipes as DishDataType[];
-
-    // const recipesWithImages = typedRecipes.map((dish) => ({
-    //   ...dish,
-    //   dishImage:
-    //     dish.dishImage ||
-    //     dishImages[dish.dishName] ||
-    //     generatedDishImage(dish.dishName),
-    // }));
 
     const recipesWithImages = typedRecipes.map((dish) => {
       const mappedImage = dishImages[dish.dishName];
@@ -86,13 +81,16 @@ export const useApp = () => {
   };
 
   const viewRecipeClick = (dish: DishDataType) => {
+    const slug = dish.dishName.toLocaleLowerCase().replace(/\s+/g, "-");
+    navigate(`/recipe/${slug}`);
     setSelectedDish(dish);
-    setIsViewRecipeOpen(true);
+    // setIsViewRecipeOpen(true);
   };
 
   const viewRecipeClose = () => {
-    setIsViewRecipeOpen(false);
+    // setIsViewRecipeOpen(false);
     setSelectedDish(null);
+    navigate("/");
   };
 
   const addRecipeClick = (): void => {
@@ -109,7 +107,7 @@ export const useApp = () => {
 
   const deleteRecipeClick = (): void => {
     setIsDeleteRecipeOpen(true);
-    setIsViewRecipeOpen(false);
+    // setIsViewRecipeOpen(false);
   };
 
   const deleteRecipeClose = (): void => {
@@ -123,7 +121,7 @@ export const useApp = () => {
   };
 
   const handleRecipeChange = () => {
-    setIsViewRecipeOpen(false);
+    // setIsViewRecipeOpen(false);
     fetchData(); // Refresh data after update
   };
 

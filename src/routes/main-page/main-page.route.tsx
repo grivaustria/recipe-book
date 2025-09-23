@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useApp } from "../../hooks/useApp";
@@ -17,7 +18,6 @@ const MainPage = () => {
     selectedDishType,
     dishFilter,
     selectedDish,
-    isViewRecipeOpen,
     isAddRecipeOpen,
     isDeleteRecipeOpen,
     fetchData,
@@ -33,6 +33,13 @@ const MainPage = () => {
     isLoading,
   } = useApp();
 
+  const { slug } = useParams();
+  const currentSelectedDish = slug
+    ? dishFilter.find(
+        (dish) => dish.dishName.toLowerCase().replace(/\s/g, "-") === slug
+      )
+    : null;
+
   return (
     <>
       <GlobalStyle />
@@ -45,9 +52,18 @@ const MainPage = () => {
         {isDeleteRecipeOpen && selectedDish && (
           <DeleteRecipe dish={selectedDish} onClose={deleteRecipeClose} />
         )}
-        {isViewRecipeOpen && selectedDish && (
+        {/* {isViewRecipeOpen && selectedDish && (
           <ViewRecipe
             dish={selectedDish}
+            onClose={viewRecipeClose}
+            onDelete={deleteRecipeClick}
+            onUpdate={handleRecipeChange}
+          />
+        )} */}
+
+        {currentSelectedDish && (
+          <ViewRecipe
+            dish={currentSelectedDish}
             onClose={viewRecipeClose}
             onDelete={deleteRecipeClick}
             onUpdate={handleRecipeChange}
