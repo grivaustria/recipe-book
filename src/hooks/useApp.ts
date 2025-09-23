@@ -24,13 +24,26 @@ export const useApp = () => {
     const recipes = await getRecipesFromFirestore();
     const typedRecipes = recipes as DishDataType[];
 
-    const recipesWithImages = typedRecipes.map((dish) => ({
-      ...dish,
-      dishImage:
-        dish.dishImage ||
-        dishImages[dish.dishName] ||
-        generatedDishImage(dish.dishName),
-    }));
+    // const recipesWithImages = typedRecipes.map((dish) => ({
+    //   ...dish,
+    //   dishImage:
+    //     dish.dishImage ||
+    //     dishImages[dish.dishName] ||
+    //     generatedDishImage(dish.dishName),
+    // }));
+
+    const recipesWithImages = typedRecipes.map((dish) => {
+      const mappedImage = dishImages[dish.dishName];
+      const hasGenerated = dish.dishImage?.startsWith("data:image/png");
+
+      return {
+        ...dish,
+        dishImage:
+          mappedImage ||
+          (!hasGenerated ? dish.dishImage : null) ||
+          generatedDishImage(dish.dishName),
+      };
+    });
 
     setDishData(recipesWithImages);
     setIsLoading(false);
@@ -45,7 +58,7 @@ export const useApp = () => {
         setDishData([]);
       }
     });
-    return unsubscribe
+    return unsubscribe;
   }, [fetchData]);
 
   // 👉 Filtering logic when dishData, searchField, or selectedDishType changes
