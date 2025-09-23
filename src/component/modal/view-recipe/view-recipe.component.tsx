@@ -13,6 +13,8 @@ import {
   CloseButton,
 } from "./view-recipe.styles";
 
+import { useNavigate } from "react-router-dom";
+
 import type { DishDataType, Procedure } from "../../../types/dish.type";
 import ViewRecipeTitle from "./view-recipe-title.component";
 import UpdateRecipeForm from "../update-recipe/update-recipe-form.component";
@@ -27,14 +29,19 @@ type ViewRecipeProps = {
 const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
   const { id, dishType, dishName, dishImage, ingredients, procedure } = dish;
   const [isUpdateOpen, setIsUpdateOpen] = useState<boolean>(false);
+  const slug = dish.dishName.toLocaleLowerCase().replace(/\s+/g, "-");
+
+  const navigate = useNavigate();
 
   const handleUpdateClick = () => {
     setIsUpdateOpen(true);
+    navigate(`/recipe/update/${slug}`);
   };
 
   const handleUpdateClose = () => {
-    setIsUpdateOpen(false);
     onUpdate();
+    setIsUpdateOpen(false);
+    navigate(`/recipe/${slug}`);
   };
 
   const handleBackgroundClick = () => {
