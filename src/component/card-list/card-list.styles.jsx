@@ -12,6 +12,8 @@ export const CardListContainer = styled.div`
   margin: 0 auto 1rem;
   padding: 0 1rem 1rem;
   overflow-y: auto;
+  overflow-x: hidden;
+  height: 65vh;
 
   ${device.mobile} {
     grid-template-columns: repeat(1, 1fr);
