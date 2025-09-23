@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useApp } from "../../hooks/useApp";
@@ -17,9 +17,7 @@ const MainPage = () => {
     searchField,
     selectedDishType,
     dishFilter,
-    selectedDish,
     isAddRecipeOpen,
-    isDeleteRecipeOpen,
     fetchData,
     onSearchChange,
     viewRecipeClick,
@@ -34,6 +32,8 @@ const MainPage = () => {
   } = useApp();
 
   const { slug } = useParams();
+  const location = useLocation();
+
   const currentSelectedDish = slug
     ? dishFilter.find(
         (dish) => dish.dishName.toLowerCase().replace(/\s/g, "-") === slug
@@ -49,9 +49,7 @@ const MainPage = () => {
         {isAddRecipeOpen && (
           <AddRecipe onClose={addRecipeClose} onRecipeAdd={fetchData} />
         )}
-        {isDeleteRecipeOpen && selectedDish && (
-          <DeleteRecipe dish={selectedDish} onClose={deleteRecipeClose} />
-        )}
+
         {/* {isViewRecipeOpen && selectedDish && (
           <ViewRecipe
             dish={selectedDish}
@@ -61,14 +59,25 @@ const MainPage = () => {
           />
         )} */}
 
-        {currentSelectedDish && (
-          <ViewRecipe
-            dish={currentSelectedDish}
-            onClose={viewRecipeClose}
-            onDelete={deleteRecipeClick}
-            onUpdate={handleRecipeChange}
-          />
-        )}
+        {slug &&
+          location.pathname.startsWith("/recipe/view/") &&
+          currentSelectedDish && (
+            <ViewRecipe
+              dish={currentSelectedDish}
+              onClose={viewRecipeClose}
+              onDelete={deleteRecipeClick}
+              onUpdate={handleRecipeChange}
+            />
+          )}
+
+        {slug &&
+          location.pathname.startsWith("/recipe/delete/") &&
+          currentSelectedDish && (
+            <DeleteRecipe
+              dish={currentSelectedDish}
+              onClose={deleteRecipeClose}
+            />
+          )}
 
         <Title />
         <Navigation

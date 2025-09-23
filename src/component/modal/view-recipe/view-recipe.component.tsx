@@ -22,7 +22,7 @@ import UpdateRecipeForm from "../update-recipe/update-recipe-form.component";
 type ViewRecipeProps = {
   dish: DishDataType;
   onClose: () => void;
-  onDelete: () => void;
+  onDelete: (dish: DishDataType) => void;
   onUpdate: () => void;
 };
 
@@ -41,7 +41,7 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
   const handleUpdateClose = () => {
     onUpdate();
     setIsUpdateOpen(false);
-    navigate(`/recipe/${slug}`);
+    navigate(`/recipe/view/${slug}`);
   };
 
   const handleBackgroundClick = () => {
@@ -78,7 +78,7 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
                 id={id}
                 title={dishName}
                 tag={dishType}
-                onDelete={onDelete}
+                onDelete={() => onDelete(dish)}
                 onUpdate={handleUpdateClick}
               />
 

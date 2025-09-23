@@ -17,7 +17,6 @@ export const useApp = () => {
   const [dishFilter, setDishFilter] = useState<DishDataType[]>([]);
 
   const [selectedDish, setSelectedDish] = useState<DishDataType | null>(null);
-  const [isViewRecipeOpen] = useState<boolean>(false);
   const [isAddRecipeOpen, setIsAddRecipeOpen] = useState<boolean>(false);
   const [isDeleteRecipeOpen, setIsDeleteRecipeOpen] = useState<boolean>(false);
 
@@ -82,13 +81,11 @@ export const useApp = () => {
 
   const viewRecipeClick = (dish: DishDataType) => {
     const slug = dish.dishName.toLocaleLowerCase().replace(/\s+/g, "-");
-    navigate(`/recipe/${slug}`);
+    navigate(`/recipe/view/${slug}`);
     setSelectedDish(dish);
-    // setIsViewRecipeOpen(true);
   };
 
   const viewRecipeClose = () => {
-    // setIsViewRecipeOpen(false);
     setSelectedDish(null);
     navigate("/");
   };
@@ -102,18 +99,17 @@ export const useApp = () => {
   const addRecipeClose = (): void => {
     setIsAddRecipeOpen(false);
     fetchData(); // Refresh data after closing add Recipe
-    // console.log("Close: Add New Dish");
   };
 
-  const deleteRecipeClick = (): void => {
+  const deleteRecipeClick = (dish: DishDataType): void => {
+    const slug = dish.dishName.toLowerCase().replace(/\s+/g, "-");
     setIsDeleteRecipeOpen(true);
-    // setIsViewRecipeOpen(false);
+    navigate(`/recipe/delete/${slug}`);
   };
 
   const deleteRecipeClose = (): void => {
-    setIsDeleteRecipeOpen(false);
-    setSelectedDish(null);
     fetchData(); // Refresh data after deletion
+    navigate("/");
   };
 
   const handleDishTypeChange = (dishType: string) => {
@@ -121,7 +117,6 @@ export const useApp = () => {
   };
 
   const handleRecipeChange = () => {
-    // setIsViewRecipeOpen(false);
     fetchData(); // Refresh data after update
   };
 
@@ -130,7 +125,6 @@ export const useApp = () => {
     selectedDishType,
     dishFilter,
     selectedDish,
-    isViewRecipeOpen,
     isAddRecipeOpen,
     isDeleteRecipeOpen,
     fetchData,
