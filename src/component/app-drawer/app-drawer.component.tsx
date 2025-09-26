@@ -93,7 +93,7 @@ const AppDrawer = () => {
   return (
     <>
       <OpenDrawer onClick={toggleDrawer(true)}>
-        <SVGBurger width={18} height={18} />
+        <SVGBurger className="burger" />
       </OpenDrawer>
       <Drawer open={open} onClose={toggleDrawer(false)}>
         {DrawerList}

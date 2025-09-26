@@ -19,7 +19,6 @@ export const CardListContainer = styled.div`
 
   ${device.mobile} {
     grid-template-columns: repeat(1, 1fr);
-    justify-items: center;
   }
 
   ${device.tablet} {

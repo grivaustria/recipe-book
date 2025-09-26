@@ -51,16 +51,11 @@ const Title = () => {
       <TitleContainer>
         <TitleText>Dish Galeria</TitleText>
 
-        {/* {isTablet ? null : (
-          <TitleDesc>
-          Collect recipes, all in one place. Accessible to any device.
-        </TitleDesc>
-        )} */}
         <TitleDesc>
           Collect recipes, all in one place. Accessible to any device.
         </TitleDesc>
       </TitleContainer>
-      {isMobile ? <AppDrawer /> : null}
+      {isTablet ? <AppDrawer /> : null}
 
 
       {!isTablet ? user ? <AuthUser user={user} logout={handleLogout} /> : <AuthNoUser /> : null}
