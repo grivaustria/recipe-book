@@ -11,7 +11,15 @@ export const useWindowResize = () => {
     width: window.innerWidth,
   });
 
-  const windowWidth = windowSize.width;
+  // const windowWidth = windowSize.width;
+
+  const { width } = windowSize;
+
+  const isMobile = width <= 599;
+  const isTablet = width <= 1023;
+  const isLaptop = width <= 1919;
+  const isDesktop = width <= 2559;
+  const isWideScreen = width >= 2560;
 
   const [showComponent, setShowComponent] = useState<boolean>(true);
 
@@ -29,14 +37,19 @@ export const useWindowResize = () => {
 
   useEffect(() => {
     // console.log("viewport width:", windowWidth);
-    if (windowWidth < 1024) {
+    if (width < 1024) {
       setShowComponent(false);
     } else {
       setShowComponent(true);
     }
-  }, [windowWidth]);
+  }, [width]);
 
   return {
     showComponent,
+    isMobile,
+    isTablet,
+    isLaptop,
+    isDesktop,
+    isWideScreen,
   };
 };

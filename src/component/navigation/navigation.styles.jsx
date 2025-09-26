@@ -6,8 +6,12 @@ export const Container = styled.div`
   // justify-content: space-between;
   gap: 1rem;
   align-items: center;
-  max-width: 1200px;
+  // max-width: 1200px;
   width: 100%;
+
+  ${device.mobile} {
+    flex-direction: column;
+  }
 `;
 
 export const NavigationContainer = styled.div`
@@ -20,10 +24,11 @@ export const NavigationContainer = styled.div`
 export const NavigationDish = styled.div`
   border-radius: 20px;
   box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.5);
-  padding: 0.5rem 1rem;
+  // padding: 0.5rem 1rem;
 
   ${device.mobile} {
-    font-size: 14px;
+    padding: 0.5rem 0.75rem;
+    font-size: 12px;
   }
 
   ${device.tablet} {

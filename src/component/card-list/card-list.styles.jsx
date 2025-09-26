@@ -16,13 +16,14 @@ export const CardListContainer = styled.div`
   height: 65vh;
 
   ${device.mobile} {
+   padding: 0 0 1rem;
     grid-template-columns: repeat(1, 1fr);
     justify-items: center;
     width: 80%;
   }
 
   ${device.tablet} {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     width: 90%;
   }
 

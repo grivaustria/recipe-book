@@ -72,7 +72,7 @@ const BaseBtn = muiStyled(Button)`
   font-weight: 500;
 `;
 
-const BaseLinkBtn = (props) => {
+export const BaseLinkBtn = (props) => {
   return <BaseBtn component={Link} {...props} />;
 };
 

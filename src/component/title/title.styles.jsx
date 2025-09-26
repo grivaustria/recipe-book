@@ -6,10 +6,16 @@ import { Link } from "react-router";
 
 export const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
+  // max-width: 1200px;
   width: 100%;
+
+  ${device.mobile} {
+    // flex-direction: column;
+    // justify-content: center;
+  }
+
 `;
 
 export const TitleContainer = styled.div`
@@ -17,9 +23,6 @@ export const TitleContainer = styled.div`
   flex-direction: column;
   gap: 0.25rem;
 
-  // ${device.mobile} {
-  //   // text-align: center;
-  // }
 `;
 
 export const TitleText = styled.span`

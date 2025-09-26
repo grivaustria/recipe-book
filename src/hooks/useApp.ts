@@ -50,10 +50,11 @@ export const useApp = () => {
         fetchData();
       } else {
         setDishData([]);
+        navigate("/login");
       }
     });
     return unsubscribe;
-  }, [fetchData]);
+  }, [fetchData, navigate]);
 
   // 👉 Filtering logic when dishData, searchField, or selectedDishType changes
   useEffect(() => {
@@ -79,6 +80,7 @@ export const useApp = () => {
     setSearchField(searchFieldString);
   };
 
+  // Main Feature: View Recipe
   const viewRecipeClick = (dish: DishDataType) => {
     const slug = dish.dishName.toLocaleLowerCase().replace(/\s+/g, "-");
     navigate(`/recipe/view/${slug}`);
@@ -90,10 +92,10 @@ export const useApp = () => {
     navigate("/");
   };
 
+  // Main Feature: Add Recipe
   const addRecipeClick = (): void => {
     setIsAddRecipeOpen(true);
     localStorage.removeItem("recipeFormDraft");
-    // console.log("Open: Add New Dish");
   };
 
   const addRecipeClose = (): void => {
@@ -101,6 +103,7 @@ export const useApp = () => {
     fetchData(); // Refresh data after closing add Recipe
   };
 
+  // Main Feature: Delete Recipe
   const deleteRecipeClick = (dish: DishDataType): void => {
     const slug = dish.dishName.toLowerCase().replace(/\s+/g, "-");
     setIsDeleteRecipeOpen(true);

@@ -15,7 +15,7 @@ export const SearchBox = styled.input.attrs({
   transition: 0.2s width ease-in-out;
 
   ${device.mobile} {
-    // width: 300px;
+    width: 300px;
     font-size: 12px;
   }
 
