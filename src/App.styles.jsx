@@ -9,6 +9,7 @@ body {
   padding: 0;
   font-family: "Arial", sans-serif;
   background-color: #fdf8f2;
+  overflow-y: hidden;
 
   ${device.mobile} {
     height: 100dvh;

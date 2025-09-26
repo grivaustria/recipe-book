@@ -17,8 +17,12 @@ export const Container = styled.div`
 
   ${device.laptop} {
     justify-content: space-between;
+    max-width: 910px;
+    width: 100%;
+  }
+
+  ${device.desktop} {
     max-width: 1200px;
-  width: 100%;
   }
 
 `;

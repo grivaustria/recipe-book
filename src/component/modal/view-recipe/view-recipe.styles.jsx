@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { device } from "../../../utils/breakpoints";
 import { CancelButton } from "../../button/button.styled";
+
+
 export const ViewRecipeContainer = styled.div`
   display: flex;
   // gap: 1rem;
@@ -40,7 +42,7 @@ export const ImageDisplay = styled.img`
   }
 
   ${device.laptop} {
-    max-height: none;
+    max-height: 553px;
     width: 450px;
     height: 600px;
   }

@@ -4,13 +4,21 @@ import { device } from "../../utils/breakpoints";
 export const Container = styled.div`
   display: flex;
   // justify-content: space-between;
-  gap: 1rem;
+  // gap: 1rem;
   align-items: center;
   // max-width: 1200px;
   width: 100%;
 
   ${device.mobile} {
     flex-direction: column;
+    gap: 1rem;
+  }
+
+  ${device.laptop} {
+    flex-direction: row;
+    max-width: 910px;
+    justify-content: center;
+    gap: 0.5rem;
   }
 `;
 

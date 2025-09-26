@@ -26,6 +26,10 @@ export const SearchBox = styled.input.attrs({
     font-size: 18px;
   }
 
+  ${device.laptop} {
+  width: 600px;
+  }
+
   ${device.desktop} {
     max-width: 1200px;
   }

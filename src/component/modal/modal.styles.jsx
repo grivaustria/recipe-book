@@ -28,7 +28,7 @@ export const Modal = styled.div`
     margin: 2rem 3rem;
   }
 
-  ${device.laptop} {
+  ${device.desktop} {
     height: auto;
     margin: 0 13rem;
   }
