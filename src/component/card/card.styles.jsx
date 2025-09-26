@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { device } from "../../utils/breakpoints";
+
+
 
 export const CardContainer = styled.div`
   display: flex;
@@ -22,6 +25,7 @@ export const CardContainer = styled.div`
   &:hover span.dish-name {
     text-decoration: underline;
   }
+
 `;
 
 export const DishImage = styled.img`
@@ -38,7 +42,7 @@ export const DishTextContainer = styled.div`
   width: 90%;
   padding: 0.5rem 0.75rem;
   flex: 1; /* This will make text container fill remaining space */
-  justify-content: flex-start; /* Align text to top */
+  justify-content: flex-start; 
 `;
 
 export const DishName = styled.span.attrs({ className: "dish-name" })`

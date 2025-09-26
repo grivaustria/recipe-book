@@ -23,4 +23,6 @@ export const RootContainer = styled.div`
   gap: 1rem;
   height: 100vh;
   width: 100%;
+  
+
 `;

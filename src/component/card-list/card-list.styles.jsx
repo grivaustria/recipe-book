@@ -7,28 +7,32 @@ export const CardListContainer = styled.div`
   gap: 1rem;
 
   /* for better control */
-  max-width: 1200px;
+    max-width: 1200px;
+    width: 100%;
 
   margin: 0 auto 1rem;
-  padding: 0 1rem 1rem;
+    padding: 0 0 1rem;
+
   overflow-y: auto;
   overflow-x: hidden;
   height: 65vh;
 
   ${device.mobile} {
-   padding: 0 0 1rem;
     grid-template-columns: repeat(1, 1fr);
     justify-items: center;
-    width: 80%;
   }
 
   ${device.tablet} {
     grid-template-columns: repeat(2, 1fr);
-    width: 90%;
   }
 
   ${device.laptop} {
-    grid-template-columns: repeat(4, 1fr);
-    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
   }
+
+  ${device.desktop} {
+    grid-template-columns: repeat(4, 1fr);
+
+  }
+
 `;

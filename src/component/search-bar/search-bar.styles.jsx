@@ -10,17 +10,23 @@ export const SearchBox = styled.input.attrs({
   border-radius: 20px;
   padding: 0.75rem 1rem;
   // width: 600px;
-  width: 100%;
+  
+  // width: 100%;
   font-size: 18px;
   transition: 0.2s width ease-in-out;
 
   ${device.mobile} {
-    width: 300px;
+    // width: 300px;
+    width: 90%;
     font-size: 12px;
   }
 
   ${device.tablet} {
     // width: 600px;
     font-size: 18px;
+  }
+
+  ${device.desktop} {
+    max-width: 1200px;
   }
 `;

@@ -1,7 +1,7 @@
 import { useWindowResize } from "../../hooks/useWindowResize";
 import { CardListContainer } from "./card-list.styles";
 import type { DishDataType } from "../../types/dish.type";
-
+ 
 import Card from "../card/card.component";
 import CardAdd from "../card-add-recipe/card-add-recipe.component";
 import Spinner from "../spinner/spinner.component";
