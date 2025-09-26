@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { ModalBackground, Modal } from "../modal.styles";
 import {
@@ -32,6 +32,14 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
   const slug = dish.dishName.toLocaleLowerCase().replace(/\s+/g, "-");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname.startsWith("/recipe/update/")) {
+      setIsUpdateOpen(true);
+    } else {
+      setIsUpdateOpen(false);
+    }
+  }, [])
 
   const handleUpdateClick = () => {
     setIsUpdateOpen(true);

@@ -51,7 +51,7 @@ const MainPage = () => {
         )}
 
         {slug &&
-          location.pathname.startsWith("/recipe/view/") &&
+          (location.pathname.startsWith("/recipe/view/") || location.pathname.startsWith("/recipe/update/")) &&
           currentSelectedDish && (
             <ViewRecipe
               dish={currentSelectedDish}

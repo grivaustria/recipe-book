@@ -5,15 +5,20 @@ import SignUp from "./routes/auth/signup.route";
 
 const App = () => {
   return (
+    <>
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<MainPage />}>
-        <Route path="recipe/view/:slug" />
-        <Route path="recipe/update/:slug" />
-        <Route path="recipe/delete/:slug" />
+        <Route path="recipe/view/:slug" element={<></>} />
+        <Route path="recipe/update/:slug" element={<></>} />
+        <Route path="recipe/delete/:slug" element={<></>} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
     </Routes>
+
+    
+    </>
+    
   );
 };
 

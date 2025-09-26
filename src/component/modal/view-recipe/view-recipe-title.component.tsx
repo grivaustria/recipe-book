@@ -53,7 +53,7 @@ const ViewRecipeTitle = ({
     onUpdate();
   };
 
-  return (
+  return ( 
     <ContentTitleContainer>
       <ContentTitle>
         <ContentText>{title}</ContentText>
