@@ -8,7 +8,7 @@ export const DrawerBox = muiStyled(Box)`
     display: flex;
     flex-direction: column;
     // justify-content: center;
-    justify-content: flex-between;
+    justify-content: space-between; 
     padding: 1rem;
     height: 100%;
 `
@@ -65,12 +65,12 @@ export const DrawerOptions = styled.span`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
 `
 
 export const DrawerButton = styled.button`
     background-color: #fefefe;
-    // border: none;
+    border: none;
     padding: 0.5rem;
     text-align: left;
     font-size: 15px;
