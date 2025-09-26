@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { styled as muiStyled } from "@mui/material";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 import { BaseLinkBtn } from "../button/button.styled";
 
@@ -67,6 +68,10 @@ export const DrawerOptions = styled.span`
     gap: 0.5rem;
     padding: 0.5rem 0;
 `
+
+export const OpenDrawer = muiStyled(Button)`
+    color: #282828;
+`;
 
 export const DrawerButton = styled.button`
     background-color: #fefefe;

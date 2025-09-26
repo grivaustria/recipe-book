@@ -51,14 +51,14 @@ const Title = () => {
       <TitleContainer>
         <TitleText>Dish Galeria</TitleText>
 
-        {isTablet ? null : (
+        {/* {isTablet ? null : (
           <TitleDesc>
           Collect recipes, all in one place. Accessible to any device.
         </TitleDesc>
-        )}
-        {/* <TitleDesc>
+        )} */}
+        <TitleDesc>
           Collect recipes, all in one place. Accessible to any device.
-        </TitleDesc> */}
+        </TitleDesc>
       </TitleContainer>
       {isMobile ? <AppDrawer /> : null}
 

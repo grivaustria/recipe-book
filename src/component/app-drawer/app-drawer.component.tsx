@@ -8,7 +8,6 @@ import Drawer from "@mui/material/Drawer";
 import { Divider } from "@mui/material";
 import { logOutUser } from "../../utils/firebase.utils";
 
-import { ButtonDrawer } from "../app-bar/app-bar.styles";
 import {
   DrawerButton,
   DrawerContent,
@@ -21,6 +20,7 @@ import {
   DrawerUserEmail,
   DrawerUserName,
   DrawerOptions,
+  OpenDrawer,
 } from "./app-drawer.styles";
 
 import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
@@ -81,10 +81,10 @@ const AppDrawer = () => {
         <Divider />
 
         <DrawerButton>
-          <SVGClose /> Close
+          <SVGClose width={18} height={18} /> Close
         </DrawerButton>
         <DrawerButton className="logout" onClick={handleLogout}>
-          <SVGLogout /> Logout
+          <SVGLogout width={18} height={18} /> Logout
         </DrawerButton>
       </DrawerOptions>
     </DrawerBox>
@@ -92,9 +92,9 @@ const AppDrawer = () => {
 
   return (
     <>
-      <ButtonDrawer onClick={toggleDrawer(true)}>
-        <SVGBurger />
-      </ButtonDrawer>
+      <OpenDrawer onClick={toggleDrawer(true)}>
+        <SVGBurger width={18} height={18} />
+      </OpenDrawer>
       <Drawer open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>

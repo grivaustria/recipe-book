@@ -6,15 +6,19 @@ import { Link } from "react-router";
 
 export const Container = styled.div`
   display: flex;
-  // justify-content: space-between;
   align-items: center;
-  // max-width: 1200px;
-  // width: 100%;
-  // margin: 0 1rem;
+  
+  margin: 0 1rem;
 
   ${device.mobile} {
     // flex-direction: column;
     // justify-content: center;
+  }
+
+  ${device.laptop} {
+    justify-content: space-between;
+    max-width: 1200px;
+  width: 100%;
   }
 
 `;
@@ -33,7 +37,7 @@ export const TitleText = styled.span`
 
 
   ${device.mobile} {
-    font-size: 40px;
+    font-size: 36px;
   }
 
   ${device.tablet} {
@@ -46,7 +50,7 @@ export const TitleDesc = styled.span`
   font-weight: 400;
 
   ${device.mobile} {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   ${device.tablet} {
