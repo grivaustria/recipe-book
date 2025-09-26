@@ -46,6 +46,11 @@ export const ImageDisplay = styled.img`
     width: 450px;
     height: 600px;
   }
+  
+  ${device.desktop} {
+    max-height: none;
+    
+  }
 `;
 
 export const ContentSection = styled.div`

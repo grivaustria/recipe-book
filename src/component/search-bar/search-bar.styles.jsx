@@ -27,10 +27,11 @@ export const SearchBox = styled.input.attrs({
   }
 
   ${device.laptop} {
-  width: 600px;
+    width: 600px;
   }
 
   ${device.desktop} {
-    max-width: 1200px;
+    // max-width: 1200px;
+    width: 100%;
   }
 `;

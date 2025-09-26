@@ -20,6 +20,11 @@ export const Container = styled.div`
     justify-content: center;
     gap: 0.5rem;
   }
+
+  ${device.desktop} {
+    max-width: 1200px;
+    gap: 1rem;
+  }
 `;
 
 export const NavigationContainer = styled.div`
