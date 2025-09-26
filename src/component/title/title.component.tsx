@@ -10,7 +10,7 @@ import {
 
 import AuthUser from "../auth-user/auth-user.component";
 import AuthNoUser from "../auth-nouser/auth-nouser.component";
-import AppBar from "../app-bar/app-bar.component";
+import AppDrawer from "../app-drawer/app-drawer.component";
 
 import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
 import { logOutUser } from "../../utils/firebase.utils";
@@ -20,7 +20,7 @@ const Title = () => {
   const auth = getAuth();
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
-
+ 
   const { isMobile, isTablet, isDesktop, isLaptop, isWideScreen } =
     useWindowResize();
 
@@ -60,7 +60,7 @@ const Title = () => {
           Collect recipes, all in one place. Accessible to any device.
         </TitleDesc> */}
       </TitleContainer>
-      {isMobile ? <AppBar /> : null}
+      {isMobile ? <AppDrawer /> : null}
 
 
       {!isTablet ? user ? <AuthUser user={user} logout={handleLogout} /> : <AuthNoUser /> : null}

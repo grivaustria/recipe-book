@@ -9,7 +9,8 @@ export const Container = styled.div`
   // justify-content: space-between;
   align-items: center;
   // max-width: 1200px;
-  width: 100%;
+  // width: 100%;
+  // margin: 0 1rem;
 
   ${device.mobile} {
     // flex-direction: column;
@@ -28,6 +29,8 @@ export const TitleContainer = styled.div`
 export const TitleText = styled.span`
   font-size: 64px;
   font-weight: 700;
+  // width: 100%;
+
 
   ${device.mobile} {
     font-size: 40px;

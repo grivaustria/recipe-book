@@ -91,14 +91,14 @@ const AppDrawer = () => {
   );
 
   return (
-    <div>
+    <>
       <ButtonDrawer onClick={toggleDrawer(true)}>
         <SVGBurger />
       </ButtonDrawer>
       <Drawer open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>
-    </div>
+    </>
   );
 };
 
