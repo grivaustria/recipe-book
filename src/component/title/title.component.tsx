@@ -21,21 +21,14 @@ const Title = () => {
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
  
-  const { isMobile, isTablet, isDesktop, isLaptop, isWideScreen } =
-    useWindowResize();
+  const { isTablet } = useWindowResize();
 
-  useEffect(() => {
-    console.log("isMobile: ", isMobile);
-    console.log("isTablet: ", isTablet);
-    console.log("isDesktop: ", isDesktop);
-    console.log("isWideScreen: ", isWideScreen);
-  }, [isMobile, isTablet, isLaptop, isDesktop, isWideScreen]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log("Check Auth: ", currentUser);
-      console.log("user id: ", auth.currentUser?.uid);
+      // console.log("Check Auth: ", currentUser);
+      // console.log("user id: ", auth.currentUser?.uid);
     });
 
     return () => unsubscribe();
@@ -59,7 +52,6 @@ const Title = () => {
 
 
       {!isTablet ? user ? <AuthUser user={user} logout={handleLogout} /> : <AuthNoUser /> : null}
-      {/* {user ? <AuthUser user={user} logout={handleLogout} /> : <AuthNoUser />} */}
     </Container>
   );
 };
