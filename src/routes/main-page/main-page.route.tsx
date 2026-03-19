@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,9 +9,16 @@ import { GlobalStyle, RootContainer } from "../../App.styles";
 import Title from "../../component/title/title.component";
 import Navigation from "../../component/navigation/navigation.component";
 import CardList from "../../component/card-list/card-list.component";
-import ViewRecipe from "../../component/modal/view-recipe/view-recipe.component";
-import AddRecipe from "../../component/modal/add-recipe/add-recipe.component";
-import DeleteRecipe from "../../component/modal/delete-recipe/delete-recipe.component";
+
+const ViewRecipe = lazy(
+  () => import("../../component/modal/view-recipe/view-recipe.component"),
+);
+const AddRecipe = lazy(
+  () => import("../../component/modal/add-recipe/add-recipe.component"),
+);
+const DeleteRecipe = lazy(
+  () => import("../../component/modal/delete-recipe/delete-recipe.component"),
+);
 
 const MainPage = () => {
   const {
@@ -46,30 +54,32 @@ const MainPage = () => {
 
       <RootContainer>
         <ToastContainer />
-        {isAddRecipeOpen && (
-          <AddRecipe onClose={addRecipeClose} onRecipeAdd={fetchData} />
-        )}
-
-        {slug &&
-          (location.pathname.startsWith("/recipe/view/") ||
-            location.pathname.startsWith("/recipe/update/")) &&
-          currentSelectedDish && (
-            <ViewRecipe
-              dish={currentSelectedDish}
-              onClose={viewRecipeClose}
-              onDelete={deleteRecipeClick}
-              onUpdate={handleRecipeChange}
-            />
+        <Suspense fallback={null}>
+          {isAddRecipeOpen && (
+            <AddRecipe onClose={addRecipeClose} onRecipeAdd={fetchData} />
           )}
 
-        {slug &&
-          location.pathname.startsWith("/recipe/delete/") &&
-          currentSelectedDish && (
-            <DeleteRecipe
-              dish={currentSelectedDish}
-              onClose={deleteRecipeClose}
-            />
-          )}
+          {slug &&
+            (location.pathname.startsWith("/recipe/view/") ||
+              location.pathname.startsWith("/recipe/update/")) &&
+            currentSelectedDish && (
+              <ViewRecipe
+                dish={currentSelectedDish}
+                onClose={viewRecipeClose}
+                onDelete={deleteRecipeClick}
+                onUpdate={handleRecipeChange}
+              />
+            )}
+
+          {slug &&
+            location.pathname.startsWith("/recipe/delete/") &&
+            currentSelectedDish && (
+              <DeleteRecipe
+                dish={currentSelectedDish}
+                onClose={deleteRecipeClose}
+              />
+            )}
+        </Suspense>
 
         <Title />
         <Navigation
