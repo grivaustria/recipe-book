@@ -1,20 +1,14 @@
 import type { Ingredient } from "../../../types/dish.type";
 
-import {
-  ContentContainer,
-  InputText,
-  SelectOption,
-  LabelText,
-  OptionsContainer,
-} from "../add-recipe/add-recipe.styles";
-
-import { RemoveButton, AddItemButton } from "../../button/button.styled";
-
 type IngredientListProps = {
   ingredients: Ingredient[];
   onChange: (index: number, field: keyof Ingredient, value: string) => void;
   onAdd: () => void;
   onRemove: (index: number) => void;
+  labelClass: string;
+  inputClass: string;
+  removeButtonClass: string;
+  addButtonClass: string;
 };
 
 const IngredientList = ({
@@ -22,25 +16,33 @@ const IngredientList = ({
   onChange,
   onAdd,
   onRemove,
+  labelClass,
+  inputClass,
+  removeButtonClass,
+  addButtonClass,
 }: IngredientListProps) => (
   <>
-    <ContentContainer>
-      <LabelText>Quantity:</LabelText>
-      <LabelText>Unit:</LabelText>
-      <LabelText>Ingredients:</LabelText>
-      <LabelText>Options:</LabelText>
-    </ContentContainer>
+    <div className="hidden w-full grid-cols-[minmax(0,0.7fr)_minmax(0,1fr)_minmax(0,2.4fr)_auto] gap-2 md:grid">
+      <span className={labelClass}>Quantity:</span>
+      <span className={labelClass}>Unit:</span>
+      <span className={labelClass}>Ingredients:</span>
+      <span className={labelClass}>Options:</span>
+    </div>
 
     {ingredients.map((ingredient, index) => (
-      <ContentContainer key={index}>
-        <InputText
+      <div
+        key={index}
+        className="grid w-full gap-2 md:grid-cols-[minmax(0,0.7fr)_minmax(0,1fr)_minmax(0,2.4fr)_auto]"
+      >
+        <input
+          className={inputClass}
           type="text"
-          className="quantity"
           placeholder="1"
           value={ingredient.quantity}
           onChange={(event) => onChange(index, "quantity", event.target.value)}
         />
-        <SelectOption
+        <select
+          className={inputClass}
           value={ingredient.unit}
           onChange={(event) => onChange(index, "unit", event.target.value)}
         >
@@ -69,25 +71,30 @@ const IngredientList = ({
             <option value="inch">inch (in)</option>
           </optgroup>
           <option value="piece">piece(s)</option>
-        </SelectOption>
-        <InputText
+        </select>
+        <input
+          className={inputClass}
           type="text"
           placeholder="e.g., garlic, salt"
           value={ingredient.name}
           onChange={(event) => onChange(index, "name", event.target.value)}
           required={index === 0}
         />
-        <OptionsContainer>
-          <RemoveButton type="button" onClick={() => onRemove(index)}>
+        <div className="flex items-center gap-2">
+          <button
+            className={removeButtonClass}
+            type="button"
+            onClick={() => onRemove(index)}
+          >
             &#10005;
-          </RemoveButton>
+          </button>
           {index === ingredients.length - 1 && (
-            <AddItemButton className="active" type="button" onClick={onAdd}>
+            <button className={addButtonClass} type="button" onClick={onAdd}>
               Add Item
-            </AddItemButton>
+            </button>
           )}
-        </OptionsContainer>
-      </ContentContainer>
+        </div>
+      </div>
     ))}
   </>
 );

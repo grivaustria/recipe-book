@@ -1,18 +1,6 @@
 import type { DishDataType } from "../../../types/dish.type";
-import { ModalBackground } from "../modal.styles";
-import {
-  ButtonContainer,
-  DeleteContainer,
-  DeleteText,
-  DeleteWarning,
-  ImageDeleteWarning,
-  RecipeToDelete,
-  TinyModal,
-} from "./delete-recipe.styles";
 
 import WarningImg from "../../../assets/noto-v1--warning.svg";
-
-import { CancelButton, DeleteButton } from "../../button/button.styled";
 
 import { deleteRecipeFromFirestore } from "../../../utils/firebase.utils";
 
@@ -35,24 +23,40 @@ const DeleteRecipe = ({ dish, onClose }: DeleteRecipeProps) => {
     }
   };
   return (
-    <ModalBackground onClick={onClose}>
-      <TinyModal onClick={(event) => event.stopPropagation()}>
-        <DeleteContainer>
-          <ImageDeleteWarning src={WarningImg} />
-          <DeleteText>
-            You're deleting <RecipeToDelete>{dishName}</RecipeToDelete>. Do you
-            confirm?
-          </DeleteText>
-          <DeleteWarning>This action cannot be undone</DeleteWarning>
-          <ButtonContainer>
-            <CancelButton onClick={onClose}>Cancel</CancelButton>
-            <DeleteButton onClick={handleConfirmDelete}>
+    <div
+      className="absolute z-50 flex h-screen w-full flex-col justify-center bg-black/50"
+      onClick={onClose}
+    >
+      <div
+        className="mx-auto flex w-[min(92vw,28rem)] rounded-2xl bg-stone-50"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="flex w-full flex-col items-center px-5 py-4 text-center text-lg text-stone-900 md:text-xl">
+          <img className="mb-2 h-20 w-20" src={WarningImg} />
+          <div>
+            You're deleting <span className="font-bold italic">{dishName}</span>
+            . Do you confirm?
+          </div>
+          <div className="font-bold text-red-600">
+            This action cannot be undone
+          </div>
+          <div className="mt-4 flex items-center gap-2">
+            <button
+              className="rounded-xl bg-stone-300 px-4 py-2 text-base font-semibold text-stone-900 transition hover:cursor-pointer hover:opacity-85 md:text-lg"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
+            <button
+              className="rounded-xl bg-red-500 px-4 py-2 text-base font-semibold text-white transition hover:cursor-pointer hover:opacity-85 md:text-lg"
+              onClick={handleConfirmDelete}
+            >
               Delete Recipe
-            </DeleteButton>
-          </ButtonContainer>
-        </DeleteContainer>
-      </TinyModal>
-    </ModalBackground>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

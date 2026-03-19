@@ -4,7 +4,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useApp } from "../../hooks/useApp";
 import { Outlet } from "react-router";
-import { GlobalStyle, RootContainer } from "../../App.styles";
 
 import Title from "../../component/title/title.component";
 import Navigation from "../../component/navigation/navigation.component";
@@ -50,9 +49,7 @@ const MainPage = () => {
 
   return (
     <>
-      <GlobalStyle />
-
-      <RootContainer>
+      <div className="flex h-screen w-full flex-col items-center gap-4">
         <ToastContainer />
         <Suspense fallback={null}>
           {isAddRecipeOpen && (
@@ -95,7 +92,7 @@ const MainPage = () => {
           onAddRecipeClick={addRecipeClick}
           isLoading={isLoading}
         />
-      </RootContainer>
+      </div>
       <Outlet />
     </>
   );

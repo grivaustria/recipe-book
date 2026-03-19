@@ -5,23 +5,8 @@ import { SVGBurger, SVGLogout, SVGClose } from "../../assets/svg.asset";
 import AppLogo from "../../assets/dishgaleria-drawer.png";
 
 import Drawer from "@mui/material/Drawer";
-import { Divider } from "@mui/material";
+import { Box, Button, Divider } from "@mui/material";
 import { logOutUser } from "../../utils/firebase.utils";
-
-import {
-  DrawerButton,
-  DrawerContent,
-  DrawerBox,
-  DrawerInfo,
-  DrawerInfoText,
-  DrawerLogo,
-  DrawerTitle,
-  DrawerUserContainer,
-  DrawerUserEmail,
-  DrawerUserName,
-  DrawerOptions,
-  OpenDrawer,
-} from "./app-drawer.styles";
 
 import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
 
@@ -39,8 +24,6 @@ const AppDrawer = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      // console.log("Check Auth: ", currentUser);
-      // console.log("user id: ", auth.currentUser?.uid);
     });
 
     return () => unsubscribe();
@@ -52,47 +35,53 @@ const AppDrawer = () => {
   };
 
   const DrawerList = (
-    <DrawerBox
+    <Box
       sx={{ width: 250 }}
       role="presentation"
       onClick={toggleDrawer(false)}
+      className="flex h-full flex-col justify-between p-4"
     >
-      <DrawerContent>
-        <DrawerTitle>
-          <DrawerLogo src={AppLogo} />
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-2 text-[28px] font-bold">
+          <img className="w-[75px]" src={AppLogo} />
           Dish Galeria
-        </DrawerTitle>
+        </div>
         <Divider />
 
-        <DrawerUserContainer>
-          <DrawerUserName>{user?.displayName}</DrawerUserName>
-          <DrawerUserEmail>{user?.email}</DrawerUserEmail>
-        </DrawerUserContainer>
+        <div className="flex flex-col">
+          <span className="text-[22px] font-bold">{user?.displayName}</span>
+          <span className="text-[15px]">{user?.email}</span>
+        </div>
         <Divider />
 
-        <DrawerInfo>
-          <DrawerInfoText>Recipe Count</DrawerInfoText>
-        </DrawerInfo>
+        <div className="flex flex-col gap-2">
+          <span>Recipe Count</span>
+        </div>
         <Divider />
-      </DrawerContent>
-      <DrawerOptions>
+      </div>
+      <div className="flex flex-col gap-2 py-2">
         <Divider />
-
-        <DrawerButton>
+        <button className="flex items-center gap-2 border-none bg-stone-50 p-2 text-left text-[15px]">
           <SVGClose width={18} height={18} /> Close
-        </DrawerButton>
-        <DrawerButton className="logout" onClick={handleLogout}>
+        </button>
+        <button
+          className="flex items-center gap-2 border-none bg-stone-50 p-2 text-left text-[15px] text-red-400"
+          onClick={handleLogout}
+        >
           <SVGLogout width={18} height={18} /> Logout
-        </DrawerButton>
-      </DrawerOptions>
-    </DrawerBox>
+        </button>
+      </div>
+    </Box>
   );
 
   return (
     <>
-      <OpenDrawer onClick={toggleDrawer(true)}>
+      <Button
+        onClick={toggleDrawer(true)}
+        sx={{ color: "#282828", minWidth: 0 }}
+      >
         <SVGBurger />
-      </OpenDrawer>
+      </Button>
       <Drawer open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>

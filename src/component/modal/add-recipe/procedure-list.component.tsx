@@ -1,18 +1,14 @@
 import type { Procedure } from "../../../types/dish.type";
-import {
-  ContentContainer,
-  InputText,
-  LabelText,
-  OptionsContainer,
-} from "../add-recipe/add-recipe.styles";
-
-import { RemoveButton, AddItemButton } from "../../button/button.styled";
 
 type ProcedureListProps = {
   procedure: Procedure[];
   onChange: (index: number, value: string) => void;
   onAdd: () => void;
   onRemove: (index: number) => void;
+  labelClass: string;
+  inputClass: string;
+  removeButtonClass: string;
+  addButtonClass: string;
 };
 
 const ProcedureList = ({
@@ -20,36 +16,48 @@ const ProcedureList = ({
   onChange,
   onAdd,
   onRemove,
+  labelClass,
+  inputClass,
+  removeButtonClass,
+  addButtonClass,
 }: ProcedureListProps) => (
   <>
-    <ContentContainer>
-      <LabelText>Procedure</LabelText>
-      <LabelText></LabelText>
-      <LabelText></LabelText>
-    </ContentContainer>
+    <div className="hidden w-full grid-cols-[minmax(0,0.35fr)_minmax(0,2.8fr)_auto] gap-2 md:grid">
+      <span className={labelClass}>Step</span>
+      <span className={labelClass}>Procedure</span>
+      <span className={labelClass}>Options</span>
+    </div>
 
     {procedure.map((stepItem, index) => (
-      <ContentContainer key={index}>
-        <InputText type="text" value={index + 1} readOnly />
-        <InputText
+      <div
+        key={index}
+        className="grid w-full gap-2 md:grid-cols-[minmax(0,0.35fr)_minmax(0,2.8fr)_auto]"
+      >
+        <input className={inputClass} type="text" value={index + 1} readOnly />
+        <input
+          className={inputClass}
           type="text"
           placeholder="e.g. Marinate the chicken for 30 minutes"
           value={stepItem.step}
           onChange={(event) => onChange(index, event.target.value)}
           required={index === 0}
         />
-        <OptionsContainer>
-          <RemoveButton type="button" onClick={() => onRemove(index)}>
+        <div className="flex items-center gap-2">
+          <button
+            className={removeButtonClass}
+            type="button"
+            onClick={() => onRemove(index)}
+          >
             &#10005;
-          </RemoveButton>
+          </button>
 
           {index === procedure.length - 1 && (
-            <AddItemButton type="button" onClick={onAdd}>
+            <button className={addButtonClass} type="button" onClick={onAdd}>
               Add Item
-            </AddItemButton>
+            </button>
           )}
-        </OptionsContainer>
-      </ContentContainer>
+        </div>
+      </div>
     ))}
   </>
 );
