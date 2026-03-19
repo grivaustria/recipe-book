@@ -6,14 +6,12 @@ type AddRecipeProps = {
   onRecipeAdd?: () => void;
 };
 
-const AddRecipe = ({ onClose, onRecipeAdd }: AddRecipeProps) => {
-  return (
-    <ModalBackground>
-      <Modal>
-        <AddRecipeForm onClose={onClose} onRecipeAdd={onRecipeAdd}/>
-      </Modal>
-    </ModalBackground>
-  );
-};
+const AddRecipe = ({ onClose, onRecipeAdd }: AddRecipeProps) => (
+  <ModalBackground>
+    <Modal>
+      <AddRecipeForm onClose={onClose} onRecipeAdd={onRecipeAdd} />
+    </Modal>
+  </ModalBackground>
+);
 
 export default AddRecipe;

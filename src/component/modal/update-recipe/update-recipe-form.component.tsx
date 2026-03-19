@@ -46,7 +46,7 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
     event.preventDefault();
 
     const trimmedIngredientsForUpdate = ingredients.filter(
-      (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim()
+      (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim(),
     );
 
     const trimmedProcedureForUpdate = procedure
@@ -68,7 +68,7 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
       await updateRecipeInFirestore(recipe.id, updatedRecipeData);
       onClose();
     } catch (error: unknown) {
-      console.error("Error updating recipe:", error);
+      // console.error("Error updating recipe:", error);
     }
   };
 

@@ -60,13 +60,13 @@ export const db = getFirestore(app);
 
 // Authentication: Creating User Document
 export const createUserDocFromAuth = async (userAuth, moreInfo = {}) => {
-  if (!userAuth) return console.error("userAuth does not exist");
+  if (!userAuth) {
+    toast.error("User authentication data does not exist");
+    return;
+  }
 
   const userDocRef = doc(db, "users", userAuth.uid);
-  // console.log("userDocRef: ", userDocRef);
-
   const userSnapshot = await getDoc(userDocRef);
-  // console.log("userSnapshot: ", userSnapshot);
 
   if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
@@ -80,7 +80,7 @@ export const createUserDocFromAuth = async (userAuth, moreInfo = {}) => {
         ...moreInfo,
       });
     } catch (err) {
-      console.error("Error create user.", err.message);
+      toast.error(err.message || "Error creating user");
     }
   }
   return userDocRef;
@@ -90,7 +90,7 @@ export const createUserDocFromAuth = async (userAuth, moreInfo = {}) => {
 export const authCreateUserEmailPassword = async (
   email,
   password,
-  displayName
+  displayName,
 ) => {
   if (!email || !password) {
     throw new Error("Email and password must be provided");
@@ -98,14 +98,14 @@ export const authCreateUserEmailPassword = async (
   const userCredential = await createUserWithEmailAndPassword(
     auth,
     email,
-    password
+    password,
   );
   const user = userCredential.user;
 
   if (displayName) {
     await updateProfile(user, { displayName });
   } else {
-    console.error("displayName does not exist");
+    toast.error("Display name does not exist");
   }
 
   return userCredential;
@@ -128,11 +128,11 @@ export const addDishToFirestore = async () => {
     for (const dish of dishJSON) {
       const { dishImage, ...data } = dish;
       await addDoc(collection(db, "recipes"), data);
-      console.log(`✅ Added: ${data.dishName}`);
+      toast.success(`Added: ${data.dishName}`);
     }
-    console.log("🎉 All dishes uploaded with unique IDs!");
+    toast.success("All dishes uploaded with unique IDs!");
   } catch (error) {
-    console.error("❌ Error uploading dishes:", error);
+    toast.error(error.message || "Error uploading dishes");
     throw error;
   }
 };
@@ -155,7 +155,7 @@ export const getRecipesFromFirestore = async () => {
     const snapshot = await getDocs(q);
     return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
-    console.error("Error fetching recipes:", error);
+    toast.error(error.message || "Error fetching recipes");
     return [];
   }
 };
@@ -182,9 +182,7 @@ export const addRecipeToFirestore = async (recipe) => {
     toast.success(`Recipe ${recipe.dishName} added successfully`);
     return docRef.id;
   } catch (error) {
-    console.error("Error occured", error.message);
-
-    toast.error("Error adding recipes");
+    toast.error(error.message || "Error adding recipes");
     throw error;
   }
 };
@@ -202,7 +200,7 @@ export const updateRecipeInFirestore = async (recipeID, updatedData) => {
     await updateDoc(recipeRef, updatedData);
     toast.success(`Recipe ${updatedData.dishName} updated successfully.`);
   } catch (error) {
-    toast.error("Error updating recipe:", error);
+    toast.error(error.message || "Error updating recipe");
     throw error;
   }
 };
@@ -219,7 +217,7 @@ export const deleteRecipeFromFirestore = async (recipeID) => {
     await deleteDoc(recipeRef);
     toast.success("Recipe deleted successfully");
   } catch (error) {
-    toast.error("There was a problem deleting recipe:", error);
+    toast.error(error.message || "There was a problem deleting recipe");
     throw error;
   }
 };
@@ -235,9 +233,9 @@ export const updateRecipeFields = async (recipeID, fieldsToUpdate) => {
   try {
     const recipeRef = doc(db, "recipes", recipeID);
     await updateDoc(recipeRef, fieldsToUpdate);
-    toast.success("Recipe fields updated successfully", recipeID);
+    toast.success("Recipe fields updated successfully");
   } catch (error) {
-    toast.error("Error updating recipe fields:", error);
+    toast.error(error.message || "Error updating recipe fields");
     throw error;
   }
 };

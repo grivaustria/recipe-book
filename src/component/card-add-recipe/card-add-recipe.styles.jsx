@@ -10,7 +10,8 @@ export const AddRecipeContainer = styled.div`
   // padding: 0 2rem;
   width: 100%;
   height: 214px; /* Keep this to match your regular cards */
-  box-shadow: 0 4px 6px -1px rgba(100, 116, 139, 0.5),
+  box-shadow:
+    0 4px 6px -1px rgba(100, 116, 139, 0.5),
     0 2px 4px -2px rgba(100, 116, 139, 0.5);
   align-items: center;
   border-radius: 0.5rem;

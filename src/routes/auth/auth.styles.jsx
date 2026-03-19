@@ -1,7 +1,10 @@
 import styled from "styled-components";
-import { styled as muiStyled, TextField } from "@mui/material";
+import {
+  styled as muiStyled,
+  TextField,
+  Button as MUIButton,
+} from "@mui/material";
 import { device, breakpointsBetween } from "../../utils/breakpoints";
-import { Button as MUIButton } from "@mui/material";
 import { Link } from "react-router";
 
 export const AuthBackground = styled.div`

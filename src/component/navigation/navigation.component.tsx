@@ -16,54 +16,52 @@ const Navigation = ({
   selectedDishType,
   onDishTypeChange,
   onSearchChange,
-}: NavigationProps) => {
-  return (
-    <Container>
-      <NavigationContainer>
-        <NavigationDish
-          onClick={() =>
-            onDishTypeChange(selectedDishType === "all" ? "" : "all")
-          }
-          className={selectedDishType === "all" ? "active" : ""}
-        >
-          All
-        </NavigationDish>
-        <NavigationDish
-          onClick={() =>
-            onDishTypeChange(selectedDishType === "fish" ? "all" : "fish")
-          }
-          className={selectedDishType === "fish" ? "active" : ""}
-        >
-          Fish
-        </NavigationDish>
-        <NavigationDish
-          onClick={() =>
-            onDishTypeChange(selectedDishType === "meat" ? "all" : "meat")
-          }
-          className={selectedDishType === "meat" ? "active" : ""}
-        >
-          Meat
-        </NavigationDish>
-        <NavigationDish
-          onClick={() =>
-            onDishTypeChange(selectedDishType === "veggies" ? "all" : "veggies")
-          }
-          className={selectedDishType === "veggies" ? "active" : ""}
-        >
-          Veggies
-        </NavigationDish>
-        <NavigationDish
-          onClick={() =>
-            onDishTypeChange(selectedDishType === "dessert" ? "all" : "dessert")
-          }
-          className={selectedDishType === "dessert" ? "active" : ""}
-        >
-          Dessert
-        </NavigationDish>
-      </NavigationContainer>
-      <SearchBar onChangeHandler={onSearchChange} />
-    </Container>
-  );
-};
+}: NavigationProps) => (
+  <Container>
+    <NavigationContainer>
+      <NavigationDish
+        onClick={() =>
+          onDishTypeChange(selectedDishType === "all" ? "" : "all")
+        }
+        className={selectedDishType === "all" ? "active" : ""}
+      >
+        All
+      </NavigationDish>
+      <NavigationDish
+        onClick={() =>
+          onDishTypeChange(selectedDishType === "fish" ? "all" : "fish")
+        }
+        className={selectedDishType === "fish" ? "active" : ""}
+      >
+        Fish
+      </NavigationDish>
+      <NavigationDish
+        onClick={() =>
+          onDishTypeChange(selectedDishType === "meat" ? "all" : "meat")
+        }
+        className={selectedDishType === "meat" ? "active" : ""}
+      >
+        Meat
+      </NavigationDish>
+      <NavigationDish
+        onClick={() =>
+          onDishTypeChange(selectedDishType === "veggies" ? "all" : "veggies")
+        }
+        className={selectedDishType === "veggies" ? "active" : ""}
+      >
+        Veggies
+      </NavigationDish>
+      <NavigationDish
+        onClick={() =>
+          onDishTypeChange(selectedDishType === "dessert" ? "all" : "dessert")
+        }
+        className={selectedDishType === "dessert" ? "active" : ""}
+      >
+        Dessert
+      </NavigationDish>
+    </NavigationContainer>
+    <SearchBar onChangeHandler={onSearchChange} />
+  </Container>
+);
 
 export default Navigation;

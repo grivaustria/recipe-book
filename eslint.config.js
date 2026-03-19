@@ -1,23 +1,197 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import { globalIgnores } from 'eslint/config'
+import js from "@eslint/js";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import tseslint from "typescript-eslint";
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
-      reactHooks.configs['recommended-latest'],
-      reactRefresh.configs.vite,
-    ],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+const sharedRules = {
+  ...reactHooks.configs.recommended.rules,
+  "react-hooks/rules-of-hooks": "error",
+  "react-hooks/exhaustive-deps": "warn",
+  "array-callback-return": "off",
+  "no-await-in-loop": "off",
+  "no-class-assign": "error",
+  "no-constant-binary-expression": "error",
+  "no-constructor-return": "error",
+  "no-duplicate-imports": "error",
+  "no-new-native-nonconstructor": "error",
+  "no-promise-executor-return": "error",
+  "no-undef": "off",
+  "no-self-compare": "error",
+  "no-template-curly-in-string": "error",
+  "no-unmodified-loop-condition": "warn",
+  "no-unreachable-loop": "error",
+  "no-unused-private-class-members": "error",
+  "require-atomic-updates": "off",
+  "@typescript-eslint/no-unused-vars": "off",
+  "arrow-body-style": "error",
+  "block-scoped-var": "error",
+  "consistent-return": "off",
+  curly: ["error", "multi-line"],
+  "default-case": "error",
+  eqeqeq: ["error", "smart"],
+  "id-length": ["error", { min: 1 }],
+  "new-cap": ["error", { newIsCap: true, capIsNew: false }],
+  "no-bitwise": "error",
+  "no-caller": "error",
+  "no-console": "error",
+  "no-continue": "error",
+  "no-else-return": ["error", { allowElseIf: false }],
+  "no-empty-function": "off",
+  "no-eq-null": "error",
+  "no-eval": "error",
+  "no-implied-eval": "error",
+  "no-lone-blocks": "error",
+  "no-loop-func": "error",
+  "no-new-object": "error",
+  "no-new-wrappers": "error",
+  "no-nested-ternary": "off",
+  "no-restricted-syntax": [
+    "error",
+    "ForInStatement",
+    "LabeledStatement",
+    "WithStatement",
+  ],
+  "no-return-assign": "off",
+  "no-sequences": "error",
+  "no-shadow": "off",
+  "no-throw-literal": "off",
+  "no-undef-init": "error",
+  "no-unused-expressions": "error",
+  "no-use-before-define": "error",
+  "no-useless-return": "error",
+  "no-var": "error",
+  "one-var": ["error", "never"],
+  "prefer-arrow-callback": "error",
+  "prefer-const": "error",
+  "prefer-template": "error",
+  "quote-props": [
+    "error",
+    "as-needed",
+    {
+      keywords: false,
+      unnecessary: true,
+      numbers: false,
     },
+  ],
+  radix: "error",
+  "spaced-comment": "error",
+  yoda: "error",
+  "react-refresh/only-export-components": [
+    "warn",
+    { allowConstantExport: true },
+  ],
+};
+
+const typescriptRules = {
+  "@typescript-eslint/array-type": ["error", { default: "array" }],
+  "@typescript-eslint/consistent-type-assertions": "error",
+  "@typescript-eslint/consistent-type-definitions": "off",
+  "@typescript-eslint/dot-notation": "off",
+  "@typescript-eslint/explicit-member-accessibility": [
+    "error",
+    {
+      accessibility: "explicit",
+      overrides: {
+        parameterProperties: "explicit",
+      },
+    },
+  ],
+  "@typescript-eslint/explicit-module-boundary-types": [
+    "off",
+    {
+      allowTypedFunctionExpressions: true,
+      allowHigherOrderFunctions: false,
+      allowDirectConstAssertionInArrowFunctions: true,
+      allowArgumentsExplicitlyTypedAsAny: false,
+    },
+  ],
+  "@typescript-eslint/member-ordering": "error",
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      selector: "variable",
+      format: ["camelCase", "UPPER_CASE", "PascalCase", "snake_case"],
+      leadingUnderscore: "allow",
+      trailingUnderscore: "forbid",
+    },
+  ],
+  "@typescript-eslint/no-empty-function": [
+    "off",
+    { allow: ["overrideMethods"] },
+  ],
+  "@typescript-eslint/no-explicit-any": "warn",
+  "@typescript-eslint/no-inferrable-types": "off",
+  "@typescript-eslint/no-non-null-assertion": "off",
+  "@typescript-eslint/no-shadow": "off",
+  "@typescript-eslint/no-unused-vars": "off",
+  "@typescript-eslint/no-unused-expressions": "off",
+  "@typescript-eslint/no-use-before-define": "off",
+  "@typescript-eslint/typedef": [
+    "error",
+    {
+      parameter: true,
+      propertyDeclaration: true,
+      objectDestructuring: false,
+      arrayDestructuring: false,
+    },
+  ],
+  "@typescript-eslint/unified-signatures": "error",
+  "dot-notation": "off",
+  "no-empty-function": "off",
+  "no-shadow": "off",
+  "no-unused-expressions": "off",
+  "no-use-before-define": "off",
+};
+
+export default [
+  {
+    ignores: [
+      "dist",
+      "node_modules",
+      "*.ico",
+      "**/*.png",
+      "**/*.svg",
+      "**/*.txt",
+      "**/*.spec.ts",
+      "**/*.mock.ts",
+      "**/polyfills.ts",
+      "**/commands.ts",
+      "**/app.po.ts",
+      "**/middleware.js",
+      "**/webpack.config.js",
+      "**/.browserslistrc",
+    ],
   },
-])
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    languageOptions: {
+      parser: tseslint.parser,
+      ecmaVersion: "latest",
+      sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.es2021,
+        ...globals.node,
+        ...globals.jest,
+      },
+    },
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+      "react-hooks": reactHooks,
+      "react-refresh": reactRefresh,
+    },
+    rules: sharedRules,
+  },
+  {
+    files: ["**/*.{ts,tsx}"],
+    rules: typescriptRules,
+  },
+];

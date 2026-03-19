@@ -10,5 +10,5 @@ createRoot(document.getElementById("root")!).render(
     <ThemeProvider theme={themeMUI}>
       <App />
     </ThemeProvider>
-  </BrowserRouter>
+  </BrowserRouter>,
 );

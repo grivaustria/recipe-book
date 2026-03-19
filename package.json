@@ -8,7 +8,11 @@
     "devnet": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "stylelint": "stylelint \"src/**/*.{css,scss}\" --allow-empty-input",
+    "prettier:check": "prettier --check .",
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "ci:check": "npm run lint && npm run stylelint && npm run prettier:check"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -36,6 +40,9 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "stylelint": "^16.23.1",
+    "stylelint-config-standard": "^38.0.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
     "vite": "^7.0.4",

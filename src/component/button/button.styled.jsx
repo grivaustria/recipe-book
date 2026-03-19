@@ -72,9 +72,7 @@ const BaseBtn = muiStyled(Button)`
   font-weight: 500;
 `;
 
-export const BaseLinkBtn = (props) => {
-  return <BaseBtn component={Link} {...props} />;
-};
+export const BaseLinkBtn = (props) => <BaseBtn component={Link} {...props} />;
 
 export const LoginBtn = styled(BaseLinkBtn)`
   background-color: #fefefe;

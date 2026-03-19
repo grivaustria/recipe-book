@@ -1,5 +1,4 @@
-import { type ChangeEvent, type FormEvent } from "react";
-import { useState } from "react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 import {
   AuthBackground,
   Container,
@@ -72,7 +71,7 @@ const Login = () => {
         switch (error.code) {
           case "auth/invalid-credential":
             toast.error(
-              "Invalid email or password. Please check your credentials."
+              "Invalid email or password. Please check your credentials.",
             );
             break;
           case "auth/user-not-found":
@@ -89,11 +88,11 @@ const Login = () => {
         }
       } else {
         toast.error("An unknown error occurred.");
-        console.error(error);
+        // console.error(error);
       }
     }
 
-    console.log("submit");
+    // console.log("submit");
   };
 
   const signInGPopup = async () => {
@@ -107,7 +106,7 @@ const Login = () => {
       }
     } catch {
       toast.error(
-        "Error continuing with Google. Please enable browser popups to continue"
+        "Error continuing with Google. Please enable browser popups to continue",
       );
     }
   };

@@ -36,7 +36,7 @@ const MainPage = () => {
 
   const currentSelectedDish = slug
     ? dishFilter.find(
-        (dish) => dish.dishName.toLowerCase().replace(/\s/g, "-") === slug
+        (dish) => dish.dishName.toLowerCase().replace(/\s/g, "-") === slug,
       )
     : null;
 
@@ -51,7 +51,8 @@ const MainPage = () => {
         )}
 
         {slug &&
-          (location.pathname.startsWith("/recipe/view/") || location.pathname.startsWith("/recipe/update/")) &&
+          (location.pathname.startsWith("/recipe/view/") ||
+            location.pathname.startsWith("/recipe/update/")) &&
           currentSelectedDish && (
             <ViewRecipe
               dish={currentSelectedDish}

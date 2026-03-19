@@ -22,29 +22,36 @@ const breakpointValues: Record<BreakpointName, string> = {
 const emToNumber = (emValue: string): number => parseFloat(emValue);
 
 export const breakpoints: Record<BreakpointName, string> = Object.keys(
-  breakpointValues
-).reduce((acc, key) => {
-  const breakpointKey = key as BreakpointName;
-  acc[breakpointKey] = `@media (min-width: ${breakpointValues[breakpointKey]})`;
-  return acc;
-}, {} as Record<BreakpointName, string>);
+  breakpointValues,
+).reduce(
+  (acc, key) => {
+    const breakpointKey = key as BreakpointName;
+    acc[breakpointKey] =
+      `@media (min-width: ${breakpointValues[breakpointKey]})`;
+    return acc;
+  },
+  {} as Record<BreakpointName, string>,
+);
 
 export const breakpointsMax: Record<BreakpointName, string> = Object.keys(
-  breakpointValues
-).reduce((acc, key) => {
-  const breakpointKey = key as BreakpointName;
-  const value = emToNumber(breakpointValues[breakpointKey]);
-  const maxValue = (value - 0.0625).toFixed(4); // Subtract 1px equivalent
-  acc[breakpointKey] = `@media (max-width: ${maxValue}em)`;
-  return acc;
-}, {} as Record<BreakpointName, string>);
+  breakpointValues,
+).reduce(
+  (acc, key) => {
+    const breakpointKey = key as BreakpointName;
+    const value = emToNumber(breakpointValues[breakpointKey]);
+    const maxValue = (value - 0.0625).toFixed(4); // Subtract 1px equivalent
+    acc[breakpointKey] = `@media (max-width: ${maxValue}em)`;
+    return acc;
+  },
+  {} as Record<BreakpointName, string>,
+);
 
 export const breakpointsBetween = (
   min: BreakpointName,
-  max: BreakpointName
+  max: BreakpointName,
 ): string => {
   if (!breakpointValues[min] || !breakpointValues[max]) {
-    console.warn(`Breakpoint '${min}' or '${max}' not found`);
+    // console.warn(`Breakpoint '${min}' or '${max}' not found`);
     return "";
   }
   const maxValue = emToNumber(breakpointValues[max]);
@@ -78,11 +85,9 @@ export const deviceMax: DeviceBreakpoints = {
 
 // Type guard to check if a string is a valid breakpoint name
 export const isValidBreakpoint = (
-  breakpoint: string
-): breakpoint is BreakpointName => {
-  return Object.keys(breakpointValues).includes(breakpoint);
-};
+  breakpoint: string,
+): breakpoint is BreakpointName =>
+  Object.keys(breakpointValues).includes(breakpoint);
 
-export const getBreakpointValue = (breakpoint: BreakpointName): string => {
-  return breakpointValues[breakpoint];
-};
+export const getBreakpointValue = (breakpoint: BreakpointName): string =>
+  breakpointValues[breakpoint];

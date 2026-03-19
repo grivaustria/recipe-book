@@ -39,7 +39,7 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
     } else {
       setIsUpdateOpen(false);
     }
-  }, [])
+  }, []);
 
   const handleUpdateClick = () => {
     setIsUpdateOpen(true);
@@ -59,9 +59,9 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
   };
 
   if (id === undefined) {
-    console.warn(
-      "Recipe being viewed has no ID. Cannot perform update/delete."
-    );
+    // console.warn(
+    //   "Recipe being viewed has no ID. Cannot perform update/delete."
+    // );
     return (
       <ModalBackground onClick={onClose}>
         <Modal onClick={(e) => e.stopPropagation()}>

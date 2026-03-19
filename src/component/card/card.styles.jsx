@@ -1,15 +1,14 @@
 import styled from "styled-components";
 import { device } from "../../utils/breakpoints";
 
-
-
 export const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 288px;
   width: 288px;
   height: 214px; /* Match the CardAdd height exactly */
-  box-shadow: 0 4px 6px -1px rgba(100, 116, 139, 0.5),
+  box-shadow:
+    0 4px 6px -1px rgba(100, 116, 139, 0.5),
     0 2px 4px -2px rgba(100, 116, 139, 0.5);
   align-items: center;
   border-radius: 0.5rem;
@@ -25,7 +24,6 @@ export const CardContainer = styled.div`
   &:hover span.dish-name {
     text-decoration: underline;
   }
-
 `;
 
 export const DishImage = styled.img`
@@ -42,7 +40,7 @@ export const DishTextContainer = styled.div`
   width: 90%;
   padding: 0.5rem 0.75rem;
   flex: 1; /* This will make text container fill remaining space */
-  justify-content: flex-start; 
+  justify-content: flex-start;
 `;
 
 export const DishName = styled.span.attrs({ className: "dish-name" })`

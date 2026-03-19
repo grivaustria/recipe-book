@@ -25,8 +25,6 @@ import {
 
 import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
 
-
-
 const AppDrawer = () => {
   const auth = getAuth();
   const [user, setUser] = useState<User | null>(null);
@@ -41,17 +39,17 @@ const AppDrawer = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log("Check Auth: ", currentUser);
-      console.log("user id: ", auth.currentUser?.uid);
+      // console.log("Check Auth: ", currentUser);
+      // console.log("user id: ", auth.currentUser?.uid);
     });
 
     return () => unsubscribe();
   }, [auth]);
 
   const handleLogout = async () => {
-      await logOutUser();
-      navigate("/login");
-    };
+    await logOutUser();
+    navigate("/login");
+  };
 
   const DrawerList = (
     <DrawerBox

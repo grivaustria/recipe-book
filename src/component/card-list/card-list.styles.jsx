@@ -7,11 +7,11 @@ export const CardListContainer = styled.div`
   gap: 1rem;
 
   /* for better control */
-    max-width: 1200px;
-    width: 100%;
+  max-width: 1200px;
+  width: 100%;
 
   margin: 0 auto 1rem;
-    padding: 0 0 1rem;
+  padding: 0 0 1rem;
 
   overflow-y: auto;
   overflow-x: hidden;
@@ -31,7 +31,5 @@ export const CardListContainer = styled.div`
 
   ${device.desktop} {
     grid-template-columns: repeat(4, 1fr);
-
   }
-
 `;

@@ -12,81 +12,77 @@ export const DrawerBox = muiStyled(Box)`
     justify-content: space-between; 
     padding: 1rem;
     height: 100%;
-`
+`;
 
 export const DrawerContent = styled.div`
- display: flex; 
- flex-direction: column;
- gap: 1rem;
-`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
 
 export const DrawerUserContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-`
+  display: flex;
+  flex-direction: column;
+`;
 
 export const DrawerTitle = styled.div`
-    font-size: 28px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-`
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
 
 export const DrawerLogo = styled.img`
-    width: 75px;
-`
+  width: 75px;
+`;
 
 export const DrawerUserName = styled.span`
-    font-size: 22px;
-    font-weight: 700;
-`
+  font-size: 22px;
+  font-weight: 700;
+`;
 
 export const DrawerUserEmail = styled.span`
-    font-size: 15px;
-    font-weight: 400;
-`
+  font-size: 15px;
+  font-weight: 400;
+`;
 
 export const DrawerUID = styled.span`
-    font-size: 14px;
-    color: #6b6b6bff;
-`
+  font-size: 14px;
+  color: #6b6b6bff;
+`;
 
 export const DrawerInfo = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
 
-export const DrawerInfoText = styled.span`
-
-`
+export const DrawerInfoText = styled.span``;
 
 export const DrawerOptions = styled.span`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.5rem 0;
-`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+`;
 
 export const OpenDrawer = muiStyled(Button)`
     color: #282828;
 `;
 
 export const DrawerButton = styled.button`
-    background-color: #fefefe;
-    border: none;
-    padding: 0.5rem;
-    text-align: left;
-    font-size: 15px;
-    display: flex;
-    align-items: center; 
-    gap: 0.5rem;
+  background-color: #fefefe;
+  border: none;
+  padding: 0.5rem;
+  text-align: left;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 
-    &.logout {
-        color: #f35555ff;
-        // font-weight: 600;
-        
-    }
-`
-
+  &.logout {
+    color: #f35555ff;
+    // font-weight: 600;
+  }
+`;

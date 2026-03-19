@@ -20,9 +20,8 @@ const Title = () => {
   const auth = getAuth();
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
- 
-  const { isTablet } = useWindowResize();
 
+  const { isTablet } = useWindowResize();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -50,8 +49,13 @@ const Title = () => {
       </TitleContainer>
       {isTablet ? <AppDrawer /> : null}
 
-
-      {!isTablet ? user ? <AuthUser user={user} logout={handleLogout} /> : <AuthNoUser /> : null}
+      {!isTablet ? (
+        user ? (
+          <AuthUser user={user} logout={handleLogout} />
+        ) : (
+          <AuthNoUser />
+        )
+      ) : null}
     </Container>
   );
 };

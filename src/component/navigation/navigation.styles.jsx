@@ -63,4 +63,3 @@ export const NavigationDish = styled.div`
   -moz-user-select: none;
   -ms-user-select: none;
 `;
-

@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
-import type { ChangeEvent } from "react";
+import { type ChangeEvent, useState, useEffect, useCallback } from "react";
 import type { DishDataType } from "../types/dish.type";
 import { useNavigate } from "react-router-dom";
 
@@ -62,13 +61,14 @@ export const useApp = () => {
 
     if (selectedDishType !== "all") {
       filteredDish = filteredDish.filter(
-        (dish) => dish.dishType.toLowerCase() === selectedDishType.toLowerCase()
+        (dish) =>
+          dish.dishType.toLowerCase() === selectedDishType.toLowerCase(),
       );
     }
 
     if (searchField) {
       filteredDish = filteredDish.filter((dish) =>
-        dish.dishName.toLowerCase().includes(searchField)
+        dish.dishName.toLowerCase().includes(searchField),
       );
     }
 

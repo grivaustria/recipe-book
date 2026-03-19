@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import type { ChangeEvent } from "react";
+import { type ChangeEvent, useState, useEffect } from "react";
 import { addRecipeToFirestore } from "../utils/firebase.utils";
 import { generatedDishImage } from "../utils/generatedDishImage";
 import type { DishDataType, Ingredient, Procedure } from "../types/dish.type";
@@ -41,13 +40,13 @@ export const useRecipeForm = ({
   const [ingredients, setIngredients] = useState<Ingredient[]>(
     baseRecipe?.ingredients && baseRecipe.ingredients.length > 0
       ? baseRecipe.ingredients
-      : [{ quantity: "", unit: "", name: "" }]
+      : [{ quantity: "", unit: "", name: "" }],
   );
 
   const [procedure, setProcedure] = useState<Procedure[]>(
     baseRecipe?.procedure && baseRecipe.procedure.length > 0
       ? baseRecipe.procedure.map((step) => ({ step }))
-      : [{ step: "" }]
+      : [{ step: "" }],
   );
 
   useEffect(() => {
@@ -71,7 +70,7 @@ export const useRecipeForm = ({
   };
 
   const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ): void => {
     const { id, value } = event.target;
     if (id === "dishName") {
@@ -84,7 +83,7 @@ export const useRecipeForm = ({
   const handleIngredientChange = (
     index: number,
     field: keyof Ingredient,
-    value: string
+    value: string,
   ): void => {
     const newIngredients = [...ingredients];
     newIngredients[index] = { ...newIngredients[index], [field]: value };
@@ -125,7 +124,7 @@ export const useRecipeForm = ({
     event.preventDefault();
 
     const trimIngredients = ingredients.filter(
-      (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim()
+      (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim(),
     );
 
     const trimProcedure = procedure
@@ -152,7 +151,7 @@ export const useRecipeForm = ({
       onClose();
       // console.log("Recipe added successfully!");
     } catch (error) {
-      console.error("Error adding recipe:", error);
+      // console.error("Error adding recipe:", error);
     }
   };
 

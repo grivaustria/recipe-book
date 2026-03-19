@@ -7,7 +7,7 @@ import { Link } from "react-router";
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  
+
   margin: 0 1rem;
 
   ${device.mobile} {
@@ -24,21 +24,18 @@ export const Container = styled.div`
   ${device.desktop} {
     max-width: 1200px;
   }
-
 `;
 
 export const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-
 `;
 
 export const TitleText = styled.span`
   font-size: 64px;
   font-weight: 700;
   // width: 100%;
-
 
   ${device.mobile} {
     font-size: 36px;

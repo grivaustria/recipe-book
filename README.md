@@ -1,69 +1,100 @@
-# React + TypeScript + Vite
+# Dish Galeria
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A recipe collection app built with React, Vite, Firebase, and styled components. Users can sign up, log in, save their own recipes, search through them, and manage entries with add, view, update, and delete flows.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Email/password authentication with Firebase Auth
+- Google sign-in with popup flow
+- Personal recipe storage in Firestore
+- Create, view, update, and delete recipe entries
+- Search and category-based filtering
+- Toast notifications for feedback
+- Responsive UI built with React, MUI, and styled-components
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 19
+- TypeScript and JavaScript
+- Vite
+- Firebase Auth
+- Firebase Firestore
+- React Router
+- MUI
+- styled-components
+- react-toastify
+- Framer Motion
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Prerequisites
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js 18 or newer
+- npm
+
+### Install
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Run the app
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+To expose the dev server on your local network:
+
+```bash
+npm run devnet
+```
+
+## Available Scripts
+
+- `npm run dev` starts the Vite dev server
+- `npm run devnet` starts the dev server with `--host`
+- `npm run build` runs TypeScript build checks and creates a production build
+- `npm run preview` previews the production build locally
+- `npm run lint` runs ESLint
+- `npm run stylelint` runs Stylelint on styles
+- `npm run prettier:check` checks formatting
+- `npm run format` formats the repository with Prettier
+- `npm run ci:check` runs lint, stylelint, and prettier checks
+
+## Project Structure
+
+```text
+src/
+  assets/        Images and icons
+  component/     Reusable UI components and modal flows
+  data/          Static dish data and image mappings
+  hooks/         App and form logic
+  routes/        Login, signup, and main page routes
+  types/         Shared TypeScript types
+  utils/         Firebase setup, helpers, and theme utilities
+```
+
+## App Flow
+
+1. Users create an account or sign in with email/password or Google.
+2. Authenticated users are redirected to the main recipe page.
+3. Recipes are fetched from Firestore and scoped to the current user.
+4. Users can search recipes, filter by dish type, and open modal-based CRUD flows.
+
+## Firebase Notes
+
+The Firebase configuration is currently defined in `src/utils/firebase.utils.js`. If you plan to publish or collaborate on this project, moving those values into Vite environment variables would be a safer next step.
+
+## Current Routes
+
+- `/` main recipe dashboard
+- `/login` login page
+- `/signup` account creation page
+- `/recipe/view/:slug` recipe view modal route
+- `/recipe/update/:slug` recipe update modal route
+- `/recipe/delete/:slug` recipe delete modal route
+
+## Status
+
+This project is actively structured around a personal recipe manager workflow and already includes authentication, Firestore integration, search, and CRUD behavior.

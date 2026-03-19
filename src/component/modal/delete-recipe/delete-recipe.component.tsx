@@ -30,7 +30,7 @@ const DeleteRecipe = ({ dish, onClose }: DeleteRecipeProps) => {
         await deleteRecipeFromFirestore(id);
         onClose();
       } catch (error) {
-        console.error("Error deleting recipe: ", error);
+        // console.error("Error deleting recipe: ", error);
       }
     }
   };

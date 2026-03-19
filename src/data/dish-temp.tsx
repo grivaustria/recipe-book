@@ -3,11 +3,11 @@ import type { DishDataType } from "../types/dish.type";
 import ChickenAdobo from "../assets/dish-chicken-adobo.jpg";
 import PorkSinigang from "../assets/dish-pork-sinigang.jpg";
 import ChickenAfritada from "../assets/dish-chicken-afritada.jpg";
-import FriedTilapia from "../assets/dish-fried-tilapia.jpg"
+import FriedTilapia from "../assets/dish-fried-tilapia.jpg";
 
 export const dishJSON: DishDataType[] = [
   {
-    dishType: 'meat',
+    dishType: "meat",
     dishName: "Chicken Adobo",
     dishImage: ChickenAdobo,
     ingredients: [
@@ -33,7 +33,11 @@ export const dishJSON: DishDataType[] = [
     dishImage: PorkSinigang,
     ingredients: [
       { name: "Pork Belly", quantity: "1", unit: "kg" },
-      { name: "Knorr Sinigang Mix (Original / Gabi)", quantity: "2", unit: "sache" },
+      {
+        name: "Knorr Sinigang Mix (Original / Gabi)",
+        quantity: "2",
+        unit: "sache",
+      },
       { name: "Water", quantity: "1", unit: "Liter" },
       { name: "Tomatoe", quantity: "3", unit: "pcs" },
       { name: "Onion", quantity: "2", unit: "pcs" },
@@ -53,7 +57,7 @@ export const dishJSON: DishDataType[] = [
     ],
   },
   {
-    dishType: 'meat',
+    dishType: "meat",
     dishName: "Chicken Afritada",
     dishImage: ChickenAfritada,
     ingredients: [
@@ -77,7 +81,7 @@ export const dishJSON: DishDataType[] = [
     ],
   },
   {
-    dishType: 'fish',
+    dishType: "fish",
     dishName: "Fried Tilapia",
     dishImage: FriedTilapia,
     ingredients: [

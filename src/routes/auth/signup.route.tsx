@@ -1,5 +1,4 @@
-import type { FormEvent, ChangeEvent } from "react";
-import { useState } from "react";
+import { type FormEvent, type ChangeEvent, useState } from "react";
 import {
   AuthBackground,
   Container,
@@ -65,7 +64,7 @@ const SignUp = () => {
       const { user } = await authCreateUserEmailPassword(
         email,
         password,
-        displayName
+        displayName,
       );
       await createUserDocFromAuth(user, { displayName });
       toast.success("Account created successfully!");
@@ -73,7 +72,7 @@ const SignUp = () => {
       resetFormFields();
       navigate("/");
     } catch (err) {
-      console.error("Error signing up", err);
+      // console.error("Error signing up", err);
       toast.error("Failed to create account");
     }
   };
@@ -88,17 +87,16 @@ const SignUp = () => {
     const { user } = await signInWithGooglePopup();
     await createUserDocFromAuth(user);
 
-    console.log("signInWithGooglePopup");
-    console.log(user);
+    // console.log("signInWithGooglePopup");
+    // console.log(user);
     try {
       if (user) {
         toast.success("You have successfully signed in.");
         navigate("/");
-
       }
     } catch {
       toast.error(
-        "Error continuing with Google. Please enable browser popups to continue"
+        "Error continuing with Google. Please enable browser popups to continue",
       );
     }
   };
