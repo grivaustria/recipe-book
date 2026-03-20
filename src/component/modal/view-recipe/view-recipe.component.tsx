@@ -46,16 +46,13 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
   };
 
   if (id === undefined) {
-    // console.warn(
-    //   "Recipe being viewed has no ID. Cannot perform update/delete."
-    // );
     return (
       <div
         className="absolute z-50 flex h-screen w-full flex-col justify-center bg-black/50"
         onClick={onClose}
       >
         <div
-          className="z-60 mx-4 flex h-[90vh] bg-stone-50 md:mx-12 xl:mx-52 xl:h-auto"
+          className="z-60 mx-4 flex h-[90vh] w-[calc(100%-2rem)] bg-stone-50 md:mx-12 md:w-[calc(100%-6rem)] xl:mx-auto xl:h-auto xl:w-[1200px] xl:max-w-[1200px]"
           onClick={(e) => e.stopPropagation()}
         >
           <div>Error: Recipe ID not found.</div>
@@ -70,20 +67,20 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
       onClick={handleBackgroundClick}
     >
       <div
-        className="z-60 mx-4 flex h-[90vh] bg-stone-50 md:mx-12 xl:mx-52 xl:h-auto"
+        className="z-60 mx-4 flex h-[90vh] w-[calc(100%-2rem)] bg-stone-50 md:mx-12 md:w-[calc(100%-6rem)] xl:mx-auto xl:h-auto xl:w-[1200px] xl:max-w-[1200px]"
         onClick={(e) => e.stopPropagation()}
       >
         {isUpdateOpen ? (
           <UpdateRecipeForm recipe={dish} onClose={handleUpdateClose} />
         ) : (
           <div className="flex w-full flex-col xl:flex-row xl:gap-4">
-            <div className="flex flex-col shadow-[5px_0px_6px_0px_rgba(100,116,139,0.5)] xl:basis-2/5">
+            <div className="flex flex-col shadow-[5px_0px_6px_0px_rgba(100,116,139,0.5)] xl:basis-3/5 3xl:basis-1/5">
               <img
-                className="max-h-[200px] object-cover md:max-h-[300px] xl:h-[600px] xl:max-h-[553px] xl:w-[450px]"
+                className="max-h-50 object-cover md:max-h-75 xl:h-150 xl:max-h-138.25 xl:w-112.5"
                 src={dishImage}
               />
             </div>
-            <div className="flex max-h-[565px] min-w-0 w-full flex-col gap-2 overflow-y-auto px-2 py-4">
+            <div className="flex max-h-141.25 min-w-0 w-full flex-col gap-2 overflow-y-auto px-2 py-4">
               <ViewRecipeTitle
                 id={id}
                 title={dishName}

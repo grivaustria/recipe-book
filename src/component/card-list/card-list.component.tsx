@@ -17,7 +17,7 @@ type CardListProps = {
 };
 
 const listClassName =
-  "mx-auto mb-4 grid h-[65vh] w-full max-w-[1200px] grid-cols-1 gap-4 overflow-x-hidden overflow-y-auto pb-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4";
+  "mb-4 grid grid-cols-5 h-[65vh] w-full gap-4 overflow-x-hidden overflow-y-auto pb-4 ";
 
 const CardList = ({
   dishData,

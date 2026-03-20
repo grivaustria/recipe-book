@@ -1,4 +1,5 @@
 import type { DishDataType } from "../../../types/dish.type";
+import { toast } from "react-toastify";
 
 import WarningImg from "../../../assets/noto-v1--warning.svg";
 
@@ -18,7 +19,9 @@ const DeleteRecipe = ({ dish, onClose }: DeleteRecipeProps) => {
         await deleteRecipeFromFirestore(id);
         onClose();
       } catch (error) {
-        // console.error("Error deleting recipe: ", error);
+        const message =
+          error instanceof Error ? error.message : "Error deleting recipe";
+        toast.error(message);
       }
     }
   };

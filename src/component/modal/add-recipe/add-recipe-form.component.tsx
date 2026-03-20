@@ -18,15 +18,11 @@ const AddRecipeForm = ({ onClose, onRecipeAdd }: AddRecipeFormProps) => {
   const {
     dishName,
     dishType,
-    ingredients,
-    procedure,
+    ingredientsMarkdown,
+    procedureMarkdown,
     handleInputChange,
-    handleIngredientChange,
-    addIngredientRow,
-    removeIngredientRow,
-    handleProcedureChange,
-    addProcedureStep,
-    removeProcedureStep,
+    setIngredientsMarkdown,
+    setProcedureMarkdown,
     handleSubmit,
   } = useRecipeForm({ onClose, onRecipeAdd });
 
@@ -74,27 +70,17 @@ const AddRecipeForm = ({ onClose, onRecipeAdd }: AddRecipeFormProps) => {
 
         <div className="flex w-full flex-col gap-2">
           <IngredientList
-            ingredients={ingredients}
-            onChange={handleIngredientChange}
-            onAdd={addIngredientRow}
-            onRemove={removeIngredientRow}
+            markdown={ingredientsMarkdown}
+            onChange={setIngredientsMarkdown}
             labelClass={labelClass}
-            inputClass={inputClass}
-            removeButtonClass={`${actionButtonClass} bg-red-500 px-3 text-xl font-bold text-white`}
-            addButtonClass={`${actionButtonClass} bg-green-600 text-white`}
           />
         </div>
 
         <div className="flex w-full flex-col gap-2">
           <ProcedureList
-            procedure={procedure}
-            onChange={handleProcedureChange}
-            onAdd={addProcedureStep}
-            onRemove={removeProcedureStep}
+            markdown={procedureMarkdown}
+            onChange={setProcedureMarkdown}
             labelClass={labelClass}
-            inputClass={inputClass}
-            removeButtonClass={`${actionButtonClass} bg-red-500 px-3 text-xl font-bold text-white`}
-            addButtonClass={`${actionButtonClass} bg-green-600 text-white`}
           />
         </div>
       </div>

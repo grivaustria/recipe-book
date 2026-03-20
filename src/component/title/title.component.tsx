@@ -30,8 +30,8 @@ const Title = () => {
   };
 
   return (
-    <div className="mx-4 flex items-center xl:w-full xl:max-w-[910px] xl:justify-between 2xl:max-w-[1200px]">
-      <div className="flex flex-col gap-1">
+    <div className="w-full flex items-center justify-between">
+      <div className="flex flex-col gap-1 ml-5">
         <span className="text-4xl font-bold md:text-[64px]">Dish Galeria</span>
         <span className="text-sm font-normal text-stone-500 md:text-[23px]">
           Collect recipes, all in one place. Accessible to any device.
@@ -41,7 +41,7 @@ const Title = () => {
 
       {!isTablet ? (
         user ? (
-          <AuthUser user={user} logout={handleLogout} />
+          <AuthUser user={user} logout={handleLogout} className="mr-5" />
         ) : (
           <AuthNoUser />
         )

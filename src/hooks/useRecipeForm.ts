@@ -1,7 +1,8 @@
 import { type ChangeEvent, useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { addRecipeToFirestore } from "../utils/firebase.utils";
 import { generatedDishImage } from "../utils/generatedDishImage";
-import type { DishDataType, Ingredient, Procedure } from "../types/dish.type";
+import type { DishDataType, Ingredient } from "../types/dish.type";
 
 const LOCAL_STORAGE_KEY = "recipeFormDraft";
 
@@ -11,6 +12,65 @@ interface UseRecipeFormProps {
   initialRecipe?: DishDataType;
   isNewRecipe?: boolean;
 }
+
+const ingredientsToMarkdown = (ingredients: Ingredient[]) => {
+  if (ingredients.length === 0) {
+    return "- quantity | unit | ingredient";
+  }
+
+  return ingredients
+    .map(
+      ({ quantity, unit, name }) =>
+        `- ${quantity.trim()} | ${unit.trim()} | ${name.trim()}`,
+    )
+    .join("\n");
+};
+
+const markdownToIngredients = (markdown: string): Ingredient[] =>
+  markdown
+    .split("\n")
+    .map((line) => line.replace(/^\s*(?:[-*+]\s+|\d+\.\s+)/, "").trim())
+    .filter((line) => line !== "")
+    .map((line) => {
+      if (!line.includes("|")) {
+        return {
+          quantity: "",
+          unit: "",
+          name: line,
+        };
+      }
+
+      const [quantity = "", unit = "", ...nameParts] = line
+        .split("|")
+        .map((part) => part.trim());
+
+      return {
+        quantity,
+        unit,
+        name: nameParts.join(" | "),
+      };
+    })
+    .filter((ingredient) =>
+      [ingredient.quantity, ingredient.unit, ingredient.name].some(
+        (value) => value !== "",
+      ),
+    );
+
+const procedureToMarkdown = (procedure: string[]) => {
+  if (procedure.length === 0) {
+    return "1. Describe the first step";
+  }
+
+  return procedure
+    .map((step, index) => `${index + 1}. ${step.trim()}`)
+    .join("\n");
+};
+
+const markdownToProcedure = (markdown: string): string[] =>
+  markdown
+    .split("\n")
+    .map((line) => line.replace(/^\s*(?:[-*+]\s+|\d+\.\s+)/, "").trim())
+    .filter((line) => line !== "");
 
 export const useRecipeForm = ({
   onClose,
@@ -37,16 +97,16 @@ export const useRecipeForm = ({
   const [dishType, setDishType] = useState(baseRecipe?.dishType || "");
   const [dishImage, setDishImage] = useState(baseRecipe?.dishImage || "");
 
-  const [ingredients, setIngredients] = useState<Ingredient[]>(
+  const [ingredientsMarkdown, setIngredientsMarkdown] = useState<string>(
     baseRecipe?.ingredients && baseRecipe.ingredients.length > 0
-      ? baseRecipe.ingredients
-      : [{ quantity: "", unit: "", name: "" }],
+      ? ingredientsToMarkdown(baseRecipe.ingredients)
+      : "- quantity | unit | ingredient",
   );
 
-  const [procedure, setProcedure] = useState<Procedure[]>(
+  const [procedureMarkdown, setProcedureMarkdown] = useState<string>(
     baseRecipe?.procedure && baseRecipe.procedure.length > 0
-      ? baseRecipe.procedure.map((step) => ({ step }))
-      : [{ step: "" }],
+      ? procedureToMarkdown(baseRecipe.procedure)
+      : "1. Describe the first step",
   );
 
   useEffect(() => {
@@ -54,19 +114,19 @@ export const useRecipeForm = ({
       dishName,
       dishType,
       dishImage,
-      ingredients,
-      procedure: procedure.map((p) => p.step),
+      ingredients: markdownToIngredients(ingredientsMarkdown),
+      procedure: markdownToProcedure(procedureMarkdown),
     };
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(currentState));
-  }, [dishName, dishType, dishImage, ingredients, procedure]);
+  }, [dishName, dishType, dishImage, ingredientsMarkdown, procedureMarkdown]);
 
   const clearFormState = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
     setDishName("");
     setDishType("");
     setDishImage("");
-    setIngredients([{ quantity: "", unit: "", name: "" }]);
-    setProcedure([{ step: "" }]);
+    setIngredientsMarkdown("- quantity | unit | ingredient");
+    setProcedureMarkdown("1. Describe the first step");
   };
 
   const handleInputChange = (
@@ -80,56 +140,16 @@ export const useRecipeForm = ({
     }
   };
 
-  const handleIngredientChange = (
-    index: number,
-    field: keyof Ingredient,
-    value: string,
-  ): void => {
-    const newIngredients = [...ingredients];
-    newIngredients[index] = { ...newIngredients[index], [field]: value };
-    setIngredients(newIngredients);
-  };
-
-  const addIngredientRow = (): void => {
-    setIngredients([...ingredients, { quantity: "", unit: "", name: "" }]);
-  };
-
-  const removeIngredientRow = (indexToRemove: number): void => {
-    if (ingredients.length > 1) {
-      setIngredients(ingredients.filter((_, index) => index !== indexToRemove));
-    } else {
-      setIngredients([{ quantity: "", unit: "", name: "" }]);
-    }
-  };
-
-  const handleProcedureChange = (index: number, value: string): void => {
-    const newProcedure = [...procedure];
-    newProcedure[index] = { ...newProcedure[index], step: value };
-    setProcedure(newProcedure);
-  };
-
-  const addProcedureStep = (): void => {
-    setProcedure([...procedure, { step: "" }]);
-  };
-
-  const removeProcedureStep = (indexToRemove: number): void => {
-    if (procedure.length > 1) {
-      setProcedure(procedure.filter((_, index) => index !== indexToRemove));
-    } else {
-      setProcedure([{ step: "" }]);
-    }
-  };
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const trimIngredients = ingredients.filter(
+    const trimIngredients = markdownToIngredients(ingredientsMarkdown).filter(
       (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim(),
     );
 
-    const trimProcedure = procedure
-      .map((procItem) => procItem.step.trim())
-      .filter((step) => step !== "");
+    const trimProcedure = markdownToProcedure(procedureMarkdown).filter(
+      (step) => step.trim() !== "",
+    );
 
     const generatedImage = generatedDishImage(dishName);
 
@@ -149,9 +169,10 @@ export const useRecipeForm = ({
         onRecipeAdd();
       }
       onClose();
-      // console.log("Recipe added successfully!");
     } catch (error) {
-      // console.error("Error adding recipe:", error);
+      const message =
+        error instanceof Error ? error.message : "Error adding recipe";
+      toast.error(message);
     }
   };
 
@@ -163,16 +184,14 @@ export const useRecipeForm = ({
     dishName,
     dishType,
     dishImage,
-    ingredients,
-    procedure,
+    ingredientsMarkdown,
+    procedureMarkdown,
     handleInputChange,
-    handleIngredientChange,
-    addIngredientRow,
-    removeIngredientRow,
-    handleProcedureChange,
-    addProcedureStep,
-    removeProcedureStep,
+    setIngredientsMarkdown,
+    setProcedureMarkdown,
     handleSubmit,
     handleCancel,
+    parseIngredientsMarkdown: markdownToIngredients,
+    parseProcedureMarkdown: markdownToProcedure,
   };
 };

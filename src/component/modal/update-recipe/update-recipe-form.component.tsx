@@ -1,4 +1,5 @@
 import type { FormEvent } from "react";
+import { toast } from "react-toastify";
 
 import IngredientList from "../add-recipe/ingredient-list.component";
 import ProcedureList from "../add-recipe/procedure-list.component";
@@ -23,27 +24,27 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
   const {
     dishName,
     dishType,
-    ingredients,
-    procedure,
+    ingredientsMarkdown,
+    procedureMarkdown,
     handleInputChange,
-    handleIngredientChange,
-    addIngredientRow,
-    removeIngredientRow,
-    handleProcedureChange,
-    addProcedureStep,
-    removeProcedureStep,
+    setIngredientsMarkdown,
+    setProcedureMarkdown,
+    parseIngredientsMarkdown,
+    parseProcedureMarkdown,
   } = useRecipeForm({ onClose, initialRecipe: recipe });
 
   const handleUpdateSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    const trimmedIngredientsForUpdate = ingredients.filter(
+    const trimmedIngredientsForUpdate = parseIngredientsMarkdown(
+      ingredientsMarkdown,
+    ).filter(
       (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim(),
     );
 
-    const trimmedProcedureForUpdate = procedure
-      .map((procItem) => procItem.step.trim())
-      .filter((step) => step !== "");
+    const trimmedProcedureForUpdate = parseProcedureMarkdown(
+      procedureMarkdown,
+    ).filter((step) => step !== "");
 
     const updatedRecipeData: DishDataType = {
       dishName,
@@ -60,14 +61,16 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
       await updateRecipeInFirestore(recipe.id, updatedRecipeData);
       onClose();
     } catch (error: unknown) {
-      // console.error("Error updating recipe:", error);
+      const message =
+        error instanceof Error ? error.message : "Error updating recipe";
+      toast.error(message);
     }
   };
 
   return (
     <form
       onSubmit={handleUpdateSubmit}
-      className="flex h-full max-h-[550px] w-full flex-col justify-between gap-4 overflow-x-hidden overflow-y-auto p-6"
+      className="flex h-full max-h-137.5 w-full flex-col justify-between gap-4 overflow-x-hidden overflow-y-auto p-6"
     >
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2 md:flex-row">
@@ -105,27 +108,17 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
         </div>
         <div className="flex w-full flex-col gap-2">
           <IngredientList
-            ingredients={ingredients}
-            onChange={handleIngredientChange}
-            onAdd={addIngredientRow}
-            onRemove={removeIngredientRow}
+            markdown={ingredientsMarkdown}
+            onChange={setIngredientsMarkdown}
             labelClass={labelClass}
-            inputClass={inputClass}
-            removeButtonClass={`${actionButtonClass} bg-red-500 px-3 text-xl font-bold text-white`}
-            addButtonClass={`${actionButtonClass} bg-green-600 text-white`}
           />
         </div>
 
         <div className="flex w-full flex-col gap-2">
           <ProcedureList
-            procedure={procedure}
-            onChange={handleProcedureChange}
-            onAdd={addProcedureStep}
-            onRemove={removeProcedureStep}
+            markdown={procedureMarkdown}
+            onChange={setProcedureMarkdown}
             labelClass={labelClass}
-            inputClass={inputClass}
-            removeButtonClass={`${actionButtonClass} bg-red-500 px-3 text-xl font-bold text-white`}
-            addButtonClass={`${actionButtonClass} bg-green-600 text-white`}
           />
         </div>
       </div>

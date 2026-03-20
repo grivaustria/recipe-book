@@ -3,12 +3,13 @@ import { type User } from "firebase/auth";
 type AuthUserProps = {
   user: User;
   logout: () => void;
+  className?: string;
 };
 
-const AuthUser = ({ user, logout }: AuthUserProps) => {
+const AuthUser = ({ user, logout, className }: AuthUserProps) => {
   const { displayName, email, uid } = user;
   return (
-    <div className="flex flex-col gap-2">
+    <div className={`${className} flex flex-col gap-2`}>
       <div className="flex flex-col items-end">
         <span className="text-2xl font-bold">{displayName}</span>
         <span className="text-base">{email}</span>

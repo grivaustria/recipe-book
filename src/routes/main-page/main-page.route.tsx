@@ -78,20 +78,22 @@ const MainPage = () => {
             )}
         </Suspense>
 
-        <Title />
-        <Navigation
-          selectedDishType={selectedDishType}
-          onDishTypeChange={handleDishTypeChange}
-          onSearchChange={onSearchChange}
-        />
+        <section className="w-full flex flex-col">
+          <Title />
+          <Navigation
+            selectedDishType={selectedDishType}
+            onDishTypeChange={handleDishTypeChange}
+            onSearchChange={onSearchChange}
+          />
 
-        <CardList
-          dishData={dishFilter}
-          onCardClick={viewRecipeClick}
-          searchField={searchField}
-          onAddRecipeClick={addRecipeClick}
-          isLoading={isLoading}
-        />
+          <CardList
+            dishData={dishFilter}
+            onCardClick={viewRecipeClick}
+            searchField={searchField}
+            onAddRecipeClick={addRecipeClick}
+            isLoading={isLoading}
+          />
+        </section>
       </div>
       <Outlet />
     </>

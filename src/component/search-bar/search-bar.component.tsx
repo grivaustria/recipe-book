@@ -6,7 +6,7 @@ type SearchBoxProps = {
 
 const SearchBar = ({ onChangeHandler }: SearchBoxProps) => (
   <input
-    className="w-[90%] rounded-[20px] border-2 border-stone-500 bg-stone-50 px-4 py-3 text-xs text-stone-900 transition md:text-lg xl:w-[600px] 2xl:w-full"
+    className="rounded-[20px] border-2 border-stone-500 bg-stone-50 px-4 py-1 text-lg text-stone-900 transition "
     type="search"
     placeholder="Search by dish name..."
     onChange={onChangeHandler}
