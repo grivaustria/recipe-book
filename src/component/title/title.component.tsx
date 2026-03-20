@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  TitleContainer,
-  TitleText,
-  TitleDesc,
-  Container,
-} from "./title.styles";
-
 import AuthUser from "../auth-user/auth-user.component";
 import AuthNoUser from "../auth-nouser/auth-nouser.component";
 import AppDrawer from "../app-drawer/app-drawer.component";
@@ -26,8 +19,6 @@ const Title = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      // console.log("Check Auth: ", currentUser);
-      // console.log("user id: ", auth.currentUser?.uid);
     });
 
     return () => unsubscribe();
@@ -39,24 +30,23 @@ const Title = () => {
   };
 
   return (
-    <Container>
-      <TitleContainer>
-        <TitleText>Dish Galeria</TitleText>
-
-        <TitleDesc>
+    <div className="w-full flex items-center justify-between">
+      <div className="flex flex-col gap-1 ml-5">
+        <span className="text-4xl font-bold md:text-[64px]">Dish Galeria</span>
+        <span className="text-sm font-normal text-stone-500 md:text-[23px]">
           Collect recipes, all in one place. Accessible to any device.
-        </TitleDesc>
-      </TitleContainer>
+        </span>
+      </div>
       {isTablet ? <AppDrawer /> : null}
 
       {!isTablet ? (
         user ? (
-          <AuthUser user={user} logout={handleLogout} />
+          <AuthUser user={user} logout={handleLogout} className="mr-5" />
         ) : (
           <AuthNoUser />
         )
       ) : null}
-    </Container>
+    </div>
   );
 };
 

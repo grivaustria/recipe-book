@@ -1,17 +1,5 @@
 import type { FormEvent } from "react";
-
-import {
-  AddRecipeContainer,
-  RecipeTitleContainer,
-  RecipeDetails,
-  InputLabelContainer,
-  LabelText,
-  InputText,
-  SelectOption,
-  List,
-} from "../add-recipe/add-recipe.styles";
-
-import { ButtonsContainer, SubmitRecipe } from "../../button/button.styled";
+import { toast } from "react-toastify";
 
 import IngredientList from "../add-recipe/ingredient-list.component";
 import ProcedureList from "../add-recipe/procedure-list.component";
@@ -20,7 +8,6 @@ import { updateRecipeInFirestore } from "../../../utils/firebase.utils";
 import { useRecipeForm } from "../../../hooks/useRecipeForm";
 
 import type { DishDataType } from "../../../types/dish.type";
-import { CloseButton } from "../view-recipe/view-recipe.styles";
 
 type UpdateRecipeFormProps = {
   recipe: DishDataType;
@@ -28,30 +15,36 @@ type UpdateRecipeFormProps = {
 };
 
 const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
+  const labelClass = "mb-1 text-base font-bold text-stone-800 md:text-lg";
+  const inputClass =
+    "w-full rounded-xl border-2 border-stone-900 bg-white px-3 py-2 text-base text-stone-900 outline-none transition focus:border-stone-700 md:text-lg";
+  const actionButtonClass =
+    "rounded-xl border-none px-4 py-2 text-base font-semibold transition hover:cursor-pointer hover:opacity-85 md:text-lg";
+
   const {
     dishName,
     dishType,
-    ingredients,
-    procedure,
+    ingredientsMarkdown,
+    procedureMarkdown,
     handleInputChange,
-    handleIngredientChange,
-    addIngredientRow,
-    removeIngredientRow,
-    handleProcedureChange,
-    addProcedureStep,
-    removeProcedureStep,
+    setIngredientsMarkdown,
+    setProcedureMarkdown,
+    parseIngredientsMarkdown,
+    parseProcedureMarkdown,
   } = useRecipeForm({ onClose, initialRecipe: recipe });
 
   const handleUpdateSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    const trimmedIngredientsForUpdate = ingredients.filter(
+    const trimmedIngredientsForUpdate = parseIngredientsMarkdown(
+      ingredientsMarkdown,
+    ).filter(
       (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim(),
     );
 
-    const trimmedProcedureForUpdate = procedure
-      .map((procItem) => procItem.step.trim())
-      .filter((step) => step !== "");
+    const trimmedProcedureForUpdate = parseProcedureMarkdown(
+      procedureMarkdown,
+    ).filter((step) => step !== "");
 
     const updatedRecipeData: DishDataType = {
       dishName,
@@ -68,27 +61,38 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
       await updateRecipeInFirestore(recipe.id, updatedRecipeData);
       onClose();
     } catch (error: unknown) {
-      // console.error("Error updating recipe:", error);
+      const message =
+        error instanceof Error ? error.message : "Error updating recipe";
+      toast.error(message);
     }
   };
 
   return (
-    <AddRecipeContainer onSubmit={handleUpdateSubmit}>
-      <RecipeDetails>
-        <RecipeTitleContainer>
-          <InputLabelContainer>
-            <LabelText htmlFor="dishName">Recipe Name:</LabelText>
-            <InputText
+    <form
+      onSubmit={handleUpdateSubmit}
+      className="flex h-full max-h-137.5 w-full flex-col justify-between gap-4 overflow-x-hidden overflow-y-auto p-6"
+    >
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2 md:flex-row">
+          <div className="flex w-full flex-col">
+            <label className={labelClass} htmlFor="dishName">
+              Recipe Name:
+            </label>
+            <input
+              className={inputClass}
               id="dishName"
               type="text"
               value={dishName}
               onChange={handleInputChange}
               required
             />
-          </InputLabelContainer>
-          <InputLabelContainer>
-            <LabelText htmlFor="dishType">Dish Type:</LabelText>
-            <SelectOption
+          </div>
+          <div className="flex w-full flex-col">
+            <label className={labelClass} htmlFor="dishType">
+              Dish Type:
+            </label>
+            <select
+              className={inputClass}
               id="dishType"
               value={dishType}
               onChange={handleInputChange}
@@ -99,34 +103,41 @@ const UpdateRecipeForm = ({ recipe, onClose }: UpdateRecipeFormProps) => {
               <option value="meat">Meat</option>
               <option value="veggies">Veggies</option>
               <option value="dessert">Dessert</option>
-            </SelectOption>
-          </InputLabelContainer>
-        </RecipeTitleContainer>
-        <List className="ingredient">
+            </select>
+          </div>
+        </div>
+        <div className="flex w-full flex-col gap-2">
           <IngredientList
-            ingredients={ingredients}
-            onChange={handleIngredientChange}
-            onAdd={addIngredientRow}
-            onRemove={removeIngredientRow}
+            markdown={ingredientsMarkdown}
+            onChange={setIngredientsMarkdown}
+            labelClass={labelClass}
           />
-        </List>
+        </div>
 
-        <List className="procedure">
+        <div className="flex w-full flex-col gap-2">
           <ProcedureList
-            procedure={procedure}
-            onChange={handleProcedureChange}
-            onAdd={addProcedureStep}
-            onRemove={removeProcedureStep}
+            markdown={procedureMarkdown}
+            onChange={setProcedureMarkdown}
+            labelClass={labelClass}
           />
-        </List>
-      </RecipeDetails>
-      <ButtonsContainer>
-        <CloseButton type="button" onClick={onClose}>
+        </div>
+      </div>
+      <div className="flex w-full justify-center gap-2">
+        <button
+          className={`${actionButtonClass} bg-stone-300 text-stone-900`}
+          type="button"
+          onClick={onClose}
+        >
           Close
-        </CloseButton>
-        <SubmitRecipe type="submit">Update Recipe</SubmitRecipe>
-      </ButtonsContainer>
-    </AddRecipeContainer>
+        </button>
+        <button
+          className={`${actionButtonClass} bg-blue-600 text-white`}
+          type="submit"
+        >
+          Update Recipe
+        </button>
+      </div>
+    </form>
   );
 };
 

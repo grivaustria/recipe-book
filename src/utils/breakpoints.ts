@@ -51,7 +51,6 @@ export const breakpointsBetween = (
   max: BreakpointName,
 ): string => {
   if (!breakpointValues[min] || !breakpointValues[max]) {
-    // console.warn(`Breakpoint '${min}' or '${max}' not found`);
     return "";
   }
   const maxValue = emToNumber(breakpointValues[max]);

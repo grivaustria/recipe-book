@@ -1,7 +1,5 @@
-import { NoResultContainer, NoResultText } from "./no-result.styles";
-
 const NoResult = () => (
-  <NoResultContainer>
+  <div className="flex h-full w-full max-w-[1200px] flex-col items-center justify-center">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="200px"
@@ -17,8 +15,10 @@ const NoResult = () => (
         d="M6.47 10.82L4 13.29l-2.47-2.47l-.71.71L3.29 14L.82 16.47l.71.71L4 14.71l2.47 2.47l.71-.71L4.71 14l2.47-2.47z"
       ></path>
     </svg>
-    <NoResultText>No recipes match your search.</NoResultText>
-  </NoResultContainer>
+    <span className="text-center text-2xl italic text-stone-400">
+      No recipes match your search.
+    </span>
+  </div>
 );
 
 export default NoResult;

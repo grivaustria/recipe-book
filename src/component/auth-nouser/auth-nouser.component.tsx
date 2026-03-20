@@ -1,12 +1,11 @@
-import {
-  MUIButtonContainer,
-  SignUpBtn,
-  LoginBtn,
-} from "../button/button.styled";
+import { Link } from "react-router-dom";
+
+const linkBaseClass =
+  "inline-flex items-center rounded-md border border-stone-200 px-3 py-2 font-bold shadow-sm transition hover:cursor-pointer";
 
 const AuthNoUser = () => (
-  <MUIButtonContainer>
-    <LoginBtn to="/login">
+  <div className="flex items-center justify-end gap-2 p-4">
+    <Link className={`${linkBaseClass} bg-stone-50 text-[#301411]`} to="/login">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="18px"
@@ -19,8 +18,11 @@ const AuthNoUser = () => (
         ></path>
       </svg>
       <span>&nbsp; Log In</span>
-    </LoginBtn>
-    <SignUpBtn to="/signup">
+    </Link>
+    <Link
+      className={`${linkBaseClass} bg-[#301411] text-stone-50`}
+      to="/signup"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="18px"
@@ -33,8 +35,8 @@ const AuthNoUser = () => (
         ></path>
       </svg>
       <span>&nbsp; Create Account</span>
-    </SignUpBtn>
-  </MUIButtonContainer>
+    </Link>
+  </div>
 );
 
 export default AuthNoUser;

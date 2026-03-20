@@ -1,10 +1,6 @@
-import {
-  Container,
-  NavigationContainer,
-  NavigationDish,
-} from "./navigation.styles";
 import type { ChangeEventHandler } from "react";
 import SearchBar from "../search-bar/search-bar.component";
+import DishTypeTag from "../tag/tag.component";
 
 type NavigationProps = {
   selectedDishType: string;
@@ -12,56 +8,38 @@ type NavigationProps = {
   onSearchChange: ChangeEventHandler<HTMLInputElement>;
 };
 
+const dishTypes = ["all", "fish", "meat", "veggies", "dessert"] as const;
+
 const Navigation = ({
   selectedDishType,
   onDishTypeChange,
   onSearchChange,
 }: NavigationProps) => (
-  <Container>
-    <NavigationContainer>
-      <NavigationDish
-        onClick={() =>
-          onDishTypeChange(selectedDishType === "all" ? "" : "all")
-        }
-        className={selectedDishType === "all" ? "active" : ""}
-      >
-        All
-      </NavigationDish>
-      <NavigationDish
-        onClick={() =>
-          onDishTypeChange(selectedDishType === "fish" ? "all" : "fish")
-        }
-        className={selectedDishType === "fish" ? "active" : ""}
-      >
-        Fish
-      </NavigationDish>
-      <NavigationDish
-        onClick={() =>
-          onDishTypeChange(selectedDishType === "meat" ? "all" : "meat")
-        }
-        className={selectedDishType === "meat" ? "active" : ""}
-      >
-        Meat
-      </NavigationDish>
-      <NavigationDish
-        onClick={() =>
-          onDishTypeChange(selectedDishType === "veggies" ? "all" : "veggies")
-        }
-        className={selectedDishType === "veggies" ? "active" : ""}
-      >
-        Veggies
-      </NavigationDish>
-      <NavigationDish
-        onClick={() =>
-          onDishTypeChange(selectedDishType === "dessert" ? "all" : "dessert")
-        }
-        className={selectedDishType === "dessert" ? "active" : ""}
-      >
-        Dessert
-      </NavigationDish>
-    </NavigationContainer>
+  <div className="flex flex-col items-center gap-2 mb-2">
+    <div className="flex gap-2 ml-5">
+      {dishTypes.map((dishType) => {
+        const isActive = selectedDishType === dishType;
+        const nextValue =
+          dishType === "all"
+            ? selectedDishType === "all"
+              ? ""
+              : "all"
+            : selectedDishType === dishType
+              ? "all"
+              : dishType;
+
+        return (
+          <DishTypeTag
+            key={dishType}
+            dishType={dishType}
+            isActive={isActive}
+            onClick={() => onDishTypeChange(nextValue)}
+          />
+        );
+      })}
+    </div>
     <SearchBar onChangeHandler={onSearchChange} />
-  </Container>
+  </div>
 );
 
 export default Navigation;

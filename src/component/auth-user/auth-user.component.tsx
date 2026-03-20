@@ -1,29 +1,24 @@
-import {
-  UserContainer,
-  UserName,
-  UserEmail,
-  UserUID,
-  AuthUserContainer,
-} from "../title/title.styles";
-import { SignOutBtn } from "../button/button.styled";
-
 import { type User } from "firebase/auth";
 
 type AuthUserProps = {
   user: User;
   logout: () => void;
+  className?: string;
 };
 
-const AuthUser = ({ user, logout }: AuthUserProps) => {
+const AuthUser = ({ user, logout, className }: AuthUserProps) => {
   const { displayName, email, uid } = user;
   return (
-    <AuthUserContainer>
-      <UserContainer>
-        <UserName>{displayName}</UserName>
-        <UserEmail>{email}</UserEmail>
-        <UserUID>UID: {uid}</UserUID>
-      </UserContainer>
-      <SignOutBtn onClick={logout}>
+    <div className={`${className} flex flex-col gap-2`}>
+      <div className="flex flex-col items-end">
+        <span className="text-2xl font-bold">{displayName}</span>
+        <span className="text-base">{email}</span>
+        <span className="text-base text-stone-500">UID: {uid}</span>
+      </div>
+      <button
+        className="inline-flex items-center self-end rounded-md border border-stone-200 bg-stone-50 px-3 py-2 font-bold text-[#582924] shadow-sm transition hover:bg-[#301411] hover:text-stone-50 hover:cursor-pointer"
+        onClick={logout}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width={18}
@@ -36,8 +31,8 @@ const AuthUser = ({ user, logout }: AuthUserProps) => {
           ></path>
         </svg>
         <span>&nbsp; Log Out</span>
-      </SignOutBtn>
-    </AuthUserContainer>
+      </button>
+    </div>
   );
 };
 

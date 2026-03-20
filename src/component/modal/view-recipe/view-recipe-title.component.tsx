@@ -4,14 +4,6 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-import {
-  ContentTitle,
-  ContentText,
-  ContentTag,
-  ContentTitleContainer,
-  ContentOption,
-} from "./view-recipe.styles";
-
 import MoreOptions from "../../../assets/qlementine-icons--menu-dots-16.svg";
 import { useWindowResize } from "../../../hooks/useWindowResize";
 
@@ -52,12 +44,16 @@ const ViewRecipeTitle = ({
   };
 
   return (
-    <ContentTitleContainer>
-      <ContentTitle>
-        <ContentText>{title}</ContentText>
-        <ContentTag>{tag}</ContentTag>
-      </ContentTitle>
-      <ContentOption>
+    <div className="flex items-start justify-between">
+      <div className="flex flex-col items-start gap-2 px-2 py-2">
+        <span className="text-2xl font-bold text-stone-900 md:text-[28px] xl:text-[32px]">
+          {title}
+        </span>
+        <span className="mb-2 rounded-xl bg-[#8c6662] px-3 py-2 text-sm capitalize text-stone-50 shadow-[2px_2px_2px_0_rgba(0,0,0,0.5)] md:text-base">
+          {tag}
+        </span>
+      </div>
+      <div className="mr-3 mt-2">
         {showComponent && (
           <>
             <Button
@@ -66,8 +62,12 @@ const ViewRecipeTitle = ({
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
+              sx={{ minWidth: "auto", padding: 0.5 }}
             >
-              <img className="img" src={MoreOptions} />
+              <img
+                className="h-[30px] self-center transition hover:cursor-pointer hover:opacity-70"
+                src={MoreOptions}
+              />
             </Button>
             <Menu
               id="basic-menu"
@@ -79,19 +79,14 @@ const ViewRecipeTitle = ({
                   "aria-labelledby": "basic-button",
                 },
               }}
-              className="menu"
             >
-              <MenuItem className="menu-item" onClick={handleUpdateItem}>
-                Update
-              </MenuItem>
-              <MenuItem className="menu-item" onClick={handleDeleteItem}>
-                Delete
-              </MenuItem>
+              <MenuItem onClick={handleUpdateItem}>Update</MenuItem>
+              <MenuItem onClick={handleDeleteItem}>Delete</MenuItem>
             </Menu>
           </>
         )}
-      </ContentOption>
-    </ContentTitleContainer>
+      </div>
+    </div>
   );
 };
 

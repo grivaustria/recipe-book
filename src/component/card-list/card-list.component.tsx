@@ -1,5 +1,4 @@
 import { useWindowResize } from "../../hooks/useWindowResize";
-import { CardListContainer } from "./card-list.styles";
 import type { DishDataType } from "../../types/dish.type";
 
 import Card from "../card/card.component";
@@ -16,6 +15,9 @@ type CardListProps = {
   onAddRecipeClick: () => void;
   isLoading: boolean;
 };
+
+const listClassName =
+  "mb-4 grid grid-cols-5 h-[65vh] w-full gap-4 overflow-x-hidden overflow-y-auto pb-4 ";
 
 const CardList = ({
   dishData,
@@ -41,7 +43,7 @@ const CardList = ({
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.4 }}
             >
-              <CardListContainer>
+              <div className={listClassName}>
                 {dishData.map((dish) => (
                   <Card
                     key={dish.id}
@@ -52,16 +54,16 @@ const CardList = ({
                 {!isSearching && showComponent && (
                   <CardAdd onAddRecipeClick={onAddRecipeClick} />
                 )}
-              </CardListContainer>
+              </div>
             </motion.div>
           ) : isSearching ? (
             <NoResult />
           ) : (
             !isSearching &&
             showComponent && (
-              <CardListContainer>
+              <div className={listClassName}>
                 <CardAdd onAddRecipeClick={onAddRecipeClick} />
-              </CardListContainer>
+              </div>
             )
           )}
         </AnimatePresence>

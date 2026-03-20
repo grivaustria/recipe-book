@@ -1,27 +1,7 @@
 import { type ChangeEvent, type FormEvent, useState } from "react";
-import {
-  AuthBackground,
-  Container,
-  AuthTitleContainer,
-  AuthTitle,
-  AuthText,
-  AuthForm,
-  AuthTitleText,
-  AuthDesc,
-  AuthContain,
-  SignUpPrompt,
-  LinkText,
-} from "./auth.styles";
-
 import Divider from "@mui/material/Divider";
-
 import { Icon } from "@iconify/react";
-
 import { TextField } from "@mui/material";
-import {
-  AuthSubmitBtn,
-  ThirdPartyAccBtn,
-} from "../../component/button/button.styled";
 
 import {
   signInWithGooglePopup,
@@ -31,7 +11,7 @@ import {
 
 import { toast, ToastContainer } from "react-toastify";
 import { FirebaseError } from "firebase/app";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 
 type FormFields = {
   email: string;
@@ -42,6 +22,10 @@ const defaultFormFields = {
   email: "",
   password: "",
 };
+
+const textFieldSx = { width: "100%" };
+const authButtonClass =
+  "inline-flex items-center justify-center gap-2 rounded-md border border-stone-200 px-3 py-2 font-medium shadow-sm transition hover:cursor-pointer";
 
 const Login = () => {
   const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
@@ -61,8 +45,6 @@ const Login = () => {
 
     try {
       await loginUserEmailPassword(email, password);
-      // const user = userCredential.user;
-      // console.log("userCredential: ", user);
       resetFormFields();
       navigate("/");
       toast.success("Signed in successfully(?)!");
@@ -88,11 +70,8 @@ const Login = () => {
         }
       } else {
         toast.error("An unknown error occurred.");
-        // console.error(error);
       }
     }
-
-    // console.log("submit");
   };
 
   const signInGPopup = async () => {
@@ -112,21 +91,32 @@ const Login = () => {
   };
 
   return (
-    <AuthBackground>
+    <div className="flex h-dvh bg-[#fdf8f2] px-10 font-sans">
       <ToastContainer />
-      <Container>
-        <AuthTitleContainer>
-          <AuthTitle to="/">Dish Galeria</AuthTitle>
-          <AuthText>
+      <div className="flex w-full items-center justify-between gap-10">
+        <div className="flex w-[55%] flex-col gap-1">
+          <Link
+            className="text-[40px] font-bold text-stone-900 no-underline md:text-[64px]"
+            to="/"
+          >
+            Dish Galeria
+          </Link>
+          <span className="text-lg font-normal text-stone-500 md:text-[23px]">
             Collect recipes, all in one place. Accessible to any device.
-          </AuthText>
-        </AuthTitleContainer>
-        <AuthForm onSubmit={handleSubmit}>
-          <AuthContain>
-            <AuthTitleText>Welcome, User!</AuthTitleText>
-            <AuthDesc>Log in to your account to continue</AuthDesc>
-          </AuthContain>
+          </span>
+        </div>
+        <form
+          className="flex w-[45%] flex-col gap-4 rounded-md border border-stone-300 bg-stone-50 px-6 py-4"
+          onSubmit={handleSubmit}
+        >
+          <div className="my-2 flex flex-col items-center gap-2">
+            <div className="text-[32px] font-bold">Welcome, User!</div>
+            <div className="text-stone-600">
+              Log in to your account to continue
+            </div>
+          </div>
           <TextField
+            sx={textFieldSx}
             variant="outlined"
             label="Email"
             type="email"
@@ -136,6 +126,7 @@ const Login = () => {
             required
           />
           <TextField
+            sx={textFieldSx}
             variant="outlined"
             label="Password"
             type="password"
@@ -144,19 +135,33 @@ const Login = () => {
             onChange={handleChange}
             required
           />
-          <AuthSubmitBtn type="submit">Submit</AuthSubmitBtn>
+          <button
+            className={`${authButtonClass} border-transparent bg-[#582924] text-stone-50`}
+            type="submit"
+          >
+            Submit
+          </button>
           <Divider>or</Divider>
-          <ThirdPartyAccBtn onClick={signInGPopup}>
+          <button
+            className={`${authButtonClass} bg-white text-stone-900`}
+            type="button"
+            onClick={signInGPopup}
+          >
             <Icon icon="devicon:google" width="16" height="16" />
             Continue with Google
-          </ThirdPartyAccBtn>
-          <SignUpPrompt>
+          </button>
+          <span className="text-center">
             New to Dish Galeria?{" "}
-            <LinkText to="/signup">Create an account</LinkText>{" "}
-          </SignUpPrompt>
-        </AuthForm>
-      </Container>
-    </AuthBackground>
+            <Link
+              className="text-sky-500 no-underline hover:underline"
+              to="/signup"
+            >
+              Create an account
+            </Link>
+          </span>
+        </form>
+      </div>
+    </div>
   );
 };
 

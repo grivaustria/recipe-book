@@ -1,27 +1,7 @@
 import { type FormEvent, type ChangeEvent, useState } from "react";
-import {
-  AuthBackground,
-  Container,
-  AuthTitleContainer,
-  AuthTitle,
-  AuthText,
-  AuthForm,
-  AuthTitleText,
-  AuthContain,
-  SignUpPrompt,
-  LinkText,
-  TextFieldInput,
-} from "./auth.styles";
-
 import Divider from "@mui/material/Divider";
-
 import { Icon } from "@iconify/react";
-
 import { TextField } from "@mui/material";
-import {
-  AuthSubmitBtn,
-  ThirdPartyAccBtn,
-} from "../../component/button/button.styled";
 
 import {
   signInWithGooglePopup,
@@ -29,7 +9,7 @@ import {
   authCreateUserEmailPassword,
 } from "../../utils/firebase.utils";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 
 type FormFields = {
   displayName: string;
@@ -44,6 +24,11 @@ const defaultFormFields = {
   password: "",
   conPassword: "",
 };
+
+const textFieldSx = { width: "100%" };
+const authButtonClass =
+  "inline-flex items-center justify-center gap-2 rounded-md border border-stone-200 px-3 py-2 font-medium shadow-sm transition hover:cursor-pointer";
+
 const SignUp = () => {
   const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
   const { displayName, email, password, conPassword } = formFields;
@@ -71,8 +56,7 @@ const SignUp = () => {
 
       resetFormFields();
       navigate("/");
-    } catch (err) {
-      // console.error("Error signing up", err);
+    } catch {
       toast.error("Failed to create account");
     }
   };
@@ -87,8 +71,6 @@ const SignUp = () => {
     const { user } = await signInWithGooglePopup();
     await createUserDocFromAuth(user);
 
-    // console.log("signInWithGooglePopup");
-    // console.log(user);
     try {
       if (user) {
         toast.success("You have successfully signed in.");
@@ -101,25 +83,38 @@ const SignUp = () => {
     }
   };
   return (
-    <AuthBackground>
+    <div className="flex h-dvh bg-[#fdf8f2] px-10 font-sans">
       <ToastContainer />
-      <Container>
-        <AuthTitleContainer>
-          <AuthTitle to="/">Dish Galeria</AuthTitle>
-          <AuthText>
+      <div className="flex w-full items-center justify-between gap-10">
+        <div className="flex w-[55%] flex-col gap-1">
+          <Link
+            className="text-[40px] font-bold text-stone-900 no-underline md:text-[64px]"
+            to="/"
+          >
+            Dish Galeria
+          </Link>
+          <span className="text-lg font-normal text-stone-500 md:text-[23px]">
             Collect recipes, all in one place. Accessible to any device.
-          </AuthText>
-        </AuthTitleContainer>
-        <AuthForm onSubmit={handleSubmit}>
-          <AuthContain>
-            <AuthTitleText>Create an account</AuthTitleText>
-          </AuthContain>
-          <ThirdPartyAccBtn onClick={signUpGPopup}>
+          </span>
+        </div>
+        <form
+          className="flex w-[45%] flex-col gap-4 rounded-md border border-stone-300 bg-stone-50 px-6 py-4"
+          onSubmit={handleSubmit}
+        >
+          <div className="my-2 flex flex-col items-center gap-2">
+            <div className="text-[32px] font-bold">Create an account</div>
+          </div>
+          <button
+            className={`${authButtonClass} bg-white text-stone-900`}
+            type="button"
+            onClick={signUpGPopup}
+          >
             <Icon icon="devicon:google" width="16" height="16" />
             Continue with Google
-          </ThirdPartyAccBtn>
+          </button>
           <Divider>or</Divider>
           <TextField
+            sx={textFieldSx}
             variant="outlined"
             label="Display Name"
             name="displayName"
@@ -129,6 +124,7 @@ const SignUp = () => {
             required
           />
           <TextField
+            sx={textFieldSx}
             variant="outlined"
             label="Email"
             type="email"
@@ -138,6 +134,7 @@ const SignUp = () => {
             required
           />
           <TextField
+            sx={textFieldSx}
             variant="outlined"
             label="Password"
             type="password"
@@ -146,7 +143,8 @@ const SignUp = () => {
             value={password}
             required
           />
-          <TextFieldInput
+          <TextField
+            sx={textFieldSx}
             variant="outlined"
             label="Confirm Password"
             type="password"
@@ -156,14 +154,25 @@ const SignUp = () => {
             required
           />
 
-          <AuthSubmitBtn type="submit">Submit</AuthSubmitBtn>
+          <button
+            className={`${authButtonClass} border-transparent bg-[#582924] text-stone-50`}
+            type="submit"
+          >
+            Submit
+          </button>
 
-          <SignUpPrompt>
-            Already have an account?<LinkText to="/login"> Sign In</LinkText>
-          </SignUpPrompt>
-        </AuthForm>
-      </Container>
-    </AuthBackground>
+          <span className="text-center">
+            Already have an account?{" "}
+            <Link
+              className="text-sky-500 no-underline hover:underline"
+              to="/login"
+            >
+              Sign In
+            </Link>
+          </span>
+        </form>
+      </div>
+    </div>
   );
 };
 
