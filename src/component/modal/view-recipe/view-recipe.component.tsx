@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import type { DishDataType, Procedure } from "../../../types/dish.type";
-import ViewRecipeTitle from "./view-recipe-title.component";
-import UpdateRecipeForm from "../update-recipe/update-recipe-form.component";
+import type { DishDataType, Procedure } from "@app-types/dish";
+import ViewRecipeTitle from "@component/modal/view-recipe/view-recipe-title.component";
+import UpdateRecipeForm from "@component/modal/update-recipe/update-recipe-form.component";
 
 type ViewRecipeProps = {
   dish: DishDataType;
@@ -52,7 +52,7 @@ const ViewRecipe = ({ dish, onClose, onDelete, onUpdate }: ViewRecipeProps) => {
         onClick={onClose}
       >
         <div
-          className="z-60 mx-4 flex h-[90vh] w-[calc(100%-2rem)] bg-stone-50 md:mx-12 md:w-[calc(100%-6rem)] xl:mx-auto xl:h-auto xl:w-[1200px] xl:max-w-[1200px]"
+          className="z-60 mx-4 flex h-[90vh] w-[calc(100%-2rem)] bg-stone-50 md:mx-12 md:w-[calc(100%-6rem)] xl:mx-auto xl:h-auto xl:w-300 xl:max-w-300"
           onClick={(e) => e.stopPropagation()}
         >
           <div>Error: Recipe ID not found.</div>

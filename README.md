@@ -1,35 +1,37 @@
 # Dish Galeria
 
-A recipe collection app built with React, Vite, Firebase, and styled components. Users can sign up, log in, save their own recipes, search through them, and manage entries with add, view, update, and delete flows.
+A personal recipe collection app built with React, Vite, Firebase, and TypeScript. Users can sign up, log in, save recipes, browse their collection, and manage entries through modal-based add, view, update, and delete flows.
 
 ## Features
 
-- Email/password authentication with Firebase Auth
-- Google sign-in with popup flow
-- Personal recipe storage in Firestore
-- Create, view, update, and delete recipe entries
-- Search and category-based filtering
-- Toast notifications for feedback
-- Responsive UI built with React, MUI, and styled-components
+- Firebase email/password auth
+- Google sign-in
+- Firestore-backed recipe storage
+- Add, view, update, and delete recipe flows
+- Search and dish-type filtering
+- Generated placeholder recipe images for dishes without uploaded artwork
+- Toast feedback for create, update, and delete actions
+- Responsive UI with route-driven modals
 
 ## Tech Stack
 
 - React 19
-- TypeScript and JavaScript
+- TypeScript
 - Vite
-- Firebase Auth
-- Firebase Firestore
+- Firebase Auth and Firestore
 - React Router
+- Redux Toolkit Query
 - MUI
-- styled-components
-- react-toastify
+- Sass modules
+- Tailwind CSS 4
+- React Toastify
 - Framer Motion
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18 or newer
+- Node.js 18+
 - npm
 
 ### Install
@@ -38,7 +40,7 @@ A recipe collection app built with React, Vite, Firebase, and styled components.
 npm install
 ```
 
-### Run the app
+### Run locally
 
 ```bash
 npm run dev
@@ -50,51 +52,65 @@ To expose the dev server on your local network:
 npm run devnet
 ```
 
-## Available Scripts
+## Scripts
 
 - `npm run dev` starts the Vite dev server
 - `npm run devnet` starts the dev server with `--host`
-- `npm run build` runs TypeScript build checks and creates a production build
-- `npm run preview` previews the production build locally
+- `npm run build` runs TypeScript checks and creates a production build
+- `npm run preview` previews the production build
 - `npm run lint` runs ESLint
-- `npm run stylelint` runs Stylelint on styles
-- `npm run prettier:check` checks formatting
-- `npm run format` formats the repository with Prettier
-- `npm run ci:check` runs lint, stylelint, and prettier checks
+- `npm run stylelint` runs Stylelint for `css` and `scss`
+- `npm run format` formats the repo with Prettier
+- `npm run prettier:check` checks formatting with Prettier
+- `npm run ci:check` runs lint, stylelint, format, and prettier checks
 
 ## Project Structure
 
 ```text
 src/
-  assets/        Images and icons
-  component/     Reusable UI components and modal flows
+  assets/        Images, icons, and SVG assets
+  component/     Reusable UI pieces and modal components
+  context/       React context providers
   data/          Static dish data and image mappings
-  hooks/         App and form logic
-  routes/        Login, signup, and main page routes
+  hooks/         App, auth, resize, and form hooks
+  routes/        Route-level pages and modal route orchestration
+  store/         RTK Query API and Redux store setup
   types/         Shared TypeScript types
-  utils/         Firebase setup, helpers, and theme utilities
+  utils/         Firebase helpers, image generation, and theme utilities
 ```
+
+## Path Aliases
+
+The app uses aliases configured in `tsconfig.app.json` and `vite.config.ts`:
+
+- `@assets/*`
+- `@component/*`
+- `@context/*`
+- `@data/*`
+- `@hooks/*`
+- `@routes/*`
+- `@store/*`
+- `@app-types/*`
+- `@utils/*`
+- `@src/*`
 
 ## App Flow
 
-1. Users create an account or sign in with email/password or Google.
-2. Authenticated users are redirected to the main recipe page.
-3. Recipes are fetched from Firestore and scoped to the current user.
-4. Users can search recipes, filter by dish type, and open modal-based CRUD flows.
+1. Users sign in with email/password or Google.
+2. Authenticated users land on the main recipe dashboard.
+3. Recipes are fetched from Firestore and mapped into the gallery.
+4. Users can search, filter, open modal routes, and manage recipes.
+5. If a recipe has no stored image, the app can generate a temporary placeholder image from the dish name.
 
-## Firebase Notes
+## Routes
 
-The Firebase configuration is currently defined in `src/utils/firebase.utils.js`. If you plan to publish or collaborate on this project, moving those values into Vite environment variables would be a safer next step.
-
-## Current Routes
-
-- `/` main recipe dashboard
+- `/` main dashboard
 - `/login` login page
-- `/signup` account creation page
-- `/recipe/view/:slug` recipe view modal route
-- `/recipe/update/:slug` recipe update modal route
-- `/recipe/delete/:slug` recipe delete modal route
+- `/signup` signup page
+- `/recipe/view/:slug` recipe view modal
+- `/recipe/update/:slug` recipe update modal
+- `/recipe/delete/:slug` recipe delete modal
 
-## Status
+## Firebase Note
 
-This project is actively structured around a personal recipe manager workflow and already includes authentication, Firestore integration, search, and CRUD behavior.
+Firebase setup is currently defined in `src/utils/firebase.utils.js`. If you plan to deploy or share this project, moving those values into Vite environment variables would be a safer next step.

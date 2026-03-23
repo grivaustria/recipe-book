@@ -1,9 +1,9 @@
-import type { DishDataType } from "../types/dish.type";
+import type { DishDataType } from "@app-types/dish";
 
-import ChickenAdobo from "../assets/dish-chicken-adobo.jpg";
-import PorkSinigang from "../assets/dish-pork-sinigang.jpg";
-import ChickenAfritada from "../assets/dish-chicken-afritada.jpg";
-import FriedTilapia from "../assets/dish-fried-tilapia.jpg";
+import ChickenAdobo from "@assets/dish-chicken-adobo.jpg";
+import PorkSinigang from "@assets/dish-pork-sinigang.jpg";
+import ChickenAfritada from "@assets/dish-chicken-afritada.jpg";
+import FriedTilapia from "@assets/dish-fried-tilapia.jpg";
 
 export const dishJSON: DishDataType[] = [
   {

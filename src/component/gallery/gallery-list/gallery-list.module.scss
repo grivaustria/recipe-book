@@ -1,0 +1,259 @@
+.listShell,
+.emptyShell {
+  width: 100%;
+}
+
+.emptyShell {
+  min-height: 70vh;
+  display: flex;
+}
+
+.masonry {
+  columns: 4;
+  column-gap: 16px;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1100px) {
+  .masonry {
+    columns: 3;
+  }
+}
+@media (max-width: 780px) {
+  .masonry {
+    columns: 2;
+  }
+}
+@media (max-width: 480px) {
+  .masonry {
+    columns: 1;
+  }
+}
+
+.dishCard {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  background: var(--warm-white);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s;
+  cursor: pointer;
+  display: block;
+  opacity: 0;
+  animation: card-in 0.5s ease forwards;
+}
+.dishCard:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: var(--shadow-lg);
+}
+
+.imgWrap {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background: var(--cream-dark);
+}
+
+.imgWrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.dishCard:hover .imgWrap img {
+  transform: scale(1.06);
+}
+
+/* varied heights for masonry feel */
+.dishCard:nth-child(3n + 1) .imgWrap {
+  height: 220px;
+}
+.dishCard:nth-child(3n + 2) .imgWrap {
+  height: 170px;
+}
+.dishCard:nth-child(3n) .imgWrap {
+  height: 260px;
+}
+
+.dishOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(26, 18, 8, 0.45) 0%,
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
+}
+.dishCard:hover .dishOverlay {
+  opacity: 1;
+}
+
+.overlayActions {
+  display: flex;
+  gap: 8px;
+}
+
+.overlayBtn {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(245, 240, 232, 0.95);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: var(--dark);
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+.overlayBtn:hover {
+  transform: scale(1.1);
+  background: #fff;
+}
+
+.dishInfo {
+  padding: 14px 16px 16px;
+}
+
+.dishCatBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 8px;
+}
+.catMeat {
+  background: rgba(196, 82, 42, 0.1);
+  color: var(--terracotta);
+}
+.catFish {
+  background: rgba(107, 124, 90, 0.12);
+  color: var(--sage);
+}
+.catVeggies {
+  background: rgba(107, 124, 90, 0.12);
+  color: var(--sage);
+}
+.catDessert {
+  background: rgba(201, 124, 43, 0.12);
+  color: var(--amber);
+}
+
+.dishName {
+  font-family: "Playfair Display", serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.3;
+}
+
+.imageFallback {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+}
+
+.addCard {
+  break-inside: avoid;
+  width: 100%;
+  margin-bottom: 16px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--cream);
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.addCard:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--terracotta);
+}
+
+.addIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  color: var(--warm-white);
+  background: var(--terracotta);
+}
+
+.addLabel {
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  color: var(--dark);
+}
+
+.emptyState {
+  width: 100%;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--cream);
+  min-height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.emptyEmoji {
+  font-size: 2.5rem;
+}
+
+.emptyTitle {
+  font-family: "Playfair Display", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.emptySub {
+  color: var(--muted);
+}

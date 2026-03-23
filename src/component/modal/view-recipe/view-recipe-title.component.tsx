@@ -4,8 +4,8 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-import MoreOptions from "../../../assets/qlementine-icons--menu-dots-16.svg";
-import { useWindowResize } from "../../../hooks/useWindowResize";
+import MoreOptions from "@assets/qlementine-icons--menu-dots-16.svg";
+import { useWindowResize } from "@hooks/useWindowResize";
 
 type ViewRecipeTitleProps = {
   id: string;

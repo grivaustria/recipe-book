@@ -1,11 +1,11 @@
-import ChickenAdobo from "../assets/dish-chicken-adobo.jpg";
-import PorkSinigang from "../assets/dish-pork-sinigang.jpg";
-import ChickenAfritada from "../assets/dish-chicken-afritada.jpg";
-import FriedTilapia from "../assets/dish-fried-tilapia.jpg";
-import JabeeChicken from "../assets/dish-jolibee-style-fried-chicken.jpg";
-import ChickenTinola from "../assets/dish-chicken-tinola.jpg";
-import FriedGalunggong from "../assets/dish-fried-galunggong.jpg";
-import GinataangKalabasa from "../assets/dish-ginataang kalabasa.jpg";
+import ChickenAdobo from "@assets/dish-chicken-adobo.jpg";
+import PorkSinigang from "@assets/dish-pork-sinigang.jpg";
+import ChickenAfritada from "@assets/dish-chicken-afritada.jpg";
+import FriedTilapia from "@assets/dish-fried-tilapia.jpg";
+import JabeeChicken from "@assets/dish-jolibee-style-fried-chicken.jpg";
+import ChickenTinola from "@assets/dish-chicken-tinola.jpg";
+import FriedGalunggong from "@assets/dish-fried-galunggong.jpg";
+import GinataangKalabasa from "@assets/dish-ginataang kalabasa.jpg";
 
 export const dishImages: Record<string, string> = {
   "Chicken Adobo": ChickenAdobo,

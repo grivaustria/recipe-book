@@ -1,38 +1,63 @@
-import { type User } from "firebase/auth";
+import type { AuthUserData } from "@store/services/recipesApi";
+import styles from "./auth-user.module.scss";
 
 type AuthUserProps = {
-  user: User;
+  user: AuthUserData;
   logout: () => void;
   className?: string;
 };
 
 const AuthUser = ({ user, logout, className }: AuthUserProps) => {
-  const { displayName, email, uid } = user;
+  const { displayName, email } = user;
   return (
-    <div className={`${className} flex flex-col gap-2`}>
-      <div className="flex flex-col items-end">
-        <span className="text-2xl font-bold">{displayName}</span>
-        <span className="text-base">{email}</span>
-        <span className="text-base text-stone-500">UID: {uid}</span>
-      </div>
-      <button
-        className="inline-flex items-center self-end rounded-md border border-stone-200 bg-stone-50 px-3 py-2 font-bold text-[#582924] shadow-sm transition hover:bg-[#301411] hover:text-stone-50 hover:cursor-pointer"
-        onClick={logout}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={18}
-          height={18}
-          viewBox="0 0 24 24"
+    <>
+      {user ? (
+        <div
+          className={`${className} flex items-center gap-4 ml-auto shrink-0`}
         >
-          <path
-            fill="currentColor"
-            d="m17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5M4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4z"
-          ></path>
-        </svg>
-        <span>&nbsp; Log Out</span>
-      </button>
-    </div>
+          <div className={styles.userPill}>
+            <div className={styles.avatar}>{displayName?.slice(0, 1)}</div>
+            <div className={styles.userInfo}>
+              <div className={styles.userName}>{displayName}</div>
+              <div className={styles.userEmail}>{email}</div>
+            </div>
+          </div>
+          <button
+            className={`${styles.btnAuth} ${styles.logout}`}
+            type="button"
+            onClick={logout}
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path
+                d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h3M10 10l3-3-3-3M13 7H5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Log Out
+          </button>
+        </div>
+      ) : (
+        <button
+          className={`${styles.btnAuth} ${styles.logout}`}
+          type="button"
+          onClick={logout}
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h3M10 10l3-3-3-3M13 7H5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Log Out
+        </button>
+      )}
+    </>
   );
 };
 

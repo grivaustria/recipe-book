@@ -20,6 +20,7 @@ export const useWindowResize = () => {
   const isWideScreen = width >= 2560;
 
   const trueIsMobile = width <= 768;
+  const dishGaleriaTablet = width <= 1228;
 
   const [showComponent, setShowComponent] = useState<boolean>(true);
 
@@ -51,5 +52,6 @@ export const useWindowResize = () => {
     isLaptop,
     isDesktop,
     isWideScreen,
+    dishGaleriaTablet,
   };
 };

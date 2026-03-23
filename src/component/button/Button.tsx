@@ -2,7 +2,7 @@ import React from "react";
 import style from "./Button.module.scss";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { IconButton } from "../icon-button/IconButton";
+import { IconButton } from "@component/icon-button/IconButton";
 
 type Variant =
   | "primary"

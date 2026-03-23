@@ -1,33 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { SVGBurger, SVGLogout, SVGClose } from "../../assets/svg.asset";
-import AppLogo from "../../assets/dishgaleria-drawer.png";
+import { SVGBurger, SVGLogout, SVGClose } from "@assets/svg.asset";
+import AppLogo from "@assets/dishgaleria-drawer.png";
+import { useSetAuthUser } from "@hooks/useSetAuthUser";
 
 import Drawer from "@mui/material/Drawer";
 import { Box, Button, Divider } from "@mui/material";
-import { logOutUser } from "../../utils/firebase.utils";
-
-import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
+import { logOutUser } from "@utils/firebase.utils";
 
 const AppDrawer = () => {
-  const auth = getAuth();
-  const [user, setUser] = useState<User | null>(null);
   const [open, setOpen] = useState<boolean>(false);
+  const { user } = useSetAuthUser();
 
   const navigate = useNavigate();
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    return () => unsubscribe();
-  }, [auth]);
 
   const handleLogout = async () => {
     await logOutUser();

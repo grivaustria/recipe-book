@@ -1,8 +1,8 @@
 import { CircularProgress } from "@mui/material";
-import { themeMUI } from "../../utils/theme-mui";
+import { themeMUI } from "@utils/theme-mui";
 
 const Spinner = () => (
-  <div className="flex h-full w-full max-w-[1200px] items-center justify-center">
+  <div className="flex h-full w-full max-w-300 items-center justify-center">
     <CircularProgress
       size={100}
       sx={{ color: themeMUI.palette.primary.main }}

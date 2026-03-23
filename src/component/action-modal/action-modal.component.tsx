@@ -4,8 +4,8 @@ import Slide from "@mui/material/Slide";
 import { type TransitionProps } from "@mui/material/transitions";
 import { MdOutlineClose } from "react-icons/md";
 import { twMerge } from "tailwind-merge";
-import { useToggle } from "../../hooks/useToggle";
-import { Button } from "../button/Button";
+import { useToggle } from "@hooks/useToggle";
+import { Button } from "@component/button/Button";
 
 const Transition = React.forwardRef(
   (

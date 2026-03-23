@@ -1,9 +1,10 @@
-import type { DishDataType } from "../../../types/dish.type";
+import { useEffect } from "react";
+import type { DishDataType } from "@app-types/dish";
 import { toast } from "react-toastify";
 
-import WarningImg from "../../../assets/noto-v1--warning.svg";
+import WarningImg from "@assets/noto-v1--warning.svg";
 
-import { deleteRecipeFromFirestore } from "../../../utils/firebase.utils";
+import { useDeleteRecipeMutation } from "@store/services/recipesApi";
 
 type DeleteRecipeProps = {
   dish: DishDataType;
@@ -12,11 +13,21 @@ type DeleteRecipeProps = {
 
 const DeleteRecipe = ({ dish, onClose }: DeleteRecipeProps) => {
   const { id, dishName } = dish;
+  const [deleteRecipe] = useDeleteRecipeMutation();
+
+  useEffect(() => {
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = overflow;
+    };
+  }, []);
 
   const handleConfirmDelete = async () => {
     if (id) {
       try {
-        await deleteRecipeFromFirestore(id);
+        await deleteRecipe(id).unwrap();
         onClose();
       } catch (error) {
         const message =
@@ -27,7 +38,7 @@ const DeleteRecipe = ({ dish, onClose }: DeleteRecipeProps) => {
   };
   return (
     <div
-      className="absolute z-50 flex h-screen w-full flex-col justify-center bg-black/50"
+      className="fixed inset-0 z-50 flex min-h-dvh w-full flex-col justify-center bg-black/50"
       onClick={onClose}
     >
       <div

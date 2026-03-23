@@ -1,12 +1,12 @@
-import { useWindowResize } from "../../hooks/useWindowResize";
-import type { DishDataType } from "../../types/dish.type";
+import { useWindowResize } from "@hooks/useWindowResize";
+import type { DishDataType } from "@app-types/dish";
 
-import Card from "../card/card.component";
-import CardAdd from "../card-add-recipe/card-add-recipe.component";
-import Spinner from "../spinner/spinner.component";
+import Card from "@component/card/card.component";
+import CardAdd from "@component/card-add-recipe/card-add-recipe.component";
+import Spinner from "@component/spinner/spinner.component";
 
 import { motion, AnimatePresence } from "framer-motion";
-import NoResult from "../no-result/no-result.component";
+import NoResult from "@component/no-result/no-result.component";
 
 type CardListProps = {
   dishData: DishDataType[];

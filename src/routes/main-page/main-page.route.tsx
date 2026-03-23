@@ -1,23 +1,16 @@
-import { lazy, Suspense } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { Suspense } from "react";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useApp } from "../../hooks/useApp";
+import { useApp } from "@hooks/useApp";
 import { Outlet } from "react-router";
 
-import Title from "../../component/title/title.component";
-import Navigation from "../../component/navigation/navigation.component";
-import CardList from "../../component/card-list/card-list.component";
-
-const ViewRecipe = lazy(
-  () => import("../../component/modal/view-recipe/view-recipe.component"),
-);
-const AddRecipe = lazy(
-  () => import("../../component/modal/add-recipe/add-recipe.component"),
-);
-const DeleteRecipe = lazy(
-  () => import("../../component/modal/delete-recipe/delete-recipe.component"),
-);
+import Header from "@component/header/Header";
+import Gallery from "@component/gallery/gallery";
+import GalleryModal from "@component/gallery/gallery-modal/gallery-modal.component";
+import UpdateRecipeForm from "@component/modal/update-recipe/update-recipe-form.component";
+import AddEditRecipe from "@component/modal/add-edit-recipe/add-edit-recipe.component";
+import DeleteRecipe from "@component/modal/delete-recipe/revamp/delete-recipe.component";
 
 const MainPage = () => {
   const {
@@ -25,7 +18,6 @@ const MainPage = () => {
     selectedDishType,
     dishFilter,
     isAddRecipeOpen,
-    fetchData,
     onSearchChange,
     viewRecipeClick,
     viewRecipeClose,
@@ -34,12 +26,13 @@ const MainPage = () => {
     deleteRecipeClick,
     deleteRecipeClose,
     handleDishTypeChange,
-    handleRecipeChange,
+    isInitializing,
     isLoading,
   } = useApp();
 
   const { slug } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const currentSelectedDish = slug
     ? dishFilter.find(
@@ -49,48 +42,53 @@ const MainPage = () => {
 
   return (
     <>
-      <div className="flex h-screen w-full flex-col items-center gap-4">
-        <ToastContainer />
-        <Suspense fallback={null}>
-          {isAddRecipeOpen && (
-            <AddRecipe onClose={addRecipeClose} onRecipeAdd={fetchData} />
+      <ToastContainer />
+      <Suspense fallback={null}>
+        {isAddRecipeOpen && <AddEditRecipe onClose={addRecipeClose} />}
+
+        {slug &&
+          location.pathname.startsWith("/recipe/view/") &&
+          currentSelectedDish && (
+            <GalleryModal
+              dish={currentSelectedDish}
+              onClose={viewRecipeClose}
+              onDelete={deleteRecipeClick}
+            />
           )}
 
-          {slug &&
-            (location.pathname.startsWith("/recipe/view/") ||
-              location.pathname.startsWith("/recipe/update/")) &&
-            currentSelectedDish && (
-              <ViewRecipe
-                dish={currentSelectedDish}
-                onClose={viewRecipeClose}
-                onDelete={deleteRecipeClick}
-                onUpdate={handleRecipeChange}
-              />
-            )}
+        {slug &&
+          location.pathname.startsWith("/recipe/update/") &&
+          currentSelectedDish && (
+            <UpdateRecipeForm
+              recipe={currentSelectedDish}
+              onClose={() => navigate(`/recipe/view/${slug}`)}
+            />
+          )}
 
-          {slug &&
-            location.pathname.startsWith("/recipe/delete/") &&
-            currentSelectedDish && (
-              <DeleteRecipe
-                dish={currentSelectedDish}
-                onClose={deleteRecipeClose}
-              />
-            )}
-        </Suspense>
+        {slug &&
+          location.pathname.startsWith("/recipe/delete/") &&
+          currentSelectedDish && (
+            <DeleteRecipe
+              dish={currentSelectedDish}
+              onClose={deleteRecipeClose}
+            />
+          )}
+      </Suspense>
 
+      <div className="flex h-full w-full flex-col items-center gap-4">
         <section className="w-full flex flex-col">
-          <Title />
-          <Navigation
-            selectedDishType={selectedDishType}
-            onDishTypeChange={handleDishTypeChange}
+          <Header
             onSearchChange={onSearchChange}
+            onDishTypeChange={handleDishTypeChange}
+            selectedDishType={selectedDishType}
           />
-
-          <CardList
+          <Gallery
             dishData={dishFilter}
             onCardClick={viewRecipeClick}
             searchField={searchField}
             onAddRecipeClick={addRecipeClick}
+            onDeleteClick={deleteRecipeClick}
+            isInitializing={isInitializing}
             isLoading={isLoading}
           />
         </section>

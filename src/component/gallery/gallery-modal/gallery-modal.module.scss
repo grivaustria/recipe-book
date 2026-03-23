@@ -1,0 +1,224 @@
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(26, 18, 8, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal {
+  background: var(--warm-white);
+  border-radius: 28px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 560px;
+  max-height: min(90vh, 820px);
+  overflow: hidden;
+  position: relative;
+}
+
+.viewImageWrap {
+  width: 100%;
+  height: 280px;
+  background: var(--cream-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  overflow: hidden;
+}
+
+.viewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.viewEmoji {
+  font-size: 5rem;
+}
+
+.viewBody {
+  padding: 28px 32px 32px;
+  max-height: calc(min(90vh, 820px) - 280px);
+  overflow-y: auto;
+}
+
+.viewCat {
+  margin-bottom: 10px;
+}
+
+.dishCatBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.catMeat {
+  background: rgba(196, 82, 42, 0.1);
+  color: var(--terracotta);
+}
+
+.catFish {
+  background: rgba(107, 124, 90, 0.12);
+  color: var(--sage);
+}
+
+.catVeggies {
+  background: rgba(107, 124, 90, 0.12);
+  color: var(--sage);
+}
+
+.catDessert {
+  background: rgba(201, 124, 43, 0.12);
+  color: var(--amber);
+}
+
+.viewName {
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--dark);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.recipeSection {
+  margin-bottom: 22px;
+}
+
+.sectionTitle {
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(140, 102, 98, 0.35);
+  font-family: "Playfair Display", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.ingredientList,
+.procedureList {
+  margin: 0;
+  padding-left: 22px;
+  color: var(--dark);
+  line-height: 1.7;
+}
+
+.ingredientList {
+  list-style: disc;
+}
+
+.procedureList {
+  list-style: decimal;
+}
+
+.ingredientList li,
+.procedureList li {
+  display: list-item;
+  margin: 6px 0;
+}
+
+.emptyCopy {
+  margin: 0;
+  color: var(--muted);
+}
+
+.viewActions {
+  display: flex;
+  gap: 12px;
+}
+
+.btnDelete {
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--terracotta);
+  border: 1.5px solid rgba(196, 82, 42, 0.3);
+  border-radius: 100px;
+  font-family: "Lato", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnDelete:hover {
+  background: var(--terracotta);
+  color: #fff;
+  border-color: var(--terracotta);
+}
+
+.btnEdit {
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--dark);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  font-family: "Lato", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnEdit:hover {
+  border-color: var(--dark);
+  background: rgba(26, 18, 8, 0.05);
+}
+
+.btnSave {
+  flex: 1;
+  padding: 14px;
+  background: var(--dark);
+  color: var(--cream);
+  border: none;
+  border-radius: 100px;
+  font-family: "Lato", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.btnSave:hover {
+  background: var(--brown);
+  transform: translateY(-1px);
+}
+
+.modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(245, 240, 232, 0.9);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--dark);
+  transition: background 0.2s;
+  z-index: 10;
+}
+
+.modalClose:hover {
+  background: #fff;
+}

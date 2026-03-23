@@ -1,4 +1,4 @@
-import AddIcon from "../../assets/material-symbols--add.svg";
+import AddIcon from "@assets/material-symbols--add.svg";
 
 type CardAddProps = {
   onAddRecipeClick: () => void;
