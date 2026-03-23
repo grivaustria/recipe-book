@@ -1,28 +1,17 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import AuthUser from "../auth-user/auth-user.component";
-import AuthNoUser from "../auth-nouser/auth-nouser.component";
-import AppDrawer from "../app-drawer/app-drawer.component";
+import AuthUser from "@component/auth-user/auth-user.component";
+import AppDrawer from "@component/app-drawer/app-drawer.component";
 
-import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
-import { logOutUser } from "../../utils/firebase.utils";
-import { useWindowResize } from "../../hooks/useWindowResize";
+import { logOutUser } from "@utils/firebase.utils";
+import { useSetAuthUser } from "@hooks/useSetAuthUser";
+import { useWindowResize } from "@hooks/useWindowResize";
 
 const Title = () => {
-  const auth = getAuth();
-  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
   const { isTablet } = useWindowResize();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    return () => unsubscribe();
-  }, [auth]);
+  const { user } = useSetAuthUser();
 
   const handleLogout = async () => {
     await logOutUser();
@@ -42,9 +31,7 @@ const Title = () => {
       {!isTablet ? (
         user ? (
           <AuthUser user={user} logout={handleLogout} className="mr-5" />
-        ) : (
-          <AuthNoUser />
-        )
+        ) : null
       ) : null}
     </div>
   );

@@ -1,31 +1,41 @@
-import { type ChangeEvent, useState, useEffect, useCallback } from "react";
-import type { DishDataType } from "../types/dish.type";
+import { type ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { getRecipesFromFirestore, auth } from "../utils/firebase.utils";
-import { dishImages } from "../data/dish-images";
-import { generatedDishImage } from "../utils/generatedDishImage";
-import { onAuthStateChanged } from "firebase/auth";
+import type { DishDataType } from "@app-types/dish";
+import { dishImages } from "@data/dish-images";
+import {
+  useGetAuthUserQuery,
+  useGetRecipesQuery,
+} from "@store/services/recipesApi";
+import { generatedDishImage } from "@utils/generatedDishImage";
 
 export const useApp = () => {
-  const [dishData, setDishData] = useState<DishDataType[]>([]);
   const [searchField, setSearchField] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   const [selectedDishType, setSelectedDishType] = useState<string>("all");
-  const [dishFilter, setDishFilter] = useState<DishDataType[]>([]);
-
   const [selectedDish, setSelectedDish] = useState<DishDataType | null>(null);
   const [isAddRecipeOpen, setIsAddRecipeOpen] = useState<boolean>(false);
   const [isDeleteRecipeOpen, setIsDeleteRecipeOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const { data: user, isLoading: isAuthLoading } = useGetAuthUserQuery();
+  const {
+    data: recipes = [],
+    isLoading,
+    isFetching,
+    refetch,
+  } = useGetRecipesQuery(undefined, {
+    skip: !user,
+  });
 
-  const fetchData = useCallback(async () => {
-    const recipes = await getRecipesFromFirestore();
-    const typedRecipes = recipes as DishDataType[];
+  useEffect(() => {
+    if (!isAuthLoading && !user) {
+      navigate("/login");
+    }
+  }, [isAuthLoading, navigate, user]);
 
-    const recipesWithImages = typedRecipes.map((dish) => {
+  const isInitializing = isAuthLoading || Boolean(user && isLoading);
+
+  const dishFilter = useMemo(() => {
+    const recipesWithImages = recipes.map((dish) => {
       const mappedImage = dishImages[dish.dishName];
       const hasGenerated = dish.dishImage?.startsWith("data:image/png");
 
@@ -38,26 +48,7 @@ export const useApp = () => {
       };
     });
 
-    setDishData(recipesWithImages);
-    setIsLoading(false);
-  }, []);
-
-  // 👉 Fetch once on mount
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        fetchData();
-      } else {
-        setDishData([]);
-        navigate("/login");
-      }
-    });
-    return unsubscribe;
-  }, [fetchData, navigate]);
-
-  // 👉 Filtering logic when dishData, searchField, or selectedDishType changes
-  useEffect(() => {
-    let filteredDish = dishData;
+    let filteredDish = recipesWithImages;
 
     if (selectedDishType !== "all") {
       filteredDish = filteredDish.filter(
@@ -72,15 +63,14 @@ export const useApp = () => {
       );
     }
 
-    setDishFilter(filteredDish);
-  }, [dishData, searchField, selectedDishType]);
+    return filteredDish;
+  }, [recipes, searchField, selectedDishType]);
 
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const searchFieldString = event.target.value.toLowerCase();
     setSearchField(searchFieldString);
   };
 
-  // Main Feature: View Recipe
   const viewRecipeClick = (dish: DishDataType) => {
     const slug = dish.dishName.toLocaleLowerCase().replace(/\s+/g, "-");
     navigate(`/recipe/view/${slug}`);
@@ -92,7 +82,6 @@ export const useApp = () => {
     navigate("/");
   };
 
-  // Main Feature: Add Recipe
   const addRecipeClick = (): void => {
     setIsAddRecipeOpen(true);
     localStorage.removeItem("recipeFormDraft");
@@ -100,10 +89,8 @@ export const useApp = () => {
 
   const addRecipeClose = (): void => {
     setIsAddRecipeOpen(false);
-    fetchData(); // Refresh data after closing add Recipe
   };
 
-  // Main Feature: Delete Recipe
   const deleteRecipeClick = (dish: DishDataType): void => {
     const slug = dish.dishName.toLowerCase().replace(/\s+/g, "-");
     setIsDeleteRecipeOpen(true);
@@ -111,7 +98,7 @@ export const useApp = () => {
   };
 
   const deleteRecipeClose = (): void => {
-    fetchData(); // Refresh data after deletion
+    setIsDeleteRecipeOpen(false);
     navigate("/");
   };
 
@@ -120,7 +107,7 @@ export const useApp = () => {
   };
 
   const handleRecipeChange = () => {
-    fetchData(); // Refresh data after update
+    navigate("/");
   };
 
   return {
@@ -130,7 +117,7 @@ export const useApp = () => {
     selectedDish,
     isAddRecipeOpen,
     isDeleteRecipeOpen,
-    fetchData,
+    fetchData: refetch,
     onSearchChange,
     viewRecipeClick,
     viewRecipeClose,
@@ -140,6 +127,7 @@ export const useApp = () => {
     deleteRecipeClose,
     handleDishTypeChange,
     handleRecipeChange,
-    isLoading,
+    isInitializing,
+    isLoading: isAuthLoading || isLoading || isFetching,
   };
 };

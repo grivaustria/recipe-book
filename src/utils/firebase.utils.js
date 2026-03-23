@@ -138,7 +138,7 @@ export const addDishToFirestore = async () => {
 };
 
 /**
- * @typedef {import('../types/dish.type').DishDataType} DishDataType
+ * @typedef {import('../types/dish').DishDataType} DishDataType
  */
 
 /**

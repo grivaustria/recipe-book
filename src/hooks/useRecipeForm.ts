@@ -1,14 +1,13 @@
 import { type ChangeEvent, useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { addRecipeToFirestore } from "../utils/firebase.utils";
-import { generatedDishImage } from "../utils/generatedDishImage";
-import type { DishDataType, Ingredient } from "../types/dish.type";
+import { generatedDishImage } from "@utils/generatedDishImage";
+import type { DishDataType, Ingredient } from "@app-types/dish";
+import { useAddRecipeMutation } from "@store/services/recipesApi";
 
 const LOCAL_STORAGE_KEY = "recipeFormDraft";
 
 interface UseRecipeFormProps {
   onClose: () => void;
-  onRecipeAdd?: () => void;
   initialRecipe?: DishDataType;
   isNewRecipe?: boolean;
 }
@@ -74,10 +73,10 @@ const markdownToProcedure = (markdown: string): string[] =>
 
 export const useRecipeForm = ({
   onClose,
-  onRecipeAdd,
   initialRecipe,
   isNewRecipe,
 }: UseRecipeFormProps) => {
+  const [addRecipe] = useAddRecipeMutation();
   const savedRecipe: DishDataType | null = (() => {
     try {
       const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -162,12 +161,8 @@ export const useRecipeForm = ({
     };
 
     try {
-      await addRecipeToFirestore(recipeDataToSave);
+      await addRecipe(recipeDataToSave).unwrap();
       clearFormState();
-
-      if (onRecipeAdd) {
-        onRecipeAdd();
-      }
       onClose();
     } catch (error) {
       const message =

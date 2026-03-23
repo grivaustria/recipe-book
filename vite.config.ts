@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import tailwindcss from "@tailwindcss/vite";
+import { fileURLToPath, URL } from "node:url";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -50,6 +51,16 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      "@src": fileURLToPath(new URL("./src", import.meta.url)),
+      "@assets": fileURLToPath(new URL("./src/assets", import.meta.url)),
+      "@component": fileURLToPath(new URL("./src/component", import.meta.url)),
+      "@context": fileURLToPath(new URL("./src/context", import.meta.url)),
+      "@data": fileURLToPath(new URL("./src/data", import.meta.url)),
+      "@hooks": fileURLToPath(new URL("./src/hooks", import.meta.url)),
+      "@routes": fileURLToPath(new URL("./src/routes", import.meta.url)),
+      "@store": fileURLToPath(new URL("./src/store", import.meta.url)),
+      "@app-types": fileURLToPath(new URL("./src/types", import.meta.url)),
+      "@utils": fileURLToPath(new URL("./src/utils", import.meta.url)),
       "@mui/styled-engine": "@mui/styled-engine-sc",
     },
   },

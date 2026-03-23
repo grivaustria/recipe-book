@@ -1,0 +1,86 @@
+.headerUser {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.userPill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 16px 6px 6px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--dark);
+  color: var(--cream);
+  font-family: "Playfair Display", serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  line-height: 1.2;
+}
+.userName {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+.userEmail {
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+.btnAuth {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  font-family: "Lato", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+
+  &.logout {
+    color: var(--muted);
+    background: transparent;
+
+    &:hover {
+      border-color: var(--terracotta);
+      color: var(--terracotta);
+    }
+  }
+
+  &.login {
+    color: var(--dark);
+    background: var(--muted);
+
+    &:hover {
+      color: var(--cream-dark);
+      background: var(--cream-dark);
+    }
+  }
+}
+
+.btnLogout:hover {
+  border-color: var(--terracotta);
+  color: var(--terracotta);
+}

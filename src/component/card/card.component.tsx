@@ -1,4 +1,4 @@
-import type { DishDataType } from "../../types/dish.type";
+import type { DishDataType } from "@app-types/dish";
 
 type CardProps = {
   dish: DishDataType;

@@ -1,0 +1,131 @@
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(26, 18, 8, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.deleteInner {
+  padding: 44px 36px 36px;
+}
+
+.deleteIconWrap {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(196, 82, 42, 0.1);
+  border: 2px solid rgba(196, 82, 42, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  margin: 0 auto 22px;
+}
+
+.deleteTitle {
+  font-family: "Playfair Display", serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--dark);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.deleteDishName {
+  display: block;
+  font-style: italic;
+  color: var(--terracotta);
+  margin-top: 4px;
+}
+
+.deleteSub {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.deleteWarning {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(196, 82, 42, 0.08);
+  border: 1px solid rgba(196, 82, 42, 0.22);
+  color: var(--terracotta);
+  font-size: 0.73rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 28px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.deleteActions {
+  display: flex;
+  gap: 12px;
+}
+
+.btnSecondary,
+.btnDeleteConfirm {
+  flex: 1;
+  padding: 13px 20px;
+  border-radius: 100px;
+  font-family: "Lato", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    transform 0.15s;
+}
+
+.btnSecondary {
+  background: transparent;
+  color: var(--muted);
+  border: 1.5px solid var(--border);
+}
+
+.btnSecondary:hover {
+  color: var(--dark);
+  border-color: var(--muted);
+}
+
+.btnDeleteConfirm {
+  background: var(--terracotta);
+  color: #fff;
+  border: none;
+}
+
+.btnDeleteConfirm:hover {
+  background: #b04523;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .deleteInner {
+    padding: 32px 20px 20px;
+  }
+
+  .deleteActions {
+    flex-direction: column;
+  }
+}
