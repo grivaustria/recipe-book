@@ -1,0 +1,36 @@
+:global(*),
+:global(*::before),
+:global(*::after) {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:global(html) {
+  scroll-behavior: smooth;
+}
+
+:global(body) {
+  font-family: "DM Sans", sans-serif;
+  background: var(--cream);
+  color: var(--dark);
+  overflow-x: hidden;
+}
+
+.page {
+  min-height: 100vh;
+}
+
+:root {
+  --cream: #f5f0e8;
+  --warm-white: #faf8f3;
+  --dark: #1a1208;
+  --brown: #3d2b1f;
+  --amber: #c97c2b;
+  --amber-light: #e8a84a;
+  --sage: #6b7c5a;
+  --terracotta: #c4522a;
+  --text-muted: #7a6a58;
+  --card-bg: #fff;
+  --border: rgba(61, 43, 31, 0.12);
+}

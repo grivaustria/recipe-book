@@ -5,14 +5,16 @@
   padding: 0.3em;
   font-size: large;
   border-radius: 0.4em;
-}
-.button:hover {
-  opacity: 1;
-  color: white !important;
-  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
-}
-.button:disabled {
-  background: gray;
+
+  &:hover {
+    opacity: 1;
+    color: white !important;
+    box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  }
+
+  &:disabled {
+    background: gray;
+  }
 }
 @media print {
   .button {

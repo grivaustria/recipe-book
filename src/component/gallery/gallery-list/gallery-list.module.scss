@@ -56,10 +56,11 @@
   display: block;
   opacity: 0;
   animation: card-in 0.5s ease forwards;
-}
-.dishCard:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: var(--shadow-lg);
+
+  &:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 .imgWrap {
@@ -67,28 +68,30 @@
   overflow: hidden;
   position: relative;
   background: var(--cream-dark);
-}
 
-.imgWrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-.dishCard:hover .imgWrap img {
-  transform: scale(1.06);
-}
+  .dishCard:nth-child(3n + 1) & {
+    height: 220px;
+  }
 
-/* varied heights for masonry feel */
-.dishCard:nth-child(3n + 1) .imgWrap {
-  height: 220px;
-}
-.dishCard:nth-child(3n + 2) .imgWrap {
-  height: 170px;
-}
-.dishCard:nth-child(3n) .imgWrap {
-  height: 260px;
+  .dishCard:nth-child(3n + 2) & {
+    height: 170px;
+  }
+
+  .dishCard:nth-child(3n) & {
+    height: 260px;
+  }
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    .dishCard:hover & {
+      transform: scale(1.06);
+    }
+  }
 }
 
 .dishOverlay {
@@ -104,9 +107,10 @@
   display: flex;
   align-items: flex-end;
   padding: 14px;
-}
-.dishCard:hover .dishOverlay {
-  opacity: 1;
+
+  .dishCard:hover & {
+    opacity: 1;
+  }
 }
 
 .overlayActions {
@@ -130,10 +134,11 @@
   transition:
     transform 0.2s,
     background 0.2s;
-}
-.overlayBtn:hover {
-  transform: scale(1.1);
-  background: #fff;
+
+  &:hover {
+    transform: scale(1.1);
+    background: #fff;
+  }
 }
 
 .dishInfo {
@@ -203,12 +208,12 @@
     transform 0.25s ease,
     box-shadow 0.25s ease,
     border-color 0.25s ease;
-}
 
-.addCard:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--terracotta);
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--terracotta);
+  }
 }
 
 .addIcon {

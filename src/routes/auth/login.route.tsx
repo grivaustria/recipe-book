@@ -1,168 +1,200 @@
-import { type ChangeEvent, type FormEvent, useState } from "react";
-import Divider from "@mui/material/Divider";
 import { Icon } from "@iconify/react";
-import { TextField } from "@mui/material";
+import { FirebaseError } from "firebase/app";
+import { type ChangeEvent, type FormEvent, useState } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import {
-  signInWithGooglePopup,
   createUserDocFromAuth,
   loginUserEmailPassword,
+  signInWithGooglePopup,
 } from "../../utils/firebase.utils";
+import { refreshToHome } from "../../utils/auth.utils";
 
-import { toast, ToastContainer } from "react-toastify";
-import { FirebaseError } from "firebase/app";
-import { Link, useNavigate } from "react-router-dom";
+import AuthPage from "./index";
+import styles from "./auth.module.scss";
 
-type FormFields = {
+type LoginFields = {
   email: string;
   password: string;
 };
 
-const defaultFormFields = {
+const defaultLoginFields: LoginFields = {
   email: "",
   password: "",
 };
 
-const textFieldSx = { width: "100%" };
-const authButtonClass =
-  "inline-flex items-center justify-center gap-2 rounded-md border border-stone-200 px-3 py-2 font-medium shadow-sm transition hover:cursor-pointer";
+const isValidEmail = (value: string) => /\S+@\S+\.\S+/.test(value);
 
 const Login = () => {
-  const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
-  const { email, password } = formFields;
-  const navigate = useNavigate();
-
-  const resetFormFields = () => {
-    setFormFields(defaultFormFields);
-  };
+  const [formFields, setFormFields] = useState<LoginFields>(defaultLoginFields);
+  const [errors, setErrors] = useState<Partial<LoginFields>>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormFields({ ...formFields, [name]: value });
+    setFormFields((current) => ({ ...current, [name]: value }));
+    setErrors((current) => ({ ...current, [name]: undefined }));
   };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const nextErrors: Partial<LoginFields> = {};
+
+    if (!formFields.email || !isValidEmail(formFields.email)) {
+      nextErrors.email = "Please enter a valid email address.";
+    }
+
+    if (!formFields.password) {
+      nextErrors.password = "Password is required.";
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
-      await loginUserEmailPassword(email, password);
-      resetFormFields();
-      navigate("/");
-      toast.success("Signed in successfully(?)!");
+      await loginUserEmailPassword(formFields.email, formFields.password);
+      toast.success("Signed in successfully.");
+      setFormFields(defaultLoginFields);
+      refreshToHome();
     } catch (error) {
       if (error instanceof FirebaseError) {
         switch (error.code) {
           case "auth/invalid-credential":
-            toast.error(
-              "Invalid email or password. Please check your credentials.",
-            );
-            break;
           case "auth/user-not-found":
-            toast.error("User not found. Please check your email.");
-            break;
           case "auth/wrong-password":
-            toast.error("Wrong password. Please check your password.");
+            toast.error("Invalid email or password. Please try again.");
             break;
           case "auth/too-many-requests":
-            toast.error("Too many requests. Please try again later.");
+            toast.error("Too many attempts. Please try again later.");
             break;
           default:
-            toast.error("An unexpected error occured. Please try again");
+            toast.error("Unable to sign in right now. Please try again.");
         }
       } else {
         toast.error("An unknown error occurred.");
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const signInGPopup = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocFromAuth(user);
+  const handleGoogleAuth = async () => {
+    setIsSubmitting(true);
 
     try {
-      if (user) {
-        toast.success("You have successfully signed in.");
-        navigate("/");
-      }
+      const { user } = await signInWithGooglePopup();
+      await createUserDocFromAuth(user);
+      toast.success("Signed in with Google.");
+      refreshToHome();
     } catch {
-      toast.error(
-        "Error continuing with Google. Please enable browser popups to continue",
-      );
+      toast.error("Error continuing with Google.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="flex h-dvh bg-[#fdf8f2] px-10 font-sans">
-      <ToastContainer />
-      <div className="flex w-full items-center justify-between gap-10">
-        <div className="flex w-[55%] flex-col gap-1">
-          <Link
-            className="text-[40px] font-bold text-stone-900 no-underline md:text-[64px]"
-            to="/"
-          >
-            Dish Galeria
-          </Link>
-          <span className="text-lg font-normal text-stone-500 md:text-[23px]">
-            Collect recipes, all in one place. Accessible to any device.
-          </span>
-        </div>
-        <form
-          className="flex w-[45%] flex-col gap-4 rounded-md border border-stone-300 bg-stone-50 px-6 py-4"
-          onSubmit={handleSubmit}
-        >
-          <div className="my-2 flex flex-col items-center gap-2">
-            <div className="text-[32px] font-bold">Welcome, User!</div>
-            <div className="text-stone-600">
-              Log in to your account to continue
-            </div>
+    <AuthPage
+      activeTab="login"
+      heading="Welcome back."
+      subheading="Log in to open your recipe collection."
+      footer={
+        <>
+          New to Dish Galeria?{" "}
+          <LinkButton label="Create an account" to="/signup" />
+        </>
+      }
+    >
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="login-email">
+            Email Address
+          </label>
+          <div className={styles.inputWrap}>
+            <span className={styles.inputIcon}>{"\u2709\uFE0F"}</span>
+            <input
+              className={`${styles.input} ${errors.email ? styles.error : ""}`}
+              id="login-email"
+              name="email"
+              onChange={handleChange}
+              placeholder="you@example.com"
+              type="email"
+              value={formFields.email}
+            />
           </div>
-          <TextField
-            sx={textFieldSx}
-            variant="outlined"
-            label="Email"
-            type="email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            sx={textFieldSx}
-            variant="outlined"
-            label="Password"
-            type="password"
-            name="password"
-            value={password}
-            onChange={handleChange}
-            required
-          />
-          <button
-            className={`${authButtonClass} border-transparent bg-[#582924] text-stone-50`}
-            type="submit"
-          >
-            Submit
-          </button>
-          <Divider>or</Divider>
-          <button
-            className={`${authButtonClass} bg-white text-stone-900`}
-            type="button"
-            onClick={signInGPopup}
-          >
-            <Icon icon="devicon:google" width="16" height="16" />
-            Continue with Google
-          </button>
-          <span className="text-center">
-            New to Dish Galeria?{" "}
-            <Link
-              className="text-sky-500 no-underline hover:underline"
-              to="/signup"
+          {errors.email ? (
+            <span className={styles.errorMessage}>{errors.email}</span>
+          ) : null}
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="login-password">
+            Password
+          </label>
+          <div className={styles.inputWrap}>
+            <span className={styles.inputIcon}>{"\u{1F512}"}</span>
+            <input
+              className={`${styles.input} ${errors.password ? styles.error : ""}`}
+              id="login-password"
+              name="password"
+              onChange={handleChange}
+              placeholder="Your password"
+              type={showPassword ? "text" : "password"}
+              value={formFields.password}
+            />
+            <button
+              className={styles.passwordToggle}
+              onClick={() => setShowPassword((current) => !current)}
+              type="button"
             >
-              Create an account
-            </Link>
-          </span>
-        </form>
-      </div>
-    </div>
+              {showPassword ? "\u{1F648}" : "\u{1F441}"}
+            </button>
+          </div>
+          {errors.password ? (
+            <span className={styles.errorMessage}>{errors.password}</span>
+          ) : null}
+        </div>
+
+        <button
+          className={styles.submitButton}
+          disabled={isSubmitting}
+          type="submit"
+        >
+          {isSubmitting ? "Signing In..." : "Log In to My Galeria"}
+        </button>
+
+        <div className={styles.divider}>or continue with</div>
+
+        <button
+          className={styles.googleButton}
+          disabled={isSubmitting}
+          onClick={handleGoogleAuth}
+          type="button"
+        >
+          <Icon icon="devicon:google" height="18" width="18" />
+          Continue with Google
+        </button>
+      </form>
+    </AuthPage>
   );
 };
+
+type LinkButtonProps = {
+  label: string;
+  to: string;
+};
+
+const LinkButton = ({ label, to }: LinkButtonProps) => (
+  <Link className={styles.switchButton} to={to}>
+    {label}
+  </Link>
+);
 
 export default Login;

@@ -1,179 +1,302 @@
-import { type FormEvent, type ChangeEvent, useState } from "react";
-import Divider from "@mui/material/Divider";
 import { Icon } from "@iconify/react";
-import { TextField } from "@mui/material";
+import { FirebaseError } from "firebase/app";
+import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import {
-  signInWithGooglePopup,
-  createUserDocFromAuth,
   authCreateUserEmailPassword,
+  createUserDocFromAuth,
+  signInWithGooglePopup,
 } from "../../utils/firebase.utils";
-import { toast, ToastContainer } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { refreshToHome } from "../../utils/auth.utils";
 
-type FormFields = {
+import AuthPage from "./index";
+import styles from "./auth.module.scss";
+
+type SignupFields = {
   displayName: string;
   email: string;
   password: string;
   conPassword: string;
 };
 
-const defaultFormFields = {
+const defaultSignupFields: SignupFields = {
   displayName: "",
   email: "",
   password: "",
   conPassword: "",
 };
 
-const textFieldSx = { width: "100%" };
-const authButtonClass =
-  "inline-flex items-center justify-center gap-2 rounded-md border border-stone-200 px-3 py-2 font-medium shadow-sm transition hover:cursor-pointer";
+const isValidEmail = (value: string) => /\S+@\S+\.\S+/.test(value);
+
+const getPasswordStrength = (value: string) => {
+  let score = 0;
+
+  if (value.length >= 8) score++;
+  if (/[A-Z]/.test(value)) score++;
+  if (/[0-9]/.test(value)) score++;
+  if (/[^A-Za-z0-9]/.test(value)) score++;
+
+  const labels = ["Too short", "Weak", "Fair", "Good", "Strong"];
+
+  return {
+    score,
+    label: value ? labels[score] : "",
+  };
+};
 
 const SignUp = () => {
-  const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
-  const { displayName, email, password, conPassword } = formFields;
-  const navigate = useNavigate();
-  const resetFormFields = () => {
-    setFormFields(defaultFormFields);
+  const [formFields, setFormFields] =
+    useState<SignupFields>(defaultSignupFields);
+  const [errors, setErrors] = useState<Partial<SignupFields>>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const passwordStrength = useMemo(
+    () => getPasswordStrength(formFields.password),
+    [formFields.password],
+  );
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormFields((current) => ({ ...current, [name]: value }));
+    setErrors((current) => ({ ...current, [name]: undefined }));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (password !== conPassword) {
-      toast.error("Passwords do not match");
+    const nextErrors: Partial<SignupFields> = {};
+
+    if (!formFields.displayName.trim()) {
+      nextErrors.displayName = "Display name is required.";
+    }
+
+    if (!formFields.email || !isValidEmail(formFields.email)) {
+      nextErrors.email = "Please enter a valid email address.";
+    }
+
+    if (formFields.password.length < 8) {
+      nextErrors.password = "Password must be at least 8 characters.";
+    }
+
+    if (formFields.password !== formFields.conPassword) {
+      nextErrors.conPassword = "Passwords do not match.";
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
       return;
     }
 
+    setIsSubmitting(true);
+
     try {
       const { user } = await authCreateUserEmailPassword(
-        email,
-        password,
-        displayName,
+        formFields.email,
+        formFields.password,
+        formFields.displayName,
       );
-      await createUserDocFromAuth(user, { displayName });
-      toast.success("Account created successfully!");
 
-      resetFormFields();
-      navigate("/");
-    } catch {
-      toast.error("Failed to create account");
+      await createUserDocFromAuth(user, {
+        displayName: formFields.displayName,
+      });
+
+      toast.success("Account created successfully.");
+      setFormFields(defaultSignupFields);
+      refreshToHome();
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            toast.error("That email is already in use.");
+            break;
+          case "auth/weak-password":
+            toast.error("Choose a stronger password.");
+            break;
+          default:
+            toast.error("Unable to create your account right now.");
+        }
+      } else {
+        toast.error("Failed to create account.");
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-
-    setFormFields({ ...formFields, [name]: value });
-  };
-
-  const signUpGPopup = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocFromAuth(user);
+  const handleGoogleAuth = async () => {
+    setIsSubmitting(true);
 
     try {
-      if (user) {
-        toast.success("You have successfully signed in.");
-        navigate("/");
-      }
+      const { user } = await signInWithGooglePopup();
+      await createUserDocFromAuth(user);
+      toast.success("Signed in with Google.");
+      refreshToHome();
     } catch {
-      toast.error(
-        "Error continuing with Google. Please enable browser popups to continue",
-      );
+      toast.error("Error continuing with Google.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
   return (
-    <div className="flex h-dvh bg-[#fdf8f2] px-10 font-sans">
-      <ToastContainer />
-      <div className="flex w-full items-center justify-between gap-10">
-        <div className="flex w-[55%] flex-col gap-1">
-          <Link
-            className="text-[40px] font-bold text-stone-900 no-underline md:text-[64px]"
-            to="/"
-          >
-            Dish Galeria
-          </Link>
-          <span className="text-lg font-normal text-stone-500 md:text-[23px]">
-            Collect recipes, all in one place. Accessible to any device.
-          </span>
-        </div>
-        <form
-          className="flex w-[45%] flex-col gap-4 rounded-md border border-stone-300 bg-stone-50 px-6 py-4"
-          onSubmit={handleSubmit}
-        >
-          <div className="my-2 flex flex-col items-center gap-2">
-            <div className="text-[32px] font-bold">Create an account</div>
+    <AuthPage
+      activeTab="signup"
+      heading="Start your galeria."
+      subheading="Create a free account and start saving recipes today."
+      note="By signing up you agree to our Terms of Service and Privacy Policy."
+      footer={
+        <>
+          Already have an account? <LinkButton label="Log in" to="/login" />
+        </>
+      }
+    >
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="signup-display-name">
+            Display Name
+          </label>
+          <div className={styles.inputWrap}>
+            <span className={styles.inputIcon}>{"\u{1F464}"}</span>
+            <input
+              className={`${styles.input} ${errors.displayName ? styles.error : ""}`}
+              id="signup-display-name"
+              name="displayName"
+              onChange={handleChange}
+              placeholder="Your name"
+              type="text"
+              value={formFields.displayName}
+            />
           </div>
-          <button
-            className={`${authButtonClass} bg-white text-stone-900`}
-            type="button"
-            onClick={signUpGPopup}
-          >
-            <Icon icon="devicon:google" width="16" height="16" />
-            Continue with Google
-          </button>
-          <Divider>or</Divider>
-          <TextField
-            sx={textFieldSx}
-            variant="outlined"
-            label="Display Name"
-            name="displayName"
-            type="text"
-            onChange={handleChange}
-            value={displayName}
-            required
-          />
-          <TextField
-            sx={textFieldSx}
-            variant="outlined"
-            label="Email"
-            type="email"
-            name="email"
-            onChange={handleChange}
-            value={email}
-            required
-          />
-          <TextField
-            sx={textFieldSx}
-            variant="outlined"
-            label="Password"
-            type="password"
-            name="password"
-            onChange={handleChange}
-            value={password}
-            required
-          />
-          <TextField
-            sx={textFieldSx}
-            variant="outlined"
-            label="Confirm Password"
-            type="password"
-            name="conPassword"
-            onChange={handleChange}
-            value={conPassword}
-            required
-          />
+          {errors.displayName ? (
+            <span className={styles.errorMessage}>{errors.displayName}</span>
+          ) : null}
+        </div>
 
-          <button
-            className={`${authButtonClass} border-transparent bg-[#582924] text-stone-50`}
-            type="submit"
-          >
-            Submit
-          </button>
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="signup-email">
+            Email Address
+          </label>
+          <div className={styles.inputWrap}>
+            <span className={styles.inputIcon}>{"\u2709\uFE0F"}</span>
+            <input
+              className={`${styles.input} ${errors.email ? styles.error : ""}`}
+              id="signup-email"
+              name="email"
+              onChange={handleChange}
+              placeholder="you@example.com"
+              type="email"
+              value={formFields.email}
+            />
+          </div>
+          {errors.email ? (
+            <span className={styles.errorMessage}>{errors.email}</span>
+          ) : null}
+        </div>
 
-          <span className="text-center">
-            Already have an account?{" "}
-            <Link
-              className="text-sky-500 no-underline hover:underline"
-              to="/login"
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="signup-password">
+            Password
+          </label>
+          <div className={styles.inputWrap}>
+            <span className={styles.inputIcon}>{"\u{1F512}"}</span>
+            <input
+              className={`${styles.input} ${errors.password ? styles.error : ""}`}
+              id="signup-password"
+              name="password"
+              onChange={handleChange}
+              placeholder="Min. 8 characters"
+              type={showPassword ? "text" : "password"}
+              value={formFields.password}
+            />
+            <button
+              className={styles.passwordToggle}
+              onClick={() => setShowPassword((current) => !current)}
+              type="button"
             >
-              Sign In
-            </Link>
-          </span>
-        </form>
-      </div>
-    </div>
+              {showPassword ? "\u{1F648}" : "\u{1F441}"}
+            </button>
+          </div>
+          {errors.password ? (
+            <span className={styles.errorMessage}>{errors.password}</span>
+          ) : null}
+          <div className={styles.strengthMeter} aria-hidden="true">
+            {[1, 2, 3, 4].map((index) => (
+              <span
+                className={`${styles.strengthSegment} ${
+                  index <= passwordStrength.score ? styles.filled : ""
+                }`}
+                key={index}
+              />
+            ))}
+          </div>
+          <div className={styles.strengthLabel}>{passwordStrength.label}</div>
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="signup-confirm-password">
+            Confirm Password
+          </label>
+          <div className={styles.inputWrap}>
+            <span className={styles.inputIcon}>{"\u{1F512}"}</span>
+            <input
+              className={`${styles.input} ${errors.conPassword ? styles.error : ""}`}
+              id="signup-confirm-password"
+              name="conPassword"
+              onChange={handleChange}
+              placeholder="Repeat password"
+              type={showConfirmPassword ? "text" : "password"}
+              value={formFields.conPassword}
+            />
+            <button
+              className={styles.passwordToggle}
+              onClick={() => setShowConfirmPassword((current) => !current)}
+              type="button"
+            >
+              {showConfirmPassword ? "\u{1F648}" : "\u{1F441}"}
+            </button>
+          </div>
+          {errors.conPassword ? (
+            <span className={styles.errorMessage}>{errors.conPassword}</span>
+          ) : null}
+        </div>
+
+        <button
+          className={styles.submitButton}
+          disabled={isSubmitting}
+          type="submit"
+        >
+          {isSubmitting ? "Creating Account..." : "Create My Account"}
+        </button>
+
+        <div className={styles.divider}>or sign up with</div>
+
+        <button
+          className={styles.googleButton}
+          disabled={isSubmitting}
+          onClick={handleGoogleAuth}
+          type="button"
+        >
+          <Icon icon="devicon:google" height="18" width="18" />
+          Continue with Google
+        </button>
+      </form>
+    </AuthPage>
   );
 };
+
+type LinkButtonProps = {
+  label: string;
+  to: string;
+};
+
+const LinkButton = ({ label, to }: LinkButtonProps) => (
+  <Link className={styles.switchButton} to={to}>
+    {label}
+  </Link>
+);
 
 export default SignUp;

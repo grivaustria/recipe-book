@@ -1,0 +1,133 @@
+.section-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--amber);
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.section-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--dark);
+  max-width: 480px;
+  margin-bottom: 64px;
+}
+
+/* HOW IT WORKS */
+.how {
+  background: var(--dark);
+  padding: 100px 60px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: -300px;
+    left: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(
+      circle,
+      rgba(201, 124, 43, 0.15) 0%,
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+
+  .section-label {
+    color: var(--amber-light);
+  }
+
+  .section-title {
+    color: var(--cream);
+  }
+}
+
+.how-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  position: relative;
+}
+
+.step {
+  padding: 0 24px;
+}
+
+.step-num {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 124, 43, 0.4);
+  color: var(--amber-light);
+  font-family: "Playfair Display", serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+  background: rgba(201, 124, 43, 0.08);
+}
+
+.step-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 14px;
+}
+
+.step-desc {
+  font-size: 0.88rem;
+  color: rgba(245, 240, 232, 0.5);
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+
+@media (max-width: 900px) {
+  .how {
+    padding: 60px 24px;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 40px;
+
+    &::before {
+      display: none;
+    }
+  }
+}
