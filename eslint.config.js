@@ -75,7 +75,7 @@ const sharedRules = {
     },
   ],
   radix: "error",
-  "spaced-comment": "error",
+  "spaced-comment": "off",
   yoda: "error",
   "react-refresh/only-export-components": [
     "warn",

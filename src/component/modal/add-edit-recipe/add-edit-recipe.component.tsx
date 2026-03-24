@@ -1,4 +1,10 @@
-import { type FormEvent, useEffect } from "react";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "react-toastify";
 import type { DishDataType } from "@app-types/dish";
 import { useRecipeForm } from "@hooks/useRecipeForm";
@@ -9,6 +15,11 @@ import {
   useAddRecipeMutation,
   useUpdateRecipeMutation,
 } from "@store/services/recipesApi";
+import {
+  deleteDishImageFromSupabase,
+  uploadDishImageToSupabase,
+  validateDishImageFile,
+} from "@utils/supabase.utils";
 import style from "./add-edit-recipe.module.scss";
 
 type AddEditRecipeProps = {
@@ -20,6 +31,15 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
   const [addRecipe] = useAddRecipeMutation();
   const [updateRecipe] = useUpdateRecipeMutation();
   const isEditMode = Boolean(recipe);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [fallbackPreview, setFallbackPreview] = useState(
+    () =>
+      recipe?.dishImage ||
+      generatedDishImage(recipe?.dishName || "Untitled Recipe"),
+  );
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const { overflow } = document.body.style;
@@ -33,18 +53,78 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
   const {
     dishName,
     dishType,
+    dishImage,
     ingredientsMarkdown,
     procedureMarkdown,
     handleInputChange,
+    setDishImage,
     setIngredientsMarkdown,
     setProcedureMarkdown,
+    clearFormState,
     parseIngredientsMarkdown,
     parseProcedureMarkdown,
   } = useRecipeForm({
-    onClose,
     initialRecipe: recipe,
     isNewRecipe: !recipe,
   });
+
+  useEffect(() => {
+    if (imagePreviewUrl) {
+      return () => {
+        URL.revokeObjectURL(imagePreviewUrl);
+      };
+    }
+  }, [imagePreviewUrl]);
+
+  useEffect(() => {
+    if (!imagePreviewUrl && !dishImage) {
+      setFallbackPreview(generatedDishImage(dishName || "Untitled Recipe"));
+    }
+  }, [dishImage, dishName, imagePreviewUrl]);
+
+  const previewImage = imagePreviewUrl || dishImage || fallbackPreview;
+
+  const handleChooseImage = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleRemoveImage = () => {
+    if (imagePreviewUrl) {
+      URL.revokeObjectURL(imagePreviewUrl);
+    }
+
+    setSelectedImageFile(null);
+    setImagePreviewUrl(null);
+    setDishImage("");
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    try {
+      validateDishImageFile(file);
+
+      if (imagePreviewUrl) {
+        URL.revokeObjectURL(imagePreviewUrl);
+      }
+
+      setSelectedImageFile(file);
+      setImagePreviewUrl(URL.createObjectURL(file));
+    } catch (error) {
+      event.target.value = "";
+      const message =
+        error instanceof Error ? error.message : "Invalid dish image";
+      toast.error(message);
+    }
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -60,17 +140,29 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
       step.trim(),
     );
 
-    const dishImage = recipe?.dishImage || generatedDishImage(dishName);
-
-    const recipeData: DishDataType = {
-      dishName,
-      dishType,
-      dishImage,
-      ingredients,
-      procedure,
-    };
+    setIsSubmitting(true);
+    let uploadedImageUrl: string | undefined;
 
     try {
+      let nextDishImage = dishImage;
+
+      if (selectedImageFile) {
+        uploadedImageUrl = await uploadDishImageToSupabase(selectedImageFile);
+        nextDishImage = uploadedImageUrl;
+      }
+
+      if (!nextDishImage) {
+        nextDishImage = generatedDishImage(dishName);
+      }
+
+      const recipeData: DishDataType = {
+        dishName,
+        dishType,
+        dishImage: nextDishImage,
+        ingredients,
+        procedure,
+      };
+
       if (isEditMode) {
         if (!recipe?.id) {
           throw new Error("Recipe ID is missing for update.");
@@ -79,19 +171,31 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
         await updateRecipe({
           recipeId: recipe.id,
           updatedData: recipeData,
+          previousImageUrl: recipe.dishImage,
         }).unwrap();
       } else {
         await addRecipe(recipeData).unwrap();
+        clearFormState();
       }
 
       onClose();
     } catch (error) {
+      if (uploadedImageUrl) {
+        try {
+          await deleteDishImageFromSupabase(uploadedImageUrl);
+        } catch {
+          // Ignore cleanup failures here and preserve the main submit error.
+        }
+      }
+
       const fallbackMessage = isEditMode
         ? "Error updating recipe"
         : "Error adding recipe";
       const message = error instanceof Error ? error.message : fallbackMessage;
 
       toast.error(message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -160,6 +264,55 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
             </div>
           </div>
 
+          <div className={style.imageSection}>
+            <div className={style.imageHeader}>
+              <label className={style.formLabel} htmlFor="dishImageUpload">
+                Dish Image
+              </label>
+              <span className={style.imageHint}>
+                JPG, JPEG, PNG, WEBP, or GIF up to 3MB
+              </span>
+            </div>
+
+            <input
+              ref={fileInputRef}
+              id="dishImageUpload"
+              type="file"
+              accept=".jpg,.jpeg,.png,.webp,.gif,image/png,image/jpeg,image/webp,image/gif"
+              className={style.fileInput}
+              onChange={handleImageChange}
+            />
+
+            <div className={style.imageCard}>
+              <div className={style.imagePreviewWrap}>
+                <img
+                  className={style.imagePreview}
+                  src={previewImage}
+                  alt={dishName || "Recipe preview"}
+                />
+              </div>
+
+              <div className={style.imageActions}>
+                <button
+                  className={style.btnSecondary}
+                  type="button"
+                  onClick={handleChooseImage}
+                >
+                  {selectedImageFile || dishImage
+                    ? "Replace Image"
+                    : "Upload Image"}
+                </button>
+                <button
+                  className={style.btnGhost}
+                  type="button"
+                  onClick={handleRemoveImage}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div className={style.editorBlock}>
             <IngredientList
               markdown={ingredientsMarkdown}
@@ -181,11 +334,20 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
               className={style.btnSecondary}
               type="button"
               onClick={onClose}
+              disabled={isSubmitting}
             >
               Cancel
             </button>
-            <button className={style.btnPrimary} type="submit">
-              {isEditMode ? "Update Recipe" : "Save Recipe"}
+            <button
+              className={style.btnPrimary}
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting
+                ? "Uploading..."
+                : isEditMode
+                  ? "Update Recipe"
+                  : "Save Recipe"}
             </button>
           </div>
         </form>

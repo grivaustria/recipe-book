@@ -1,13 +1,9 @@
-import { type ChangeEvent, useState, useEffect } from "react";
-import { toast } from "react-toastify";
-import { generatedDishImage } from "@utils/generatedDishImage";
+import { type ChangeEvent, useEffect, useState } from "react";
 import type { DishDataType, Ingredient } from "@app-types/dish";
-import { useAddRecipeMutation } from "@store/services/recipesApi";
 
 const LOCAL_STORAGE_KEY = "recipeFormDraft";
 
 interface UseRecipeFormProps {
-  onClose: () => void;
   initialRecipe?: DishDataType;
   isNewRecipe?: boolean;
 }
@@ -72,11 +68,9 @@ const markdownToProcedure = (markdown: string): string[] =>
     .filter((line) => line !== "");
 
 export const useRecipeForm = ({
-  onClose,
   initialRecipe,
   isNewRecipe,
 }: UseRecipeFormProps) => {
-  const [addRecipe] = useAddRecipeMutation();
   const savedRecipe: DishDataType | null = (() => {
     try {
       const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -139,42 +133,6 @@ export const useRecipeForm = ({
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const trimIngredients = markdownToIngredients(ingredientsMarkdown).filter(
-      (ing) => ing.quantity.trim() || ing.unit.trim() || ing.name.trim(),
-    );
-
-    const trimProcedure = markdownToProcedure(procedureMarkdown).filter(
-      (step) => step.trim() !== "",
-    );
-
-    const generatedImage = generatedDishImage(dishName);
-
-    const recipeDataToSave: DishDataType = {
-      dishName,
-      dishType,
-      dishImage: generatedImage,
-      ingredients: trimIngredients,
-      procedure: trimProcedure,
-    };
-
-    try {
-      await addRecipe(recipeDataToSave).unwrap();
-      clearFormState();
-      onClose();
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Error adding recipe";
-      toast.error(message);
-    }
-  };
-
-  const handleCancel = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
-  };
-
   return {
     dishName,
     dishType,
@@ -182,10 +140,10 @@ export const useRecipeForm = ({
     ingredientsMarkdown,
     procedureMarkdown,
     handleInputChange,
+    setDishImage,
     setIngredientsMarkdown,
     setProcedureMarkdown,
-    handleSubmit,
-    handleCancel,
+    clearFormState,
     parseIngredientsMarkdown: markdownToIngredients,
     parseProcedureMarkdown: markdownToProcedure,
   };

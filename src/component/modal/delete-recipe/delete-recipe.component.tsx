@@ -27,7 +27,10 @@ const DeleteRecipe = ({ dish, onClose }: DeleteRecipeProps) => {
   const handleConfirmDelete = async () => {
     if (id) {
       try {
-        await deleteRecipe(id).unwrap();
+        await deleteRecipe({
+          recipeId: id,
+          imageUrl: dish.dishImage,
+        }).unwrap();
         onClose();
       } catch (error) {
         const message =

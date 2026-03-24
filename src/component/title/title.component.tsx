@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AuthUser from "@component/auth-user/auth-user.component";
 import AppDrawer from "@component/app-drawer/app-drawer.component";
 
-import { logOutUser } from "@utils/firebase.utils";
+import { logOutUser } from "@utils/supabase.utils";
 import { useSetAuthUser } from "@hooks/useSetAuthUser";
 import { useWindowResize } from "@hooks/useWindowResize";
 

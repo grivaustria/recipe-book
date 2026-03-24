@@ -7,7 +7,7 @@ import { useSetAuthUser } from "@hooks/useSetAuthUser";
 
 import Drawer from "@mui/material/Drawer";
 import { Box, Button, Divider } from "@mui/material";
-import { logOutUser } from "@utils/firebase.utils";
+import { logOutUser } from "@utils/supabase.utils";
 
 const AppDrawer = () => {
   const [open, setOpen] = useState<boolean>(false);

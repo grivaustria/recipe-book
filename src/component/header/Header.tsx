@@ -5,7 +5,7 @@ import Tag from "@component/tag/Tag";
 import AuthUser from "@component/auth-user/auth-user.component";
 import { useNavigate } from "react-router-dom";
 import { useSetAuthUser } from "@hooks/useSetAuthUser";
-import { logOutUser } from "@utils/firebase.utils";
+import { logOutUser } from "@utils/supabase.utils";
 import { useWindowResize } from "@src/hooks/useWindowResize";
 
 type IHeader = {

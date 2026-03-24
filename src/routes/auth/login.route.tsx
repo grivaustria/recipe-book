@@ -1,14 +1,14 @@
 import { Icon } from "@iconify/react";
-import { FirebaseError } from "firebase/app";
 import { type ChangeEvent, type FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import {
-  createUserDocFromAuth,
+  getAuthErrorCode,
+  isSupabaseAuthError,
   loginUserEmailPassword,
-  signInWithGooglePopup,
-} from "../../utils/firebase.utils";
+  signInWithGoogle,
+} from "../../utils/supabase.utils";
 import { refreshToHome } from "../../utils/auth.utils";
 
 import AuthPage from "./index";
@@ -64,15 +64,11 @@ const Login = () => {
       setFormFields(defaultLoginFields);
       refreshToHome();
     } catch (error) {
-      if (error instanceof FirebaseError) {
-        switch (error.code) {
-          case "auth/invalid-credential":
-          case "auth/user-not-found":
-          case "auth/wrong-password":
+      if (isSupabaseAuthError(error)) {
+        switch (getAuthErrorCode(error)) {
+          case "invalid_credentials":
+          case "email_not_confirmed":
             toast.error("Invalid email or password. Please try again.");
-            break;
-          case "auth/too-many-requests":
-            toast.error("Too many attempts. Please try again later.");
             break;
           default:
             toast.error("Unable to sign in right now. Please try again.");
@@ -89,14 +85,15 @@ const Login = () => {
     setIsSubmitting(true);
 
     try {
-      const { user } = await signInWithGooglePopup();
-      await createUserDocFromAuth(user);
-      toast.success("Signed in with Google.");
-      refreshToHome();
+      await signInWithGoogle();
     } catch {
       toast.error("Error continuing with Google.");
-    } finally {
       setIsSubmitting(false);
+      return;
+    } finally {
+      if (!document.hidden) {
+        setIsSubmitting(false);
+      }
     }
   };
 
