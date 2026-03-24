@@ -124,6 +124,60 @@
   background: var(--cream);
 }
 
+.imageSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.imageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.imageHint {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.fileInput {
+  display: none;
+}
+
+.imageCard {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 16px;
+  align-items: center;
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  background: var(--cream);
+}
+
+.imagePreviewWrap {
+  overflow: hidden;
+  border-radius: 14px;
+  aspect-ratio: 4 / 3;
+  background: #efe2d0;
+}
+
+.imagePreview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.imageActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
 .editorBlock :global(.mdx-editor-toolbar) {
   border-bottom: 1px solid var(--border);
   background: var(--cream);
@@ -148,7 +202,8 @@
 }
 
 .btnPrimary,
-.btnSecondary {
+.btnSecondary,
+.btnGhost {
   border-radius: 999px;
   font-family: "Lato", sans-serif;
   font-size: 0.92rem;
@@ -181,6 +236,24 @@
   }
 }
 
+.btnGhost {
+  background: rgba(201, 124, 43, 0.08);
+  color: var(--amber);
+  border: 1.5px solid rgba(201, 124, 43, 0.22);
+
+  &:hover {
+    background: rgba(201, 124, 43, 0.14);
+  }
+}
+
+.btnPrimary:disabled,
+.btnSecondary:disabled,
+.btnGhost:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
 @media (max-width: 720px) {
   .modal {
     max-height: 96vh;
@@ -198,5 +271,14 @@
 
   .footer {
     flex-direction: column;
+  }
+
+  .imageCard {
+    grid-template-columns: 1fr;
+  }
+
+  .imageHeader {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

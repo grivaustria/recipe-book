@@ -1,14 +1,14 @@
 import { Icon } from "@iconify/react";
-import { FirebaseError } from "firebase/app";
 import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import {
   authCreateUserEmailPassword,
-  createUserDocFromAuth,
-  signInWithGooglePopup,
-} from "../../utils/firebase.utils";
+  getAuthErrorCode,
+  isSupabaseAuthError,
+  signInWithGoogle,
+} from "../../utils/supabase.utils";
 import { refreshToHome } from "../../utils/auth.utils";
 
 import AuthPage from "./index";
@@ -94,26 +94,28 @@ const SignUp = () => {
     setIsSubmitting(true);
 
     try {
-      const { user } = await authCreateUserEmailPassword(
+      const { session } = await authCreateUserEmailPassword(
         formFields.email,
         formFields.password,
         formFields.displayName,
       );
 
-      await createUserDocFromAuth(user, {
-        displayName: formFields.displayName,
-      });
-
-      toast.success("Account created successfully.");
+      toast.success(
+        session
+          ? "Account created successfully."
+          : "Account created. Check your email to confirm your signup.",
+      );
       setFormFields(defaultSignupFields);
-      refreshToHome();
+      if (session) {
+        refreshToHome();
+      }
     } catch (error) {
-      if (error instanceof FirebaseError) {
-        switch (error.code) {
-          case "auth/email-already-in-use":
+      if (isSupabaseAuthError(error)) {
+        switch (getAuthErrorCode(error)) {
+          case "user_already_exists":
             toast.error("That email is already in use.");
             break;
-          case "auth/weak-password":
+          case "weak_password":
             toast.error("Choose a stronger password.");
             break;
           default:
@@ -131,14 +133,15 @@ const SignUp = () => {
     setIsSubmitting(true);
 
     try {
-      const { user } = await signInWithGooglePopup();
-      await createUserDocFromAuth(user);
-      toast.success("Signed in with Google.");
-      refreshToHome();
+      await signInWithGoogle();
     } catch {
       toast.error("Error continuing with Google.");
-    } finally {
       setIsSubmitting(false);
+      return;
+    } finally {
+      if (!document.hidden) {
+        setIsSubmitting(false);
+      }
     }
   };
 

@@ -1,24 +1,27 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { onAuthStateChanged, type User } from "firebase/auth";
 import type { DishDataType } from "@app-types/dish";
 import { catchError } from "@store/helper/query";
+import { supabase } from "@utils/supabase";
 import {
-  addRecipeToFirestore,
-  auth,
-  deleteRecipeFromFirestore,
-  getRecipesFromFirestore,
-  updateRecipeInFirestore,
-} from "@utils/firebase.utils";
+  addRecipeToSupabase,
+  deleteRecipeFromSupabase,
+  getCurrentAuthUser,
+  getRecipesFromSupabase,
+  type AuthUserData,
+  updateRecipeInSupabase,
+} from "@utils/supabase.utils";
+
+export type { AuthUserData };
 
 type UpdateRecipePayload = {
   recipeId: string;
   updatedData: DishDataType;
+  previousImageUrl?: string;
 };
 
-export type AuthUserData = {
-  uid: string;
-  displayName: string | null;
-  email: string | null;
+type DeleteRecipePayload = {
+  recipeId: string;
+  imageUrl?: string;
 };
 
 type AuthUserCacheLifecycleApi = {
@@ -26,22 +29,30 @@ type AuthUserCacheLifecycleApi = {
   dispatch: (action: unknown) => unknown;
 };
 
-const mapAuthUser = (user: User | null): AuthUserData | null =>
+const mapAuthUser = (
+  user: {
+    id: string;
+    email?: string | null;
+    user_metadata?: {
+      display_name?: string;
+      full_name?: string;
+      name?: string;
+    };
+  } | null,
+): AuthUserData | null =>
   user
     ? {
-        uid: user.uid,
-        displayName: user.displayName,
-        email: user.email,
+        uid: user.id,
+        displayName:
+          user.user_metadata?.display_name ??
+          user.user_metadata?.full_name ??
+          user.user_metadata?.name ??
+          null,
+        email: user.email ?? null,
       }
     : null;
 
-const getInitialAuthUser = () =>
-  new Promise<AuthUserData | null>((resolve) => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      unsubscribe();
-      resolve(mapAuthUser(currentUser));
-    });
-  });
+const getInitialAuthUser = async () => getCurrentAuthUser();
 
 const sanitizeRecipe = (
   recipe: DishDataType & Record<string, unknown>,
@@ -84,18 +95,20 @@ export const recipesApi = createApi({
         _arg: void,
         { cacheEntryRemoved, dispatch }: AuthUserCacheLifecycleApi,
       ) {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const {
+          data: { subscription },
+        } = supabase.auth.onAuthStateChange((_event, session) => {
           dispatch(
             recipesApi.util.upsertQueryData(
               "getAuthUser",
               undefined,
-              mapAuthUser(currentUser),
+              mapAuthUser(session?.user ?? null),
             ),
           );
         });
 
         await cacheEntryRemoved;
-        unsubscribe();
+        subscription.unsubscribe();
       },
     }),
     getRecipes: builder.query<DishDataType[], void>({
@@ -103,7 +116,7 @@ export const recipesApi = createApi({
         return runQuery(
           async () =>
             (
-              (await getRecipesFromFirestore()) as (DishDataType &
+              (await getRecipesFromSupabase()) as (DishDataType &
                 Record<string, unknown>)[]
             ).map(sanitizeRecipe),
           "Error fetching recipes",
@@ -111,28 +124,33 @@ export const recipesApi = createApi({
       },
       providesTags: ["Recipes"],
     }),
-    addRecipe: builder.mutation<void, DishDataType>({
+    addRecipe: builder.mutation<string, DishDataType>({
       async queryFn(recipe: DishDataType) {
         return runQuery(
-          async () => addRecipeToFirestore(recipe),
+          async () => addRecipeToSupabase(recipe),
           "Error adding recipe",
         );
       },
       invalidatesTags: ["Recipes"],
     }),
     updateRecipe: builder.mutation<void, UpdateRecipePayload>({
-      async queryFn({ recipeId, updatedData }: UpdateRecipePayload) {
+      async queryFn({
+        recipeId,
+        updatedData,
+        previousImageUrl,
+      }: UpdateRecipePayload) {
         return runQuery(
-          async () => updateRecipeInFirestore(recipeId, updatedData),
+          async () =>
+            updateRecipeInSupabase(recipeId, updatedData, previousImageUrl),
           "Error updating recipe",
         );
       },
       invalidatesTags: ["Recipes"],
     }),
-    deleteRecipe: builder.mutation<void, string>({
-      async queryFn(recipeId: string) {
+    deleteRecipe: builder.mutation<void, DeleteRecipePayload>({
+      async queryFn({ recipeId, imageUrl }: DeleteRecipePayload) {
         return runQuery(
-          async () => deleteRecipeFromFirestore(recipeId),
+          async () => deleteRecipeFromSupabase(recipeId, imageUrl),
           "Error deleting recipe",
         );
       },

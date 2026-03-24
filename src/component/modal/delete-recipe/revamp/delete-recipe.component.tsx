@@ -29,7 +29,10 @@ const DeleteRecipe = ({ dish, onClose }: DeleteRecipeProps) => {
     }
 
     try {
-      await deleteRecipe(id).unwrap();
+      await deleteRecipe({
+        recipeId: id,
+        imageUrl: dish.dishImage,
+      }).unwrap();
       onClose();
     } catch (error) {
       const message =

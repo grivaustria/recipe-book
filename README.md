@@ -1,27 +1,30 @@
 # Dish Galeria
 
-Dish Galeria is a small personal web app for collecting and managing recipes in one place. It includes a public landing page, Firebase authentication, and an authenticated recipe dashboard where users can add, browse, update, and delete their own dishes.
+Dish Galeria is a personal recipe web app for saving, organizing, and revisiting favorite dishes in one place. It includes a public landing page, Supabase authentication, and a private dashboard where each user can manage their own recipe collection.
+
+This project originally used Firebase for authentication and recipe storage, and was recently migrated to Supabase. Some legacy Firebase files may still exist in the repo during cleanup, but the active app flow now runs on Supabase.
 
 ## Overview
 
-This project is built as a mini-project with real app structure rather than a single demo screen. It combines:
+This project is structured like a small production app rather than a single-page demo. It includes:
 
 - a marketing-style landing page
-- email/password and Google authentication
-- Firestore-backed recipe storage
+- email/password and Google authentication with Supabase
+- user-scoped recipe storage
 - gallery browsing, filtering, and search
-- modal-based recipe CRUD flows
+- modal-based recipe create, update, view, and delete flows
+- optional dish image upload to Supabase Storage
 
 ## Features
 
-- Public landing page with section-based component styling
-- Separate login and signup routes with a shared auth layout
-- Firebase email/password authentication
-- Google sign-in
-- Firestore-backed recipe data per authenticated user
-- Add, view, update, and delete recipe flows
+- Public landing page with section-based layout and branding
+- Separate login and signup routes with shared auth UI
+- Supabase email/password authentication
+- Google sign-in with Supabase OAuth
+- Per-user recipe CRUD backed by Supabase
 - Search and category filtering
-- Generated fallback images for dishes without uploaded artwork
+- Dish image upload with type validation and a 3 MB limit
+- Generated fallback images when no dish image is provided
 - Toast feedback for auth and recipe actions
 - Responsive UI across landing, auth, and app screens
 
@@ -32,8 +35,9 @@ This project is built as a mini-project with real app structure rather than a si
 - Vite
 - React Router
 - Redux Toolkit Query
-- Firebase Auth
-- Firestore
+- Supabase Auth
+- Supabase Database
+- Supabase Storage
 - Sass modules
 - MUI
 - Tailwind CSS 4
@@ -46,6 +50,7 @@ This project is built as a mini-project with real app structure rather than a si
 
 - Node.js 18+
 - npm
+- a Supabase project
 
 ### Install
 
@@ -53,7 +58,33 @@ This project is built as a mini-project with real app structure rather than a si
 npm install
 ```
 
-### Run locally
+### Environment Variables
+
+Create a `.env` file in the project root with:
+
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_or_publishable_key
+```
+
+The app reads these from [src/utils/supabase.ts](/c:/Users/User/Documents/personal/recipe-book/src/utils/supabase.ts).
+
+### Supabase Setup
+
+Run the SQL migrations in your Supabase project:
+
+1. Run [supabase/migrations/0001_initial_schema.sql](/c:/Users/User/Documents/personal/recipe-book/supabase/migrations/0001_initial_schema.sql)
+2. Run [supabase/migrations/0002_recipe_images_storage.sql](/c:/Users/User/Documents/personal/recipe-book/supabase/migrations/0002_recipe_images_storage.sql) if you want dish image upload enabled
+
+Then configure authentication in the Supabase dashboard:
+
+1. Enable `Email` in `Authentication > Providers`
+2. Enable `Google` if you want Google sign-in
+3. Add your local and deployed URLs in `Authentication > URL Configuration`
+
+For more detailed setup notes, see [SUPABASE_MIGRATION.md](/c:/Users/User/Documents/personal/recipe-book/SUPABASE_MIGRATION.md).
+
+### Run Locally
 
 ```bash
 npm run dev
@@ -81,11 +112,11 @@ npm run devnet
 
 - `/` shows the landing page for signed-out users and the main app for signed-in users
 - `/auth` redirects to `/login`
-- `/login` login page
-- `/signup` signup page
-- `/recipe/view/:slug` recipe view modal route
-- `/recipe/update/:slug` recipe update modal route
-- `/recipe/delete/:slug` recipe delete modal route
+- `/login` shows the login page
+- `/signup` shows the signup page
+- `/recipe/view/:slug` shows the recipe view modal route
+- `/recipe/update/:slug` shows the recipe update modal route
+- `/recipe/delete/:slug` shows the recipe delete modal route
 
 ## Project Structure
 
@@ -99,7 +130,10 @@ src/
   routes/        Landing, auth, and main app routes
   store/         RTK Query API and Redux store setup
   types/         Shared TypeScript types
-  utils/         Firebase helpers, auth helpers, image generation, and theme utilities
+  utils/         Supabase helpers, auth helpers, image generation, and theme utilities
+
+supabase/
+  migrations/    SQL schema and storage policy migrations
 ```
 
 ## Path Aliases
@@ -121,12 +155,22 @@ The app uses aliases configured in `tsconfig.app.json` and `vite.config.ts`:
 
 1. Signed-out users land on the public landing page.
 2. The landing page CTA routes them to signup.
-3. Users authenticate with email/password or Google.
-4. After successful authentication, the app refreshes and loads the authenticated experience.
-5. Signed-in users land on the main recipe dashboard.
-6. Recipes are fetched from Firestore and displayed in the gallery.
-7. Users can search, filter, and manage recipes through modal-based flows.
+3. Users authenticate with email/password or Google through Supabase.
+4. After successful authentication, the app loads the authenticated dashboard.
+5. Signed-in users can add, view, update, delete, search, and filter recipes.
+6. Recipe data is scoped to the authenticated user through Supabase RLS policies.
+7. Dish images can be uploaded to Supabase Storage or generated locally as fallbacks.
 
-## Firebase Note
+## Image Upload Notes
 
-Firebase setup is currently defined in [`src/utils/firebase.utils.js`](src/utils/firebase.utils.js). If you plan to deploy or share this project publicly, moving those config values into Vite environment variables would be a better next step.
+- Dish image uploads are stored in the `recipe-images` Supabase Storage bucket.
+- Allowed file types are `.jpg`, `.jpeg`, `.png`, `.webp`, and `.gif`.
+- Client-side validation limits uploads to `3 MB`.
+- Uploaded files are stored in per-user folders so storage RLS can enforce ownership.
+- If no image is uploaded, the app generates a fallback image from the dish name.
+
+## Notes
+
+- The app previously used Firebase and was recently migrated to Supabase for auth, database access, and storage.
+- The repo still contains some legacy Firebase files while the migration cleanup is being finalized, but the active auth and recipe flows now use Supabase.
+- If you are troubleshooting setup or RLS errors, start with [SUPABASE_MIGRATION.md](/c:/Users/User/Documents/personal/recipe-book/SUPABASE_MIGRATION.md).

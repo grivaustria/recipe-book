@@ -15,7 +15,7 @@ const LPNavigation = () => {
     {
       id: "link-categories",
       link: "#categories",
-      field: "How it Works",
+      field: "Categories",
       isCta: false,
     },
     { id: "link-signup", link: "#signup", field: "Start Free", isCta: true },
