@@ -152,12 +152,12 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
-}
 
-.btnDelete:hover {
-  background: var(--terracotta);
-  color: #fff;
-  border-color: var(--terracotta);
+  &:hover {
+    background: var(--terracotta);
+    color: #fff;
+    border-color: var(--terracotta);
+  }
 }
 
 .btnEdit {
@@ -171,11 +171,11 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
-}
 
-.btnEdit:hover {
-  border-color: var(--dark);
-  background: rgba(26, 18, 8, 0.05);
+  &:hover {
+    border-color: var(--dark);
+    background: rgba(26, 18, 8, 0.05);
+  }
 }
 
 .btnSave {
@@ -193,11 +193,11 @@
     background 0.2s,
     transform 0.2s;
   letter-spacing: 0.03em;
-}
 
-.btnSave:hover {
-  background: var(--brown);
-  transform: translateY(-1px);
+  &:hover {
+    background: var(--brown);
+    transform: translateY(-1px);
+  }
 }
 
 .modalClose {
@@ -217,8 +217,8 @@
   color: var(--dark);
   transition: background 0.2s;
   z-index: 10;
-}
 
-.modalClose:hover {
-  background: #fff;
+  &:hover {
+    background: #fff;
+  }
 }

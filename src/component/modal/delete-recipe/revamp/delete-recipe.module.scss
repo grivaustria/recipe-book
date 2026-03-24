@@ -102,22 +102,22 @@
   background: transparent;
   color: var(--muted);
   border: 1.5px solid var(--border);
-}
 
-.btnSecondary:hover {
-  color: var(--dark);
-  border-color: var(--muted);
+  &:hover {
+    color: var(--dark);
+    border-color: var(--muted);
+  }
 }
 
 .btnDeleteConfirm {
   background: var(--terracotta);
   color: #fff;
   border: none;
-}
 
-.btnDeleteConfirm:hover {
-  background: #b04523;
-  transform: translateY(-1px);
+  &:hover {
+    background: #b04523;
+    transform: translateY(-1px);
+  }
 }
 
 @media (max-width: 640px) {

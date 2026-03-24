@@ -1,28 +1,41 @@
 # Dish Galeria
 
-A personal recipe collection app built with React, Vite, Firebase, and TypeScript. Users can sign up, log in, save recipes, browse their collection, and manage entries through modal-based add, view, update, and delete flows.
+Dish Galeria is a small personal web app for collecting and managing recipes in one place. It includes a public landing page, Firebase authentication, and an authenticated recipe dashboard where users can add, browse, update, and delete their own dishes.
+
+## Overview
+
+This project is built as a mini-project with real app structure rather than a single demo screen. It combines:
+
+- a marketing-style landing page
+- email/password and Google authentication
+- Firestore-backed recipe storage
+- gallery browsing, filtering, and search
+- modal-based recipe CRUD flows
 
 ## Features
 
-- Firebase email/password auth
+- Public landing page with section-based component styling
+- Separate login and signup routes with a shared auth layout
+- Firebase email/password authentication
 - Google sign-in
-- Firestore-backed recipe storage
+- Firestore-backed recipe data per authenticated user
 - Add, view, update, and delete recipe flows
-- Search and dish-type filtering
-- Generated placeholder recipe images for dishes without uploaded artwork
-- Toast feedback for create, update, and delete actions
-- Responsive UI with route-driven modals
+- Search and category filtering
+- Generated fallback images for dishes without uploaded artwork
+- Toast feedback for auth and recipe actions
+- Responsive UI across landing, auth, and app screens
 
 ## Tech Stack
 
 - React 19
 - TypeScript
 - Vite
-- Firebase Auth and Firestore
 - React Router
 - Redux Toolkit Query
-- MUI
+- Firebase Auth
+- Firestore
 - Sass modules
+- MUI
 - Tailwind CSS 4
 - React Toastify
 - Framer Motion
@@ -64,19 +77,29 @@ npm run devnet
 - `npm run prettier:check` checks formatting with Prettier
 - `npm run ci:check` runs lint, stylelint, format, and prettier checks
 
+## Routes
+
+- `/` shows the landing page for signed-out users and the main app for signed-in users
+- `/auth` redirects to `/login`
+- `/login` login page
+- `/signup` signup page
+- `/recipe/view/:slug` recipe view modal route
+- `/recipe/update/:slug` recipe update modal route
+- `/recipe/delete/:slug` recipe delete modal route
+
 ## Project Structure
 
 ```text
 src/
   assets/        Images, icons, and SVG assets
-  component/     Reusable UI pieces and modal components
+  component/     Reusable UI, auth, gallery, and modal components
   context/       React context providers
   data/          Static dish data and image mappings
   hooks/         App, auth, resize, and form hooks
-  routes/        Route-level pages and modal route orchestration
+  routes/        Landing, auth, and main app routes
   store/         RTK Query API and Redux store setup
   types/         Shared TypeScript types
-  utils/         Firebase helpers, image generation, and theme utilities
+  utils/         Firebase helpers, auth helpers, image generation, and theme utilities
 ```
 
 ## Path Aliases
@@ -96,21 +119,14 @@ The app uses aliases configured in `tsconfig.app.json` and `vite.config.ts`:
 
 ## App Flow
 
-1. Users sign in with email/password or Google.
-2. Authenticated users land on the main recipe dashboard.
-3. Recipes are fetched from Firestore and mapped into the gallery.
-4. Users can search, filter, open modal routes, and manage recipes.
-5. If a recipe has no stored image, the app can generate a temporary placeholder image from the dish name.
-
-## Routes
-
-- `/` main dashboard
-- `/login` login page
-- `/signup` signup page
-- `/recipe/view/:slug` recipe view modal
-- `/recipe/update/:slug` recipe update modal
-- `/recipe/delete/:slug` recipe delete modal
+1. Signed-out users land on the public landing page.
+2. The landing page CTA routes them to signup.
+3. Users authenticate with email/password or Google.
+4. After successful authentication, the app refreshes and loads the authenticated experience.
+5. Signed-in users land on the main recipe dashboard.
+6. Recipes are fetched from Firestore and displayed in the gallery.
+7. Users can search, filter, and manage recipes through modal-based flows.
 
 ## Firebase Note
 
-Firebase setup is currently defined in `src/utils/firebase.utils.js`. If you plan to deploy or share this project, moving those values into Vite environment variables would be a safer next step.
+Firebase setup is currently defined in [`src/utils/firebase.utils.js`](src/utils/firebase.utils.js). If you plan to deploy or share this project publicly, moving those config values into Vite environment variables would be a better next step.
