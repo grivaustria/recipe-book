@@ -6,19 +6,27 @@ import style from "./gallery.module.scss";
 
 type GalleryProps = {
   dishData: DishDataType[];
+  totalDishCount: number;
+  hasActiveGalleryFilter: boolean;
+  isFirstLoginWalkthroughOpen: boolean;
   onCardClick: (dish: DishDataType) => void;
   searchField: string;
   onAddRecipeClick: () => void;
   onDeleteClick: (dish: DishDataType) => void;
+  onDismissWalkthrough: () => void;
   isInitializing: boolean;
   isLoading: boolean;
 };
 
 const Gallery = ({
   dishData,
+  totalDishCount,
+  hasActiveGalleryFilter,
+  isFirstLoginWalkthroughOpen,
   onCardClick,
   onAddRecipeClick,
   onDeleteClick,
+  onDismissWalkthrough,
   isInitializing,
 }: GalleryProps) => {
   const dishCount = dishData.length;
@@ -35,9 +43,13 @@ const Gallery = ({
         ) : (
           <GalleryList
             dishData={dishData}
+            totalDishCount={totalDishCount}
+            hasActiveGalleryFilter={hasActiveGalleryFilter}
+            isFirstLoginWalkthroughOpen={isFirstLoginWalkthroughOpen}
             onCardClick={onCardClick}
             onDeleteClick={onDeleteClick}
             onAddRecipeClick={onAddRecipeClick}
+            onDismissWalkthrough={onDismissWalkthrough}
           />
         )}
       </div>

@@ -246,10 +246,19 @@
   justify-content: center;
   text-align: center;
   gap: 8px;
+  padding: 40px 28px;
 }
 
 .emptyEmoji {
   font-size: 2.5rem;
+}
+
+.emptyEyebrow {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--terracotta);
 }
 
 .emptyTitle {
@@ -261,4 +270,137 @@
 
 .emptySub {
   color: var(--muted);
+  max-width: 560px;
+}
+
+.walkthroughPanel {
+  width: min(100%, 980px);
+  margin-top: 20px;
+  padding: 24px;
+  border-radius: 28px;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(201, 124, 43, 0.18),
+      transparent 38%
+    ),
+    linear-gradient(135deg, #20170d 0%, #2a1d10 100%);
+  color: var(--cream);
+  text-align: left;
+  box-shadow: var(--shadow-lg);
+}
+
+.walkthroughHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.walkthroughLabel {
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber-light);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.walkthroughTitle {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  font-weight: 700;
+  color: var(--cream);
+}
+
+.walkthroughDismiss {
+  border: 1px solid rgba(245, 240, 232, 0.18);
+  background: rgba(245, 240, 232, 0.08);
+  color: var(--cream);
+  border-radius: 999px;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(245, 240, 232, 0.16);
+  }
+}
+
+.walkthroughSteps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.walkthroughStep {
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(245, 240, 232, 0.08);
+  border: 1px solid rgba(245, 240, 232, 0.1);
+}
+
+.walkthroughStepNumber {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+  font-family: "Playfair Display", serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--amber-light);
+  background: rgba(201, 124, 43, 0.14);
+  border: 1px solid rgba(201, 124, 43, 0.28);
+}
+
+.walkthroughStepTitle {
+  font-family: "Playfair Display", serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 10px;
+}
+
+.walkthroughStepDescription {
+  margin: 0;
+  color: rgba(245, 240, 232, 0.72);
+  line-height: 1.7;
+}
+
+.emptyAction {
+  margin-top: 12px;
+  border: none;
+  border-radius: 999px;
+  background: var(--terracotta);
+  color: var(--warm-white);
+  padding: 12px 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+@media (max-width: 900px) {
+  .walkthroughSteps {
+    grid-template-columns: 1fr;
+  }
+
+  .walkthroughHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .walkthroughDismiss {
+    align-self: flex-start;
+  }
 }
