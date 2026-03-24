@@ -17,6 +17,9 @@ const MainPage = () => {
     searchField,
     selectedDishType,
     dishFilter,
+    totalDishCount,
+    hasActiveGalleryFilter,
+    isFirstLoginWalkthroughOpen,
     isAddRecipeOpen,
     onSearchChange,
     viewRecipeClick,
@@ -26,6 +29,7 @@ const MainPage = () => {
     deleteRecipeClick,
     deleteRecipeClose,
     handleDishTypeChange,
+    dismissFirstLoginWalkthrough,
     isInitializing,
     isLoading,
   } = useApp();
@@ -84,10 +88,14 @@ const MainPage = () => {
           />
           <Gallery
             dishData={dishFilter}
+            totalDishCount={totalDishCount}
+            hasActiveGalleryFilter={hasActiveGalleryFilter}
+            isFirstLoginWalkthroughOpen={isFirstLoginWalkthroughOpen}
             onCardClick={viewRecipeClick}
             searchField={searchField}
             onAddRecipeClick={addRecipeClick}
             onDeleteClick={deleteRecipeClick}
+            onDismissWalkthrough={dismissFirstLoginWalkthrough}
             isInitializing={isInitializing}
             isLoading={isLoading}
           />

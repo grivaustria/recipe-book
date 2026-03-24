@@ -8,12 +8,17 @@ import {
 } from "@store/services/recipesApi";
 import { generatedDishImage } from "@utils/generatedDishImage";
 
+const buildWalkthroughStorageKey = (userId: string) =>
+  `dishGaleria:firstLoginWalkthroughDismissed:${userId}`;
+
 export const useApp = () => {
   const [searchField, setSearchField] = useState<string>("");
   const [selectedDishType, setSelectedDishType] = useState<string>("all");
   const [selectedDish, setSelectedDish] = useState<DishDataType | null>(null);
   const [isAddRecipeOpen, setIsAddRecipeOpen] = useState<boolean>(false);
   const [isDeleteRecipeOpen, setIsDeleteRecipeOpen] = useState<boolean>(false);
+  const [isFirstLoginWalkthroughOpen, setIsFirstLoginWalkthroughOpen] =
+    useState(false);
 
   const navigate = useNavigate();
   const { data: user, isLoading: isAuthLoading } = useGetAuthUserQuery();
@@ -33,6 +38,25 @@ export const useApp = () => {
   }, [isAuthLoading, navigate, user]);
 
   const isInitializing = isAuthLoading || Boolean(user && isLoading);
+  const hasActiveSearch = searchField.trim() !== "";
+  const hasActiveDishTypeFilter = selectedDishType !== "all";
+
+  useEffect(() => {
+    if (!user?.uid) {
+      setIsFirstLoginWalkthroughOpen(false);
+      return;
+    }
+
+    if (recipes.length > 0) {
+      setIsFirstLoginWalkthroughOpen(false);
+      return;
+    }
+
+    const hasDismissedWalkthrough =
+      localStorage.getItem(buildWalkthroughStorageKey(user.uid)) === "true";
+
+    setIsFirstLoginWalkthroughOpen(!hasDismissedWalkthrough);
+  }, [recipes.length, user?.uid]);
 
   const dishFilter = useMemo(() => {
     const recipesWithImages = recipes.map((dish) => {
@@ -110,10 +134,21 @@ export const useApp = () => {
     navigate("/");
   };
 
+  const dismissFirstLoginWalkthrough = () => {
+    if (user?.uid) {
+      localStorage.setItem(buildWalkthroughStorageKey(user.uid), "true");
+    }
+
+    setIsFirstLoginWalkthroughOpen(false);
+  };
+
   return {
     searchField,
     selectedDishType,
     dishFilter,
+    totalDishCount: recipes.length,
+    hasActiveGalleryFilter: hasActiveSearch || hasActiveDishTypeFilter,
+    isFirstLoginWalkthroughOpen,
     selectedDish,
     isAddRecipeOpen,
     isDeleteRecipeOpen,
@@ -127,6 +162,7 @@ export const useApp = () => {
     deleteRecipeClose,
     handleDishTypeChange,
     handleRecipeChange,
+    dismissFirstLoginWalkthrough,
     isInitializing,
     isLoading: isAuthLoading || isLoading || isFetching,
   };
