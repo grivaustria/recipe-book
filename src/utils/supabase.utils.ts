@@ -80,6 +80,12 @@ const buildRecipeMap = (
       .map((procedure) => procedure.description),
   }));
 
+const isMissingAuthSessionError = (error: unknown) =>
+  typeof error === "object" &&
+  error !== null &&
+  "name" in error &&
+  error.name === "AuthSessionMissingError";
+
 const getCurrentUser = async () => {
   const {
     data: { user },
@@ -87,6 +93,10 @@ const getCurrentUser = async () => {
   } = await supabase.auth.getUser();
 
   if (error) {
+    if (isMissingAuthSessionError(error)) {
+      return null;
+    }
+
     throw error;
   }
 
@@ -128,6 +138,26 @@ const getStoragePathFromPublicUrl = (imageUrl: string) => {
 
   return decodeURIComponent(
     parsedUrl.pathname.slice(pathIndex + STORAGE_PUBLIC_PATH_SEGMENT.length),
+  );
+};
+
+const createAuthLikeError = (code: string, message: string) => {
+  const error = new Error(message) as Error & { code: string; name: string };
+  error.code = code;
+  error.name = "AuthApiError";
+  return error;
+};
+
+const isExistingUserSignupResponse = (
+  data: Awaited<ReturnType<typeof supabase.auth.signUp>>["data"],
+) => {
+  const identities = data.user?.identities;
+
+  return (
+    !data.session &&
+    !!data.user &&
+    Array.isArray(identities) &&
+    identities.length === 0
   );
 };
 
@@ -240,6 +270,13 @@ export const authCreateUserEmailPassword = async (
 
   if (error) {
     throw error;
+  }
+
+  if (isExistingUserSignupResponse(data)) {
+    throw createAuthLikeError(
+      "user_already_exists",
+      "A user with this email address has already been registered.",
+    );
   }
 
   return data;
@@ -556,6 +593,7 @@ export const deleteRecipeFromSupabase = async (
 export const isSupabaseAuthError = (error: unknown): error is AuthError =>
   typeof error === "object" &&
   error !== null &&
-  "name" in error &&
-  typeof error.name === "string" &&
-  error.name.toLowerCase().includes("auth");
+  (("name" in error &&
+    typeof error.name === "string" &&
+    error.name.toLowerCase().includes("auth")) ||
+    ("code" in error && typeof error.code === "string"));

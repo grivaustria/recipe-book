@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
-import { type ChangeEvent, type FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import {
@@ -27,10 +27,25 @@ const defaultLoginFields: LoginFields = {
 const isValidEmail = (value: string) => /\S+@\S+\.\S+/.test(value);
 
 const Login = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [formFields, setFormFields] = useState<LoginFields>(defaultLoginFields);
   const [errors, setErrors] = useState<Partial<LoginFields>>({});
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+
+    if (searchParams.get("signup") !== "success") {
+      return;
+    }
+
+    toast.success(
+      "Account created successfully. Please check your email to confirm your account.",
+    );
+    navigate("/login", { replace: true });
+  }, [location.search, navigate]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

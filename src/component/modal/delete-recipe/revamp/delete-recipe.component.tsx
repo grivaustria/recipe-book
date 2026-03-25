@@ -53,8 +53,7 @@ const DeleteRecipe = ({ dish, onClose }: DeleteRecipeProps) => {
           </div>
 
           <p className={style.deleteSub}>
-            You&apos;re about to remove this recipe from your collection
-            permanently.
+            You're about to remove this recipe from your collection permanently.
           </p>
 
           <div className={style.deleteWarning}>
