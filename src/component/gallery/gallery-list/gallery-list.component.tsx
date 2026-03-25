@@ -145,9 +145,7 @@ const GalleryList = ({
           ) : (
             <>
               <div className={style.emptyEyebrow}>First time here?</div>
-              <div className={style.emptyTitle}>
-                Let&apos;s set up your gallery
-              </div>
+              <div className={style.emptyTitle}>Let's set up your gallery</div>
               <div className={style.emptySub}>
                 You do not have any saved dishes yet. Start with one recipe and
                 the rest of your collection will build from there.
@@ -161,7 +159,7 @@ const GalleryList = ({
                         Quick walkthrough
                       </div>
                       <div className={style.walkthroughTitle}>
-                        Here&apos;s what to do first
+                        Here's what to do first
                       </div>
                     </div>
 

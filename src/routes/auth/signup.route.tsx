@@ -1,5 +1,11 @@
 import { Icon } from "@iconify/react";
-import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -9,7 +15,7 @@ import {
   isSupabaseAuthError,
   signInWithGoogle,
 } from "../../utils/supabase.utils";
-import { refreshToHome } from "../../utils/auth.utils";
+import { refreshToLogin } from "../../utils/auth.utils";
 
 import AuthPage from "./index";
 import styles from "./auth.module.scss";
@@ -27,6 +33,8 @@ const defaultSignupFields: SignupFields = {
   password: "",
   conPassword: "",
 };
+const SIGNUP_RATE_LIMIT_STORAGE_KEY = "signup-rate-limit-until";
+const SIGNUP_RATE_LIMIT_WINDOW_MS = 60_000;
 
 const isValidEmail = (value: string) => /\S+@\S+\.\S+/.test(value);
 
@@ -46,6 +54,15 @@ const getPasswordStrength = (value: string) => {
   };
 };
 
+const getStoredRateLimitUntil = () => {
+  const storedValue = window.localStorage.getItem(
+    SIGNUP_RATE_LIMIT_STORAGE_KEY,
+  );
+  const parsedValue = storedValue ? Number(storedValue) : NaN;
+
+  return Number.isFinite(parsedValue) ? parsedValue : null;
+};
+
 const SignUp = () => {
   const [formFields, setFormFields] =
     useState<SignupFields>(defaultSignupFields);
@@ -53,11 +70,54 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [rateLimitUntil, setRateLimitUntil] = useState<number | null>(null);
+  const [now, setNow] = useState(() => Date.now());
 
   const passwordStrength = useMemo(
     () => getPasswordStrength(formFields.password),
     [formFields.password],
   );
+  const rateLimitSecondsRemaining = rateLimitUntil
+    ? Math.max(0, Math.ceil((rateLimitUntil - now) / 1000))
+    : 0;
+  const isRateLimitActive = rateLimitSecondsRemaining > 0;
+  const retryAtLabel = rateLimitUntil
+    ? new Date(rateLimitUntil).toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit",
+        second: "2-digit",
+      })
+    : "";
+
+  useEffect(() => {
+    const storedRateLimitUntil = getStoredRateLimitUntil();
+
+    if (!storedRateLimitUntil || storedRateLimitUntil <= Date.now()) {
+      window.localStorage.removeItem(SIGNUP_RATE_LIMIT_STORAGE_KEY);
+      return;
+    }
+
+    setRateLimitUntil(storedRateLimitUntil);
+  }, []);
+
+  useEffect(() => {
+    if (!rateLimitUntil) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      const currentTime = Date.now();
+
+      setNow(currentTime);
+
+      if (currentTime >= rateLimitUntil) {
+        window.localStorage.removeItem(SIGNUP_RATE_LIMIT_STORAGE_KEY);
+        setRateLimitUntil(null);
+      }
+    }, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, [rateLimitUntil]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -94,35 +154,48 @@ const SignUp = () => {
     setIsSubmitting(true);
 
     try {
-      const { session } = await authCreateUserEmailPassword(
+      await authCreateUserEmailPassword(
         formFields.email,
         formFields.password,
         formFields.displayName,
       );
 
-      toast.success(
-        session
-          ? "Account created successfully."
-          : "Account created. Check your email to confirm your signup.",
-      );
       setFormFields(defaultSignupFields);
-      if (session) {
-        refreshToHome();
-      }
+      refreshToLogin("?signup=success");
     } catch (error) {
       if (isSupabaseAuthError(error)) {
         switch (getAuthErrorCode(error)) {
           case "user_already_exists":
             toast.error("That email is already in use.");
             break;
+          case "over_email_send_rate_limit":
+          case "email_rate_limit_exceeded":
+            {
+              const nextRetryAt = Date.now() + SIGNUP_RATE_LIMIT_WINDOW_MS;
+
+              window.localStorage.setItem(
+                SIGNUP_RATE_LIMIT_STORAGE_KEY,
+                String(nextRetryAt),
+              );
+              setRateLimitUntil(nextRetryAt);
+              setNow(Date.now());
+            }
+            toast.error(
+              "Too many signup attempts. Please wait a moment before trying again.",
+            );
+            break;
           case "weak_password":
             toast.error("Choose a stronger password.");
             break;
           default:
-            toast.error("Unable to create your account right now.");
+            toast.error(
+              error.message || "Unable to create your account right now.",
+            );
         }
       } else {
-        toast.error("Failed to create account.");
+        toast.error(
+          error instanceof Error ? error.message : "Failed to create account.",
+        );
       }
     } finally {
       setIsSubmitting(false);
@@ -269,11 +342,23 @@ const SignUp = () => {
 
         <button
           className={styles.submitButton}
-          disabled={isSubmitting}
+          disabled={isSubmitting || isRateLimitActive}
           type="submit"
         >
-          {isSubmitting ? "Creating Account..." : "Create My Account"}
+          {isSubmitting
+            ? "Creating Account..."
+            : isRateLimitActive
+              ? `Try again in ${rateLimitSecondsRemaining}s`
+              : "Create My Account"}
         </button>
+        {isRateLimitActive ? (
+          <div className={styles.rateLimitNotice}>
+            Signup email cooldown active. Try again in{" "}
+            {rateLimitSecondsRemaining} seconds at {retryAtLabel}. If you used
+            production heavily, the broader project email limit may still take
+            longer to clear.
+          </div>
+        ) : null}
 
         <div className={styles.divider}>or sign up with</div>
 

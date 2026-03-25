@@ -57,8 +57,7 @@ const HeroSection = () => {
         </h1>
         <p className={styles["hero-sub"]}>
           Dish Galeria is where food memories live. Save, organize, and access
-          your favorite recipes from any device, anytime you&apos;re ready to
-          cook.
+          your favorite recipes from any device, anytime you're ready to cook.
         </p>
         <div className={styles["hero-actions"]}>
           <Link to="/signup" className={styles["btn-primary"]}>

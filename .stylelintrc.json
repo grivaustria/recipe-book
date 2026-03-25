@@ -9,6 +9,7 @@
     "comment-empty-line-before": null,
     "font-family-name-quotes": null,
     "selector-class-pattern": null,
+    "no-descending-specificity": null,
     "property-no-vendor-prefix": null,
     "media-feature-range-notation": null,
     "selector-pseudo-class-no-unknown": [
