@@ -73,7 +73,7 @@ const AuthPage = ({
               role="tab"
               to="/signup"
             >
-              Create Account
+              Sign Up
             </Link>
           </div>
 

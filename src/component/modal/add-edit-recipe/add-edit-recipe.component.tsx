@@ -27,6 +27,9 @@ type AddEditRecipeProps = {
   recipe?: DishDataType;
 };
 
+const DEFAULT_INGREDIENTS_MARKDOWN = "- quantity | unit | ingredient";
+const DEFAULT_PROCEDURE_MARKDOWN = "1. Describe the first step";
+
 const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
   const [addRecipe] = useAddRecipeMutation();
   const [updateRecipe] = useUpdateRecipeMutation();
@@ -40,6 +43,7 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
       generatedDishImage(recipe?.dishName || "Untitled Recipe"),
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
 
   useEffect(() => {
     const { overflow } = document.body.style;
@@ -83,6 +87,37 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
   }, [dishImage, dishName, imagePreviewUrl]);
 
   const previewImage = imagePreviewUrl || dishImage || fallbackPreview;
+  const isNewRecipeDirty =
+    !isEditMode &&
+    (dishName.trim() !== "" ||
+      dishType.trim() !== "" ||
+      Boolean(dishImage) ||
+      Boolean(selectedImageFile) ||
+      ingredientsMarkdown.trim() !== DEFAULT_INGREDIENTS_MARKDOWN ||
+      procedureMarkdown.trim() !== DEFAULT_PROCEDURE_MARKDOWN);
+
+  const closeModal = () => {
+    setIsDiscardModalOpen(false);
+    onClose();
+  };
+
+  const handleRequestClose = () => {
+    if (isSubmitting) {
+      return;
+    }
+
+    if (isNewRecipeDirty) {
+      setIsDiscardModalOpen(true);
+      return;
+    }
+
+    closeModal();
+  };
+
+  const handleDiscardChanges = () => {
+    clearFormState();
+    closeModal();
+  };
 
   const handleChooseImage = () => {
     fileInputRef.current?.click();
@@ -178,7 +213,7 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
         clearFormState();
       }
 
-      onClose();
+      closeModal();
     } catch (error) {
       if (uploadedImageUrl) {
         try {
@@ -200,10 +235,14 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
   };
 
   return (
-    <div className={style.modalBackdrop} onClick={onClose}>
+    <div className={style.modalBackdrop} onClick={handleRequestClose}>
       <div className={style.modal} onClick={(event) => event.stopPropagation()}>
-        <button className={style.modalClose} type="button" onClick={onClose}>
-          ✕
+        <button
+          className={style.modalClose}
+          type="button"
+          onClick={handleRequestClose}
+        >
+          x
         </button>
 
         <div className={style.header}>
@@ -333,7 +372,7 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
             <button
               className={style.btnSecondary}
               type="button"
-              onClick={onClose}
+              onClick={handleRequestClose}
               disabled={isSubmitting}
             >
               Cancel
@@ -352,6 +391,40 @@ const AddEditRecipe = ({ onClose, recipe }: AddEditRecipeProps) => {
           </div>
         </form>
       </div>
+
+      {isDiscardModalOpen && (
+        <div
+          className={style.confirmBackdrop}
+          onClick={() => setIsDiscardModalOpen(false)}
+        >
+          <div
+            className={style.confirmModal}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className={style.confirmTitle}>Discard new recipe?</div>
+            <p className={style.confirmText}>
+              If you exit now, this new dish will not be saved to your
+              collection. Are you sure you want to leave?
+            </p>
+            <div className={style.confirmActions}>
+              <button
+                className={style.btnSecondary}
+                type="button"
+                onClick={() => setIsDiscardModalOpen(false)}
+              >
+                Keep Editing
+              </button>
+              <button
+                className={style.btnPrimary}
+                type="button"
+                onClick={handleDiscardChanges}
+              >
+                Discard Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

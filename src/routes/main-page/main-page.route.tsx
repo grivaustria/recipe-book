@@ -10,6 +10,7 @@ import UpdateRecipeForm from "@component/modal/update-recipe/update-recipe-form.
 import AddEditRecipe from "@component/modal/add-edit-recipe/add-edit-recipe.component";
 import DeleteRecipe from "@component/modal/delete-recipe/revamp/delete-recipe.component";
 import ResponsiveFeedback from "@component/responsive-feedback/responsive-feedback.component";
+import ErrorPage from "@routes/error-page";
 import "react-toastify/dist/ReactToastify.css";
 
 const MainPage = () => {
@@ -43,6 +44,22 @@ const MainPage = () => {
         (dish) => dish.dishName.toLowerCase().replace(/\s/g, "-") === slug,
       )
     : null;
+
+  const isRecipeDetailRoute =
+    location.pathname.startsWith("/recipe/view/") ||
+    location.pathname.startsWith("/recipe/update/") ||
+    location.pathname.startsWith("/recipe/delete/");
+
+  const shouldShowRecipeNotFound =
+    Boolean(slug) &&
+    isRecipeDetailRoute &&
+    !isInitializing &&
+    !isLoading &&
+    !currentSelectedDish;
+
+  if (shouldShowRecipeNotFound) {
+    return <ErrorPage />;
+  }
 
   return (
     <>
