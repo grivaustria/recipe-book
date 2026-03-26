@@ -2,7 +2,7 @@
 
 Dish Galeria is a personal recipe web app for saving, organizing, and revisiting favorite dishes in one place. It includes a public landing page, Supabase authentication, and a private dashboard where each user can manage their own recipe collection.
 
-This project originally used Firebase for authentication and recipe storage, and was recently migrated to Supabase. Some legacy Firebase files may still exist in the repo during cleanup, but the active app flow now runs on Supabase.
+The project originally used Firebase for authentication and recipe storage, then migrated to Supabase. Some legacy Firebase files still exist in the repo during cleanup, but the active app flow now runs on Supabase.
 
 ## Overview
 
@@ -39,8 +39,8 @@ This project is structured like a small production app rather than a single-page
 - Supabase Database
 - Supabase Storage
 - Sass modules
-- MUI
 - Tailwind CSS 4
+- MUI
 - React Toastify
 - Framer Motion
 
@@ -60,28 +60,21 @@ npm install
 
 ### Environment Variables
 
-For local development, create a `.env.local` file in the project root with your
-development Supabase project values:
+Create a `.env.local` file in the project root with your Supabase project values:
 
 ```env
 VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_or_publishable_key
 ```
 
-Vite will load `.env.local` for your machine without committing it. Keep
-production Supabase values in your deployment provider environment variables,
-not in your local dev file.
-
-You can copy from either [\.env.example](/c:/Users/User/Documents/personal/recipe-book/.env.example)
-or [\.env.local.example](/c:/Users/User/Documents/personal/recipe-book/.env.local.example).
-The app reads these from [src/utils/supabase.ts](/c:/Users/User/Documents/personal/recipe-book/src/utils/supabase.ts).
+The app reads these values from `src/utils/supabase.ts`. If either variable is missing, the app throws an error at startup.
 
 ### Supabase Setup
 
 Run the SQL migrations in your Supabase project:
 
-1. Run [supabase/migrations/0001_initial_schema.sql](/c:/Users/User/Documents/personal/recipe-book/supabase/migrations/0001_initial_schema.sql)
-2. Run [supabase/migrations/0002_recipe_images_storage.sql](/c:/Users/User/Documents/personal/recipe-book/supabase/migrations/0002_recipe_images_storage.sql) if you want dish image upload enabled
+1. Run `supabase/migrations/0001_initial_schema.sql`
+2. Run `supabase/migrations/0002_recipe_images_storage.sql` if you want dish image upload enabled
 
 Then configure authentication in the Supabase dashboard:
 
@@ -93,31 +86,20 @@ Then configure authentication in the Supabase dashboard:
 
 If you want Google sign-in, create a Web OAuth client in Google Cloud Console:
 
-1. Open the Google Cloud Console and select or create a project.
+1. Open Google Cloud Console and select or create a project.
 2. Go to `Google Auth Platform > Clients`.
-3. If prompted, configure the consent screen first:
-   Set an app name, support email, and audience details, then save.
+3. If prompted, configure the consent screen first.
 4. Click `Create client`.
 5. Choose `Web application`.
 6. Add your app origins under `Authorized JavaScript origins`, for example:
    `http://localhost:5173`
    `https://your-production-domain.vercel.app`
-7. In your Supabase project, open `Authentication > Sign In / Providers > Google`
-   and copy the callback URL shown in the Google provider settings.
-   This is your Supabase callback URI.
+7. In Supabase, open `Authentication > Sign In / Providers > Google` and copy the callback URL shown there.
 8. Add that callback URL to `Authorized redirect URIs` in Google Cloud.
-   It usually looks like:
-   `https://<your-project-ref>.supabase.co/auth/v1/callback`
-9. Click `Create`, then copy the generated `Client ID` and `Client Secret`.
-10. Paste those values into the Google provider settings in your Supabase project.
+9. Copy the generated `Client ID` and `Client Secret`.
+10. Paste those values into the Google provider settings in Supabase.
 
-Recommended setup:
-
-- use a separate Google OAuth client for Development and Production
-- use your Dev Supabase callback URL in the Dev Google client
-- use your Production Supabase callback URL in the Production Google client
-
-For more detailed setup notes, see [SUPABASE_MIGRATION.md](/c:/Users/User/Documents/personal/recipe-book/SUPABASE_MIGRATION.md).
+For more setup notes, see `SUPABASE_MIGRATION.md`.
 
 ### Run Locally
 
@@ -143,15 +125,19 @@ npm run devnet
 - `npm run prettier:check` checks formatting with Prettier
 - `npm run ci:check` runs lint, stylelint, format, and prettier checks
 
+## Changelog
+
+Project changes are tracked in `CHANGELOG.md`.
+
 ## Routes
 
 - `/` shows the landing page for signed-out users and the main app for signed-in users
 - `/auth` redirects to `/login`
 - `/login` shows the login page
 - `/signup` shows the signup page
-- `/recipe/view/:slug` shows the recipe view modal route
-- `/recipe/update/:slug` shows the recipe update modal route
-- `/recipe/delete/:slug` shows the recipe delete modal route
+- `/recipe/view/:slug` opens the recipe details modal route for signed-in users
+- `/recipe/update/:slug` opens the recipe update modal route for signed-in users
+- `/recipe/delete/:slug` opens the recipe delete modal route for signed-in users
 
 ## Project Structure
 
@@ -206,6 +192,5 @@ The app uses aliases configured in `tsconfig.app.json` and `vite.config.ts`:
 
 ## Notes
 
-- The app previously used Firebase and was recently migrated to Supabase for auth, database access, and storage.
-- The repo still contains some legacy Firebase files while the migration cleanup is being finalized, but the active auth and recipe flows now use Supabase.
-- If you are troubleshooting setup or RLS errors, start with [SUPABASE_MIGRATION.md](/c:/Users/User/Documents/personal/recipe-book/SUPABASE_MIGRATION.md).
+- The repo still contains some legacy Firebase files, but the active auth and recipe flows now use Supabase.
+- If you are troubleshooting setup or RLS errors, start with `SUPABASE_MIGRATION.md`.
