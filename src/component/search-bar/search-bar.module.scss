@@ -36,3 +36,9 @@
   color: var(--muted);
   pointer-events: none;
 }
+
+@media (max-width: 1365px) {
+  .searchBar {
+    width: 100%;
+  }
+}

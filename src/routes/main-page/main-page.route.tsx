@@ -1,7 +1,5 @@
 import { Suspense } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useApp } from "@hooks/useApp";
 import { Outlet } from "react-router";
 
@@ -11,6 +9,8 @@ import GalleryModal from "@component/gallery/gallery-modal/gallery-modal.compone
 import UpdateRecipeForm from "@component/modal/update-recipe/update-recipe-form.component";
 import AddEditRecipe from "@component/modal/add-edit-recipe/add-edit-recipe.component";
 import DeleteRecipe from "@component/modal/delete-recipe/revamp/delete-recipe.component";
+import ResponsiveFeedback from "@component/responsive-feedback/responsive-feedback.component";
+import "react-toastify/dist/ReactToastify.css";
 
 const MainPage = () => {
   const {
@@ -46,7 +46,7 @@ const MainPage = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ResponsiveFeedback />
       <Suspense fallback={null}>
         {isAddRecipeOpen && <AddEditRecipe onClose={addRecipeClose} />}
 

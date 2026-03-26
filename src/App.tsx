@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import { useGetAuthUserQuery } from "@store/services/recipesApi";
+import AppLoadingScreen from "@component/app-loading-screen/app-loading-screen.component";
 
 const MainPage = lazy(() => import("./routes/main-page/main-page.route"));
 const Login = lazy(() => import("./routes/auth/login.route"));
@@ -15,11 +16,11 @@ const App = () => {
   const { data: user, isLoading: isAuthLoading } = useGetAuthUserQuery();
 
   if (isAuthLoading) {
-    return null;
+    return <AppLoadingScreen />;
   }
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<AppLoadingScreen />}>
       <Routes>
         <Route path="/auth" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<Login />} />

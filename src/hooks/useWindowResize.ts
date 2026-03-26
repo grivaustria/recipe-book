@@ -5,6 +5,14 @@ type WindowSize = {
   width: number;
 };
 
+const VIEWPORTS = {
+  mobile: 360,
+  tablet: 768,
+  smallDesktop: 1366,
+  scaledLaptop: 1536,
+  externalMonitor: 1920,
+} as const;
+
 export const useWindowResize = () => {
   const [windowSize, setWindowSize] = useState<WindowSize>({
     height: window.innerHeight,
@@ -13,16 +21,25 @@ export const useWindowResize = () => {
 
   const { width } = windowSize;
 
-  const isMobile = width <= 599;
-  const isTablet = width <= 1023;
-  const isLaptop = width <= 1919;
-  const isDesktop = width <= 2559;
-  const isWideScreen = width >= 2560;
+  // Mobile viewport: below the 768px tablet breakpoint.
+  const isMobile = width < VIEWPORTS.tablet;
+  // Tablet viewport: 768px up to below 1366px.
+  const isTablet = width >= VIEWPORTS.tablet && width < VIEWPORTS.smallDesktop;
+  // Small desktop viewport: 1366px up to below 1536px.
+  const isLaptop =
+    width >= VIEWPORTS.smallDesktop && width < VIEWPORTS.scaledLaptop;
+  // Scaled laptop viewport: 1536px up to below 1920px.
+  const isDesktop =
+    width >= VIEWPORTS.scaledLaptop && width < VIEWPORTS.externalMonitor;
+  // External monitor viewport: 1920px and above.
+  const isWideScreen = width >= VIEWPORTS.externalMonitor;
 
-  const trueIsMobile = width <= 768;
-  const dishGaleriaTablet = width <= 1228;
+  const trueIsMobile = width <= VIEWPORTS.mobile;
+  const dishGaleriaTablet = width < VIEWPORTS.smallDesktop;
 
-  const [showComponent, setShowComponent] = useState<boolean>(true);
+  const [showComponent, setShowComponent] = useState<boolean>(
+    width >= VIEWPORTS.smallDesktop,
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -37,7 +54,7 @@ export const useWindowResize = () => {
   }, []);
 
   useEffect(() => {
-    if (width < 1024) {
+    if (width < VIEWPORTS.smallDesktop) {
       setShowComponent(false);
     } else {
       setShowComponent(true);

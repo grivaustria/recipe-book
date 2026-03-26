@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import ResponsiveFeedback from "@component/responsive-feedback/responsive-feedback.component";
 
 import styles from "./auth.module.scss";
 
@@ -24,7 +24,7 @@ const AuthPage = ({
   note,
 }: AuthPageProps) => (
   <main className={styles.page}>
-    <ToastContainer />
+    <ResponsiveFeedback />
     <section className={styles.shell}>
       <div className={styles.brandPanel}>
         <Link className={styles.brand} to="/">
