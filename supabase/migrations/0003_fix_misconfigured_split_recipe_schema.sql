@@ -1,3 +1,33 @@
+-- Corrective migration for a misconfigured project that was initialized
+-- with the old consolidated recipe schema instead of the split
+-- recipes / ingredients / procedure tables.
+
+do $$
+begin
+  if to_regclass('public.recipes') is not null then
+    execute 'drop trigger if exists recipes_set_updated_at on public.recipes';
+  end if;
+end
+$$;
+
+do $$
+begin
+  if to_regclass('public.profiles') is not null then
+    execute 'drop trigger if exists profiles_set_updated_at on public.profiles';
+  end if;
+end
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+
+drop function if exists public.set_updated_at();
+drop function if exists public.handle_new_user();
+
+drop table if exists public.ingredients cascade;
+drop table if exists public.procedure cascade;
+drop table if exists public.recipes cascade;
+drop table if exists public.profiles cascade;
+
 create extension if not exists pgcrypto;
 
 create table if not exists public.recipes (

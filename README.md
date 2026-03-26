@@ -60,13 +60,20 @@ npm install
 
 ### Environment Variables
 
-Create a `.env` file in the project root with:
+For local development, create a `.env.local` file in the project root with your
+development Supabase project values:
 
 ```env
 VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_or_publishable_key
 ```
 
+Vite will load `.env.local` for your machine without committing it. Keep
+production Supabase values in your deployment provider environment variables,
+not in your local dev file.
+
+You can copy from either [\.env.example](/c:/Users/User/Documents/personal/recipe-book/.env.example)
+or [\.env.local.example](/c:/Users/User/Documents/personal/recipe-book/.env.local.example).
 The app reads these from [src/utils/supabase.ts](/c:/Users/User/Documents/personal/recipe-book/src/utils/supabase.ts).
 
 ### Supabase Setup
@@ -81,6 +88,34 @@ Then configure authentication in the Supabase dashboard:
 1. Enable `Email` in `Authentication > Providers`
 2. Enable `Google` if you want Google sign-in
 3. Add your local and deployed URLs in `Authentication > URL Configuration`
+
+### Create a Google OAuth Client
+
+If you want Google sign-in, create a Web OAuth client in Google Cloud Console:
+
+1. Open the Google Cloud Console and select or create a project.
+2. Go to `Google Auth Platform > Clients`.
+3. If prompted, configure the consent screen first:
+   Set an app name, support email, and audience details, then save.
+4. Click `Create client`.
+5. Choose `Web application`.
+6. Add your app origins under `Authorized JavaScript origins`, for example:
+   `http://localhost:5173`
+   `https://your-production-domain.vercel.app`
+7. In your Supabase project, open `Authentication > Sign In / Providers > Google`
+   and copy the callback URL shown in the Google provider settings.
+   This is your Supabase callback URI.
+8. Add that callback URL to `Authorized redirect URIs` in Google Cloud.
+   It usually looks like:
+   `https://<your-project-ref>.supabase.co/auth/v1/callback`
+9. Click `Create`, then copy the generated `Client ID` and `Client Secret`.
+10. Paste those values into the Google provider settings in your Supabase project.
+
+Recommended setup:
+
+- use a separate Google OAuth client for Development and Production
+- use your Dev Supabase callback URL in the Dev Google client
+- use your Production Supabase callback URL in the Production Google client
 
 For more detailed setup notes, see [SUPABASE_MIGRATION.md](/c:/Users/User/Documents/personal/recipe-book/SUPABASE_MIGRATION.md).
 

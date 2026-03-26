@@ -38,11 +38,39 @@ const Header = ({
     navigate("/login");
   };
 
-  const { dishGaleriaTablet } = useWindowResize();
+  const { isMobile, dishGaleriaTablet } = useWindowResize();
 
   return (
     <header className={`${className} ${style.header}`}>
-      {dishGaleriaTablet ? (
+      {isMobile ? (
+        <div className={style.mobileHeader}>
+          <div className={style.topHeader}>
+            <a className={style.logo} href="#">
+              Dish <em>Galeria</em>
+            </a>
+
+            <div className={style.mobileSearch}>
+              <SearchBar onChangeHandler={onSearchChange} />
+            </div>
+
+            {user && (
+              <AuthUser
+                user={user}
+                logout={handleLogout}
+                className={style.mobileAuthUser}
+              />
+            )}
+          </div>
+
+          <div className={style.filterRow}>
+            <Tag
+              tabs={tabs}
+              selectedDishType={selectedDishType}
+              onClickTab={onDishTypeChange}
+            />
+          </div>
+        </div>
+      ) : dishGaleriaTablet ? (
         <div className="flex flex-col items-center justify-center w-full gap-2 pb-4">
           <div className="h-17 flex items-center justify-between w-full">
             <a className={style.logo} href="#">

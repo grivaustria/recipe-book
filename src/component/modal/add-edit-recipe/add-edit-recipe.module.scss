@@ -41,6 +41,45 @@
   color: var(--dark);
 }
 
+.confirmBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 510;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(26, 18, 8, 0.3);
+}
+
+.confirmModal {
+  width: min(100%, 420px);
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--warm-white);
+  box-shadow: var(--shadow-lg);
+}
+
+.confirmTitle {
+  font-family: "Playfair Display", serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--dark);
+}
+
+.confirmText {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
 .header {
   padding: 30px 32px 20px;
   border-bottom: 1px solid var(--border);
@@ -280,5 +319,9 @@
   .imageHeader {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .confirmActions {
+    flex-direction: column;
   }
 }

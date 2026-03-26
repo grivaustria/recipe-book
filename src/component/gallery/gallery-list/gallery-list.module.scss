@@ -80,17 +80,21 @@
   .dishCard:nth-child(3n) & {
     height: 260px;
   }
+}
 
-  & img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.lazyImageFrame {
+  width: 100%;
+  height: 100%;
+}
 
-    .dishCard:hover & {
-      transform: scale(1.06);
-    }
+.dishImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  .dishCard:hover & {
+    transform: scale(1.06);
   }
 }
 
@@ -183,7 +187,7 @@
 }
 
 .imageFallback {
-  height: 200px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;

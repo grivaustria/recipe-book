@@ -1,6 +1,7 @@
 import type { DishDataType } from "@app-types/dish";
 import { FaRegEye } from "react-icons/fa";
 import { RiDeleteBinFill } from "react-icons/ri";
+import LazyImage from "@component/lazy-image/LazyImage";
 import style from "./gallery-list.module.scss";
 
 type GalleryListProps = {
@@ -82,10 +83,11 @@ const GalleryList = ({
               >
                 <div className={style.imgWrap}>
                   {dish.dishImage ? (
-                    <img
+                    <LazyImage
                       src={dish.dishImage}
                       alt={dish.dishName}
-                      loading="lazy"
+                      className={style.dishImage}
+                      wrapperClassName={style.lazyImageFrame}
                     />
                   ) : (
                     <div className={style.imageFallback}>{emoji}</div>
