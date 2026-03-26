@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import {
@@ -15,7 +15,7 @@ import {
   isSupabaseAuthError,
   signInWithGoogle,
 } from "../../utils/supabase.utils";
-import { refreshToLogin } from "../../utils/auth.utils";
+import { useGetAuthUserQuery } from "@store/services/recipesApi";
 
 import AuthPage from "./index";
 import styles from "./auth.module.scss";
@@ -64,6 +64,8 @@ const getStoredRateLimitUntil = () => {
 };
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const { refetch: refetchAuthUser } = useGetAuthUserQuery();
   const [formFields, setFormFields] =
     useState<SignupFields>(defaultSignupFields);
   const [errors, setErrors] = useState<Partial<SignupFields>>({});
@@ -161,7 +163,8 @@ const SignUp = () => {
       );
 
       setFormFields(defaultSignupFields);
-      refreshToLogin("?signup=success");
+      await refetchAuthUser();
+      navigate("/login?signup=success", { replace: true });
     } catch (error) {
       if (isSupabaseAuthError(error)) {
         switch (getAuthErrorCode(error)) {

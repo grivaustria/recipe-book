@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useGetAuthUserQuery } from "@store/services/recipesApi";
 
 import {
   getAuthErrorCode,
@@ -9,7 +10,6 @@ import {
   loginUserEmailPassword,
   signInWithGoogle,
 } from "../../utils/supabase.utils";
-import { refreshToHome } from "../../utils/auth.utils";
 
 import AuthPage from "./index";
 import styles from "./auth.module.scss";
@@ -29,6 +29,7 @@ const isValidEmail = (value: string) => /\S+@\S+\.\S+/.test(value);
 const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { refetch: refetchAuthUser } = useGetAuthUserQuery();
   const [formFields, setFormFields] = useState<LoginFields>(defaultLoginFields);
   const [errors, setErrors] = useState<Partial<LoginFields>>({});
   const [showPassword, setShowPassword] = useState(false);
@@ -77,7 +78,8 @@ const Login = () => {
       await loginUserEmailPassword(formFields.email, formFields.password);
       toast.success("Signed in successfully.");
       setFormFields(defaultLoginFields);
-      refreshToHome();
+      await refetchAuthUser();
+      navigate("/", { replace: true });
     } catch (error) {
       if (isSupabaseAuthError(error)) {
         switch (getAuthErrorCode(error)) {
